@@ -33,7 +33,7 @@
 <section id="backupView" class="hidden">
 <div class="card"><div class="title">Резервное копирование</div><p class="muted">Сохраняйте все объекты, помещения, позиции смет и настройки в JSON-файл. Его можно перенести на другое устройство или восстановить после очистки браузера.</p><div class="actions"><button onclick="backup()">Экспорт данных JSON</button><button class="secondary" onclick="document.getElementById('restoreFile').click()">Восстановить из JSON</button><input id="restoreFile" class="hidden" type="file" accept=".json,application/json" onchange="restore(event)"></div><hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><div class="title">Экспорт сметы</div><p class="muted">Выберите объект во вкладке «Объекты», затем скачайте Excel или сохраните смету в PDF.</p><div class="actions"><button onclick="exportExcel()">Excel (.xlsx)</button><button class="secondary" onclick="exportCSV()">CSV для Excel</button><button class="secondary" onclick="printEstimate()">Печать / PDF</button></div><div class="actions"><button class="danger" onclick="clearAll()">Удалить все локальные данные</button></div></div>
 </section>
-<div class="footer">Сметчик_22 · Локальное хранение · Новосибирск · ₽</div>
+<div class="footer">Сметчик_22 · Локальное хранение · Барнаул · ₽</div>
 </main>
 <script>
 const tg=window.Telegram?.WebApp;if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#172033');tg.setBackgroundColor('#f3f5f9')}catch(e){}}
