@@ -124,6 +124,8 @@
     .room-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px;margin-top:8px}
     .obj-context{background:var(--accent-soft);border-radius:10px;padding:11px 13px;font-size:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;line-height:1.4}
     .obj-context b{color:var(--accent);overflow-wrap:break-word}
+    .edit-hint{background:var(--green-soft);border:1px solid #bbf7d0;color:#166534;border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.45;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    @media (prefers-color-scheme:dark){.edit-hint{color:#bbf7d0}}
     .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;backdrop-filter:blur(2px);animation:fadeIn .2s ease}
     .drawer{position:fixed;top:0;left:0;bottom:0;width:300px;max-width:85vw;background:var(--card);z-index:51;box-shadow:4px 0 24px rgba(0,0,0,.25);animation:slideIn .25s cubic-bezier(0.2,0.9,0.3,1);display:flex;flex-direction:column;overflow-y:auto}
     @keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
@@ -153,54 +155,25 @@
     .thanks-block{background:var(--pink-soft);border-radius:12px;padding:13px;margin-bottom:12px;font-size:14px;color:var(--text);line-height:1.55;text-wrap:pretty}
     .voice-pulse{display:inline-block;font-size:56px;line-height:1;animation:pulse 1.2s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.65;transform:scale(1.15)}}
-
-    .support-hero{
-      background:linear-gradient(135deg,#fff1f5 0%,#ffe4ec 100%);
-      border:1px solid #fecdd3;
-      border-radius:20px;
-      padding:22px 18px;
-      margin-bottom:14px;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-    }
-    @media (prefers-color-scheme:dark){
-      .support-hero{background:linear-gradient(135deg,#4c0519 0%,#4a0519 100%);border-color:#831843}
-    }
-    .support-hero h2{
-      margin:0 0 8px;font-size:20px;font-weight:800;color:var(--pink);
-      letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px;
-    }
+    .support-hero{background:linear-gradient(135deg,#fff1f5 0%,#ffe4ec 100%);border:1px solid #fecdd3;border-radius:20px;padding:22px 18px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden}
+    @media (prefers-color-scheme:dark){.support-hero{background:linear-gradient(135deg,#4c0519 0%,#4a0519 100%);border-color:#831843}}
+    .support-hero h2{margin:0 0 8px;font-size:20px;font-weight:800;color:var(--pink);letter-spacing:-.3px;display:flex;align-items:center;justify-content:center;gap:8px}
     .support-hero .lead{font-size:14px;color:var(--text);margin:0 0 16px;line-height:1.5;opacity:.85}
     .support-hero .qr-block{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:14px}
-    .support-hero .qr-img{
-      width:220px;height:220px;background:#fff;padding:10px;border-radius:16px;
-      border:1px solid var(--line);box-shadow:0 4px 16px rgba(225,29,72,.15);
-      cursor:pointer;transition:transform .2s ease;
-    }
+    .support-hero .qr-img{width:220px;height:220px;background:#fff;padding:10px;border-radius:16px;border:1px solid var(--line);box-shadow:0 4px 16px rgba(225,29,72,.15);cursor:pointer;transition:transform .2s ease}
     .support-hero .qr-img:hover{transform:scale(1.03)}
     .support-hero .qr-hint{font-size:13px;color:var(--text);opacity:.8;max-width:340px;line-height:1.45}
     .support-hero .support-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
     .support-hero .heart-anim{display:inline-block;animation:heartbeat 1.6s ease-in-out infinite}
     @keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.2)}30%{transform:scale(1)}45%{transform:scale(1.15)}60%{transform:scale(1)}}
-    .support-footer{
-      background:linear-gradient(135deg,#fff1f5 0%,#ffe4ec 100%);
-      border:1px solid #fecdd3;border-radius:16px;padding:16px;margin-top:14px;
-      display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-    }
-    @media (prefers-color-scheme:dark){
-      .support-footer{background:linear-gradient(135deg,#4c0519 0%,#4a0519 100%);border-color:#831843}
-    }
-    .support-footer .sf-qr{
-      width:76px;height:76px;background:#fff;padding:4px;border-radius:10px;
-      border:1px solid var(--line);flex-shrink:0;
-    }
+    .support-footer{background:linear-gradient(135deg,#fff1f5 0%,#ffe4ec 100%);border:1px solid #fecdd3;border-radius:16px;padding:16px;margin-top:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    @media (prefers-color-scheme:dark){.support-footer{background:linear-gradient(135deg,#4c0519 0%,#4a0519 100%);border-color:#831843}}
+    .support-footer .sf-qr{width:76px;height:76px;background:#fff;padding:4px;border-radius:10px;border:1px solid var(--line);flex-shrink:0}
     .support-footer .sf-text{flex:1 1 160px;min-width:0}
     .support-footer .sf-text h3{margin:0 0 4px;font-size:15px;font-weight:700;color:var(--pink);letter-spacing:-.2px}
     .support-footer .sf-text p{margin:0;font-size:13px;color:var(--text);opacity:.8;line-height:1.4}
     .support-footer .sf-btn{flex-shrink:0}
     .modal-qr{width:280px;height:280px;max-width:100%;background:#fff;padding:12px;border-radius:16px;border:1px solid var(--line);display:block;margin:0 auto 16px}
-
     @media (min-width:680px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.wrap{padding-top:24px}}
     @media (max-width:420px){.grid{grid-template-columns:1fr}.grid.cols3{grid-template-columns:1fr 1fr}.card{padding:15px}.segment{flex-wrap:wrap}.segment button{flex:1 1 calc(50% - 4px)}.support-hero .qr-img{width:180px;height:180px}}
     @media (max-width:360px){body{font-size:15px}.tabs button{padding:9px 12px;font-size:13px}.card{padding:13px}.btn{padding:12px 14px;font-size:14px}.stat .n{font-size:18px}.gantt-label{flex-basis:100%}.gantt-bar{flex-basis:100%}}
@@ -307,7 +280,6 @@ function fallbackCopy(text, cb){
 async function loadScript(src){
   return new Promise((resolve, reject) => {
     if(document.querySelector('script[src="'+src+'"]')){
-      // уже загружен — ждём глобальную переменную
       const check = setInterval(() => {
         if(window.XLSX || window.pdfMake){ clearInterval(check); resolve(); }
       }, 50);
@@ -331,72 +303,40 @@ function blobToDataURL(blob){
   });
 }
 
-// Основная функция скачивания файла.
-// Порядок попыток:
-// 1. Telegram.WebApp.downloadFile с data URL (работает в Telegram Android/iOS/Desktop, Bot API 8.0+)
-// 2. <a download> с blob URL (работает в обычных браузерах, Telegram Desktop)
-// 3. Открыть data URL через openLink (fallback для iOS, если downloadFile не сработал)
 async function saveBlob(blob, filename, opts){
   opts = opts || {};
   const isTelegram = !!window.Telegram?.WebApp?.initData;
-
-  // 1. Пробуем Telegram downloadFile с data URL
   if (isTelegram && typeof window.Telegram.WebApp.downloadFile === 'function'){
     try {
       const dataUrl = await blobToDataURL(blob);
       window.Telegram.WebApp.downloadFile({ url: dataUrl, file_name: filename });
       toast('✅ Файл передан на скачивание');
       return true;
-    } catch(e){
-      console.warn('Telegram.downloadFile failed:', e);
-    }
+    } catch(e){ console.warn('Telegram.downloadFile failed:', e); }
   }
-
-  // 2. Пробуем <a download> с blob URL
   try {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.rel = 'noopener';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      if (a.parentNode) a.parentNode.removeChild(a);
-      try { URL.revokeObjectURL(url); } catch(e){}
-    }, 1500);
+    a.href = url; a.download = filename; a.rel = 'noopener'; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); try { URL.revokeObjectURL(url); } catch(e){} }, 1500);
     toast('✅ Файл скачан');
     return true;
-  } catch(e){
-    console.warn('a.download failed:', e);
-  }
-
-  // 3. Fallback — открыть data URL напрямую
+  } catch(e){ console.warn('a.download failed:', e); }
   try {
     const dataUrl = await blobToDataURL(blob);
-    if (isTelegram && window.Telegram.WebApp.openLink){
-      window.Telegram.WebApp.openLink(dataUrl);
-    } else {
-      window.open(dataUrl, '_blank');
-    }
+    if (isTelegram && window.Telegram.WebApp.openLink){ window.Telegram.WebApp.openLink(dataUrl); }
+    else { window.open(dataUrl, '_blank'); }
     toast('📥 Файл открыт. Сохраните его через меню браузера.', '#64748b');
     return true;
-  } catch(e){
-    console.warn('Open fallback failed:', e);
-  }
-
+  } catch(e){ console.warn('Open fallback failed:', e); }
   alert('Не удалось сохранить файл. Попробуйте открыть приложение в браузере.');
   return false;
 }
 
-// ============ ГЕНЕРАЦИЯ EXCEL (.xlsx) ============
 async function buildExcelBlob(rows, sheetName){
-  if (!window.XLSX){
-    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
-  }
+  if (!window.XLSX){ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'); }
   const ws = XLSX.utils.aoa_to_sheet(rows);
-  // Автоширина колонок
   const colWidths = [];
   rows.forEach(row => {
     row.forEach((cell, idx) => {
@@ -408,32 +348,27 @@ async function buildExcelBlob(rows, sheetName){
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, sheetName || 'Смета');
   return await new Promise((resolve, reject) => {
-    try {
-      XLSX.write(wb, { bookType: 'xlsx', type: 'blob' }, (b) => resolve(b));
-    } catch(e){ reject(e); }
+    try { XLSX.write(wb, { bookType: 'xlsx', type: 'blob' }, (b) => resolve(b)); }
+    catch(e){ reject(e); }
   });
 }
 
-// ============ ГЕНЕРАЦИЯ PDF (pdfmake) ============
 async function ensurePdfMake(){
   if (window.pdfMake && window.pdfMake.vfs) return;
   await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js');
   await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js');
-  if (!window.pdfMake || !window.pdfMake.vfs){
-    throw new Error('Не удалось загрузить pdfmake');
-  }
+  if (!window.pdfMake || !window.pdfMake.vfs){ throw new Error('Не удалось загрузить pdfmake'); }
 }
 
 async function buildPdfBlob(docDefinition){
   await ensurePdfMake();
   return await new Promise((resolve, reject) => {
-    try {
-      pdfMake.createPdf(docDefinition).getBlob(blob => resolve(blob));
-    } catch(e){ reject(e); }
+    try { pdfMake.createPdf(docDefinition).getBlob(blob => resolve(blob)); }
+    catch(e){ reject(e); }
   });
 }
 
-// ============ КАТАЛОГ (70 ПОЗИЦИЙ) ============
+// ============ КАТАЛОГ ============
 const DEFAULT_CATALOG = [
   {id:'d1',group:'Демонтаж',name:'Демонтаж старой штукатурки',unit:'м²',price:220,type:'work',stage:'Демонтаж',rooms:['bedroom','living','kids','kitchen','bathroom','toilet','combined','hallway','balcony']},
   {id:'d2',group:'Демонтаж',name:'Демонтаж керамической плитки',unit:'м²',price:340,type:'work',stage:'Демонтаж',rooms:['bathroom','toilet','combined','kitchen']},
@@ -554,10 +489,7 @@ if(!Array.isArray(db.catalog)) db.catalog = [];
   const existingIds = new Set(db.catalog.map(x=>x.id));
   let restored = 0;
   DEFAULT_CATALOG.forEach(defItem=>{
-    if(!existingIds.has(defItem.id)){
-      db.catalog.push(JSON.parse(JSON.stringify(defItem)));
-      restored++;
-    }
+    if(!existingIds.has(defItem.id)){ db.catalog.push(JSON.parse(JSON.stringify(defItem))); restored++; }
   });
   if(restored > 0){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); }catch(e){} }
 })();
@@ -569,13 +501,10 @@ function migrateDB(){
   db.objects.forEach(o => {
     (o.items||[]).forEach(i => {
       if(i.roomName && i.name && i.name.endsWith(' ('+i.roomName+')')){
-        i.name = i.name.slice(0, -(' ('+i.roomName+')').length);
-        changed = true;
+        i.name = i.name.slice(0, -(' ('+i.roomName+')').length); changed = true;
       }
     });
-    if(o.kind === 'Ванная комната' || o.kind === 'Санузел' || o.kind === 'Совмещённый санузел'){
-      o.kind = 'Другое'; changed = true;
-    }
+    if(o.kind === 'Ванная комната' || o.kind === 'Санузел' || o.kind === 'Совмещённый санузел'){ o.kind = 'Другое'; changed = true; }
     if(o.kind && !OBJECT_KINDS.includes(o.kind)){
       const found = OBJECT_KINDS.find(k=>o.kind.includes(k));
       if(found){ o.kind = found; changed = true; }
@@ -615,8 +544,7 @@ function initSettingsDraft(){
       company: db.company||'', inn: db.inn||'', ogrn: db.ogrn||'',
       legalAddress: db.legalAddress||'', director: db.director||'',
       phone: db.phone||'', email: db.email||'', website: db.website||'',
-      region: db.region||'Новосибирск',
-      markup: db.markup ?? 10, waste: db.waste ?? 10,
+      region: db.region||'Новосибирск', markup: db.markup ?? 10, waste: db.waste ?? 10,
       contractPrefix: db.contractPrefix||'BM',
       donateName: db.donateName||'', donateQrLink: db.donateQrLink||'',
       donateTelegram: db.donateTelegram||'', donateMessage: db.donateMessage||''
@@ -633,31 +561,25 @@ function commitSettingsDraft(){
   if(!settingsDraft) return;
   if(settingsDraft.markup === '' || settingsDraft.markup === null) settingsDraft.markup = 0;
   if(settingsDraft.waste === '' || settingsDraft.waste === null) settingsDraft.waste = 0;
-  Object.assign(db, settingsDraft);
-  save(); settingsDraft = null;
+  Object.assign(db, settingsDraft); save(); settingsDraft = null;
 }
 function saveSettings(){
   if(!settingsDraft){ toast('Нет изменений', '#64748b'); return; }
   commitSettingsDraft();
-  toast('💾 Настройки сохранены');
-  render();
+  toast('💾 Настройки сохранены'); render();
 }
 function resetSettingsDraft(){ settingsDraft = null; initSettingsDraft(); render(); toast('↩ Изменения отменены', '#64748b'); }
 function settingsDirty(){
   if(!settingsDraft) return false;
-  for(const k of Object.keys(settingsDraft)){
-    if(String(settingsDraft[k] ?? '') !== String(db[k] ?? '')) return true;
-  }
+  for(const k of Object.keys(settingsDraft)){ if(String(settingsDraft[k] ?? '') !== String(db[k] ?? '')) return true; }
   return false;
 }
 
 // ============ НАВИГАЦИЯ ============
 function applyState(st){
   st = st || { tab:'home', editingItem:null };
-  tab = st.tab || 'home';
-  editingItem = st.editingItem || null;
-  render();
-  updateBackButton();
+  tab = st.tab || 'home'; editingItem = st.editingItem || null;
+  render(); updateBackButton();
 }
 function navigate(newState){
   if(tab === 'settings' && newState.tab !== 'settings' && settingsDraft){
@@ -665,8 +587,7 @@ function navigate(newState){
     if(wasDirty) toast('💾 Настройки сохранены автоматически');
   }
   if(saveTimeout){ clearTimeout(saveTimeout); save(); saveTimeout=null; }
-  closeCatalogModals();
-  stopVoice();
+  closeCatalogModals(); stopVoice();
   const st = { tab:newState.tab||tab, editingItem:newState.editingItem||null };
   if(st.tab!==tab || st.editingItem!==editingItem){ try{ history.pushState(st, '', location.href); }catch(e){} }
   applyState(st);
@@ -727,10 +648,7 @@ function renderDrawer(){
     <div class="drawer-overlay" onclick="closeMenu()"></div>
     <aside class="drawer" role="dialog">
       <div class="drawer-header">
-        <div>
-          <div class="drawer-title">BuildMate Pro${admin?' <span class="badge gold" style="margin-left:4px">Автор</span>':''}</div>
-          <div class="drawer-sub">Ваш помощник в составлении смет</div>
-        </div>
+        <div><div class="drawer-title">BuildMate Pro${admin?' <span class="badge gold" style="margin-left:4px">Автор</span>':''}</div><div class="drawer-sub">Ваш помощник в составлении смет</div></div>
         <button class="drawer-close" onclick="closeMenu()" aria-label="Закрыть">×</button>
       </div>
       <nav class="drawer-nav">
@@ -738,19 +656,18 @@ function renderDrawer(){
         <div class="drawer-section">Поддержка</div>
         <button class="donate" onclick="closeMenu(); openDonate()">❤️ Поддержать автора <span class="badge pink" style="margin-left:auto">QR</span></button>
       </nav>
-      <div class="drawer-footer">BuildMate Pro · v1.6<br>Сделано для прорабов и мастеров</div>
+      <div class="drawer-footer">BuildMate Pro · v1.7<br>Сделано для прорабов и мастеров</div>
     </aside>`;
 }
 function navigateFromMenu(key){ closeMenu(); navigate({ tab:key, editingItem:null }); }
 
-// ============ ДОНАТ (QR) ============
+// ============ ДОНАТ ============
 function getDonateReqs(){
   const admin = isAdmin();
   const hasLocal = admin && !!db.donateQrLink;
   const src = hasLocal ? {
-    name: db.donateName || HARDCODED_DONATE.name,
-    qrLink: db.donateQrLink, bank: HARDCODED_DONATE.bank || '',
-    telegram: db.donateTelegram || HARDCODED_DONATE.telegram,
+    name: db.donateName || HARDCODED_DONATE.name, qrLink: db.donateQrLink,
+    bank: HARDCODED_DONATE.bank || '', telegram: db.donateTelegram || HARDCODED_DONATE.telegram,
     message: db.donateMessage || HARDCODED_DONATE.message
   } : HARDCODED_DONATE;
   return {
@@ -807,7 +724,6 @@ function openQrDirect(){
   if(!r.qrLink){ toast('Ссылка для QR не задана', '#64748b'); return; }
   if(/^https?:\/\//i.test(r.qrLink)){
     if(window.Telegram?.WebApp?.openLink){ try{ window.Telegram.WebApp.openLink(r.qrLink); return; }catch(e){} }
-    if(window.Telegram?.WebApp?.openTelegramLink && /t\.me\//i.test(r.qrLink)){ try{ window.Telegram.WebApp.openTelegramLink(r.qrLink); return; }catch(e){} }
     window.open(r.qrLink, '_blank');
   } else { copyText(r.qrLink); }
 }
@@ -818,7 +734,6 @@ function openAuthorChat(){
   if(window.Telegram?.WebApp?.openTelegramLink){ try{ window.Telegram.WebApp.openTelegramLink(url); return; }catch(e){} }
   window.open(url, '_blank');
 }
-
 function renderSupportHero(){
   if(!hasActiveDonate()) return '';
   const r = getDonateReqs();
@@ -827,26 +742,15 @@ function renderSupportHero(){
     <section class="support-hero">
       <h2><span class="heart-anim">❤️</span> Поддержать автора</h2>
       <p class="lead">${esc(r.message)}</p>
-      <div class="qr-block">
-        <img src="${qrUrl}" alt="QR-код для поддержки" class="qr-img" onclick="openDonate()">
-        <div class="qr-hint">Отсканируйте QR-код в приложении банка,<br>или нажмите на него для подробностей.</div>
-      </div>
-      <div class="support-actions">
-        <button class="btn pink" onclick="openDonate()">❤️ Поддержать</button>
-        <button class="btn secondary" onclick="openQrDirect()">💳 Открыть в банке</button>
-      </div>
+      <div class="qr-block"><img src="${qrUrl}" alt="QR-код для поддержки" class="qr-img" onclick="openDonate()"><div class="qr-hint">Отсканируйте QR-код в приложении банка,<br>или нажмите на него для подробностей.</div></div>
+      <div class="support-actions"><button class="btn pink" onclick="openDonate()">❤️ Поддержать</button><button class="btn secondary" onclick="openQrDirect()">💳 Открыть в банке</button></div>
     </section>`;
 }
 function renderSupportFooter(){
   if(!hasActiveDonate()) return '';
   const r = getDonateReqs();
   const qrUrl = getQrImageUrl(r.qrLink, 152);
-  return `
-    <section class="support-footer">
-      <img src="${qrUrl}" alt="QR" class="sf-qr" onclick="openDonate()" style="cursor:pointer">
-      <div class="sf-text"><h3>❤️ Поддержать автора</h3><p>Отсканируйте QR в приложении банка или нажмите кнопку.</p></div>
-      <button class="btn pink sf-btn" onclick="openDonate()">Поддержать</button>
-    </section>`;
+  return `<section class="support-footer"><img src="${qrUrl}" alt="QR" class="sf-qr" onclick="openDonate()" style="cursor:pointer"><div class="sf-text"><h3>❤️ Поддержать автора</h3><p>Отсканируйте QR в приложении банка или нажмите кнопку.</p></div><button class="btn pink sf-btn" onclick="openDonate()">Поддержать</button></section>`;
 }
 
 // ============ МОДАЛКИ ============
@@ -874,11 +778,7 @@ function setAddEstimateSearch(v){
   const listEl = document.getElementById('eaList'); if(!listEl) return;
   const search = v.toLowerCase().trim();
   const filtered = CATALOG.filter(p => !search || p.name.toLowerCase().includes(search) || (p.group||'').toLowerCase().includes(search));
-  listEl.innerHTML = filtered.length ? filtered.map(p => `
-    <div class="catalog-pick-item" onclick="openAddEstimateItemForm('${p.id}')">
-      <div class="itemhead"><div class="grow"><strong>${esc(p.name)}</strong><div class="itemmeta">${p.type==='material'?'📦 Материал':'🔧 Работа'} · ${esc(p.group)} · ${esc(p.unit)}</div></div><b style="white-space:nowrap">${fmt(p.price)}</b></div>
-    </div>
-  `).join('') : '<p class="hint" style="padding:12px;text-align:center">Ничего не найдено</p>';
+  listEl.innerHTML = filtered.length ? filtered.map(p => `<div class="catalog-pick-item" onclick="openAddEstimateItemForm('${p.id}')"><div class="itemhead"><div class="grow"><strong>${esc(p.name)}</strong><div class="itemmeta">${p.type==='material'?'📦 Материал':'🔧 Работа'} · ${esc(p.group)} · ${esc(p.unit)}</div></div><b style="white-space:nowrap">${fmt(p.price)}</b></div></div>`).join('') : '<p class="hint" style="padding:12px;text-align:center">Ничего не найдено</p>';
 }
 function openAddEstimateItemForm(catalogId){
   if(!estimateAddState) return;
@@ -904,40 +804,10 @@ function renderAddEstimateItemModal(){
   if(estimateAddState.mode === 'select'){
     const search = (estimateAddState.search||'').toLowerCase().trim();
     const filtered = CATALOG.filter(p => !search || p.name.toLowerCase().includes(search) || (p.group||'').toLowerCase().includes(search));
-    host.innerHTML = `
-      <div class="modal-overlay" onclick="closeEstimateAddModal()">
-        <div class="modal" onclick="event.stopPropagation()">
-          <button class="modal-close" onclick="closeEstimateAddModal()" aria-label="Закрыть">×</button>
-          <h2>➕ Добавить позицию в смету</h2>
-          <p class="hint">Выберите из каталога или создайте вручную</p>
-          <div class="field" style="margin:12px 0 10px"><input type="text" id="eaSearch" placeholder="🔍 Поиск по названию или разделу..." value="${esc(estimateAddState.search||'')}" oninput="setAddEstimateSearch(this.value)"></div>
-          <button class="btn secondary" style="width:100%;margin-bottom:12px" onclick="openAddEstimateItemForm(null)">📝 Создать вручную</button>
-          <div class="catalog-pick" id="eaList">
-            ${filtered.length ? filtered.map(p => `<div class="catalog-pick-item" onclick="openAddEstimateItemForm('${p.id}')"><div class="itemhead"><div class="grow"><strong>${esc(p.name)}</strong><div class="itemmeta">${p.type==='material'?'📦 Материал':'🔧 Работа'} · ${esc(p.group)} · ${esc(p.unit)}</div></div><b style="white-space:nowrap">${fmt(p.price)}</b></div></div>`).join('') : '<p class="hint" style="padding:12px;text-align:center">Ничего не найдено</p>'}
-          </div>
-        </div>
-      </div>`;
+    host.innerHTML = `<div class="modal-overlay" onclick="closeEstimateAddModal()"><div class="modal" onclick="event.stopPropagation()"><button class="modal-close" onclick="closeEstimateAddModal()" aria-label="Закрыть">×</button><h2>➕ Добавить позицию в смету</h2><p class="hint">Выберите из каталога или создайте вручную</p><div class="field" style="margin:12px 0 10px"><input type="text" id="eaSearch" placeholder="🔍 Поиск по названию или разделу..." value="${esc(estimateAddState.search||'')}" oninput="setAddEstimateSearch(this.value)"></div><button class="btn secondary" style="width:100%;margin-bottom:12px" onclick="openAddEstimateItemForm(null)">📝 Создать вручную</button><div class="catalog-pick" id="eaList">${filtered.length ? filtered.map(p => `<div class="catalog-pick-item" onclick="openAddEstimateItemForm('${p.id}')"><div class="itemhead"><div class="grow"><strong>${esc(p.name)}</strong><div class="itemmeta">${p.type==='material'?'📦 Материал':'🔧 Работа'} · ${esc(p.group)} · ${esc(p.unit)}</div></div><b style="white-space:nowrap">${fmt(p.price)}</b></div></div>`).join('') : '<p class="hint" style="padding:12px;text-align:center">Ничего не найдено</p>'}</div></div></div>`;
   } else {
     const d = estimateAddState.draft;
-    host.innerHTML = `
-      <div class="modal-overlay" onclick="closeEstimateAddModal()">
-        <div class="modal" onclick="event.stopPropagation()">
-          <button class="modal-close" onclick="closeEstimateAddModal()" aria-label="Закрыть">×</button>
-          <h2>📝 Позиция в смету</h2>
-          <div class="grid">
-            <div class="field" style="grid-column:1/-1"><label>Наименование</label><input type="text" id="eaName" value="${esc(d.name)}" placeholder="Например: Штукатурка стен по маякам"></div>
-            <div class="field"><label>Тип</label><select id="eaType"><option value="work" ${d.type==='work'?'selected':''}>🔧 Работа</option><option value="material" ${d.type==='material'?'selected':''}>📦 Материал</option></select></div>
-            <div class="field"><label>Единица</label><input type="text" id="eaUnit" value="${esc(d.unit)}" placeholder="м², пог. м, шт."></div>
-            <div class="field"><label>Количество</label><input type="number" id="eaQty" value="${d.qty || 1}" step="any" min="0"></div>
-            <div class="field"><label>Цена за ед., ₽</label><input type="number" id="eaPrice" value="${d.price || 0}" step="any" min="0"></div>
-            <div class="field"><label>Себестоимость за ед., ₽</label><input type="number" id="eaCost" value="${d.cost || 0}" step="any" min="0"></div>
-            <div class="field"><label>Раздел</label><input type="text" id="eaGroup" value="${esc(d.group)}"></div>
-            <div class="field"><label>Помещение</label><select id="eaRoom"><option value="">— Общее —</option>${(o.rooms||[]).map(r=>`<option value="${r.id}" ${d.roomId===r.id?'selected':''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div>
-            <div class="field"><label>Этап</label><select id="eaStage">${STAGES_ALL.map(s=>`<option value="${s}" ${d.stage===s?'selected':''}>${s}</option>`).join('')}</select></div>
-          </div>
-          <div class="actions"><button class="btn" onclick="commitAddEstimateItem()">✅ Добавить в смету</button><button class="btn secondary" onclick="backToAddEstimateSelect()">← К выбору</button></div>
-        </div>
-      </div>`;
+    host.innerHTML = `<div class="modal-overlay" onclick="closeEstimateAddModal()"><div class="modal" onclick="event.stopPropagation()"><button class="modal-close" onclick="closeEstimateAddModal()" aria-label="Закрыть">×</button><h2>📝 Позиция в смету</h2><div class="grid"><div class="field" style="grid-column:1/-1"><label>Наименование</label><input type="text" id="eaName" value="${esc(d.name)}" placeholder="Например: Штукатурка стен по маякам"></div><div class="field"><label>Тип</label><select id="eaType"><option value="work" ${d.type==='work'?'selected':''}>🔧 Работа</option><option value="material" ${d.type==='material'?'selected':''}>📦 Материал</option></select></div><div class="field"><label>Единица</label><input type="text" id="eaUnit" value="${esc(d.unit)}" placeholder="м², пог. м, шт."></div><div class="field"><label>Количество</label><input type="number" id="eaQty" value="${d.qty || 1}" step="any" min="0"></div><div class="field"><label>Цена за ед., ₽</label><input type="number" id="eaPrice" value="${d.price || 0}" step="any" min="0"></div><div class="field"><label>Себестоимость за ед., ₽</label><input type="number" id="eaCost" value="${d.cost || 0}" step="any" min="0"></div><div class="field"><label>Раздел</label><input type="text" id="eaGroup" value="${esc(d.group)}"></div><div class="field"><label>Помещение</label><select id="eaRoom"><option value="">— Общее —</option>${(o.rooms||[]).map(r=>`<option value="${r.id}" ${d.roomId===r.id?'selected':''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div><div class="field"><label>Этап</label><select id="eaStage">${STAGES_ALL.map(s=>`<option value="${s}" ${d.stage===s?'selected':''}>${s}</option>`).join('')}</select></div></div><div class="actions"><button class="btn" onclick="commitAddEstimateItem()">✅ Добавить в смету</button><button class="btn secondary" onclick="backToAddEstimateSelect()">← К выбору</button></div></div></div>`;
   }
 }
 function commitAddEstimateItem(){
@@ -946,15 +816,10 @@ function commitAddEstimateItem(){
   const room = roomId ? o.rooms.find(r=>r.id===roomId) : null;
   const price = num(document.getElementById('eaPrice').value);
   o.items.push({
-    id: 'i_'+uid(),
-    name: document.getElementById('eaName').value.trim() || 'Новая позиция',
-    type: document.getElementById('eaType').value,
-    unit: document.getElementById('eaUnit').value.trim() || 'м²',
-    qty: num(document.getElementById('eaQty').value),
-    price: price,
-    cost: num(document.getElementById('eaCost').value),
-    group: document.getElementById('eaGroup').value.trim() || 'Прочее',
-    stage: document.getElementById('eaStage').value,
+    id: 'i_'+uid(), name: document.getElementById('eaName').value.trim() || 'Новая позиция',
+    type: document.getElementById('eaType').value, unit: document.getElementById('eaUnit').value.trim() || 'м²',
+    qty: num(document.getElementById('eaQty').value), price: price, cost: num(document.getElementById('eaCost').value),
+    group: document.getElementById('eaGroup').value.trim() || 'Прочее', stage: document.getElementById('eaStage').value,
     roomId: roomId || '', roomName: room ? room.name : ''
   });
   save(); closeCatalogModals(); toast('✅ Позиция добавлена в смету'); render();
@@ -977,34 +842,7 @@ function renderCatalogEditModal(){
   const d = catalogEditState.draft;
   const isEdit = catalogEditState.mode === 'edit';
   const host = document.getElementById('catalogModalHost');
-  host.innerHTML = `
-    <div class="modal-overlay" onclick="closeCatalogEdit()">
-      <div class="modal" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="closeCatalogEdit()" aria-label="Закрыть">×</button>
-        <h2>${isEdit?'✏️ Редактирование расценки':'➕ Новая расценка'}</h2>
-        ${catalogEditState.originalText?`<p class="hint" style="margin-bottom:12px">Распознано: «${esc(catalogEditState.originalText)}»</p>`:''}
-        <div class="grid">
-          <div class="field" style="grid-column:1/-1"><label>Наименование</label><input type="text" id="ceName" value="${esc(d.name)}" placeholder="Например: Штукатурка стен по маякам"></div>
-          <div class="field"><label>Тип</label><select id="ceType"><option value="work" ${d.type==='work'?'selected':''}>🔧 Работа</option><option value="material" ${d.type==='material'?'selected':''}>📦 Материал</option></select></div>
-          <div class="field"><label>Единица</label><input type="text" id="ceUnit" value="${esc(d.unit)}" placeholder="м², пог. м, шт."></div>
-          <div class="field"><label>Цена, ₽</label><input type="number" id="cePrice" value="${d.price}" min="0" step="any"></div>
-          <div class="field"><label>Раздел</label><input type="text" id="ceGroup" value="${esc(d.group)}" placeholder="Отделка, Плитка, Сантехника..."></div>
-          <div class="field"><label>Этап</label><select id="ceStage">${STAGES_ALL.map(s=>`<option value="${s}" ${d.stage===s?'selected':''}>${s}</option>`).join('')}</select></div>
-        </div>
-        <div class="field" style="margin-top:12px">
-          <label>Применимо к помещениям</label>
-          <div class="room-chips" id="ceRooms">
-            ${ROOM_TYPES.map(rt=>`<label class="room-chip ${(d.rooms||[]).includes(rt.key)?'on':''}"><input type="checkbox" value="${rt.key}" ${(d.rooms||[]).includes(rt.key)?'checked':''}>${rt.emoji} ${rt.label}</label>`).join('')}
-          </div>
-          <p class="hint" style="margin-top:8px">Отметьте, в каких комнатах применяется эта расценка. Если ничего не выбрано — применяется ко всем.</p>
-        </div>
-        <div class="actions">
-          <button class="btn" onclick="saveCatalogEdit()">${isEdit?'💾 Сохранить':'➕ Добавить'}</button>
-          <button class="btn secondary" onclick="closeCatalogEdit()">Отмена</button>
-          ${isEdit?`<button class="btn danger" onclick="deleteCatalogFromModal()">🗑 Удалить</button>`:''}
-        </div>
-      </div>
-    </div>`;
+  host.innerHTML = `<div class="modal-overlay" onclick="closeCatalogEdit()"><div class="modal" onclick="event.stopPropagation()"><button class="modal-close" onclick="closeCatalogEdit()" aria-label="Закрыть">×</button><h2>${isEdit?'✏️ Редактирование расценки':'➕ Новая расценка'}</h2>${catalogEditState.originalText?`<p class="hint" style="margin-bottom:12px">Распознано: «${esc(catalogEditState.originalText)}»</p>`:''}<div class="grid"><div class="field" style="grid-column:1/-1"><label>Наименование</label><input type="text" id="ceName" value="${esc(d.name)}" placeholder="Например: Штукатурка стен по маякам"></div><div class="field"><label>Тип</label><select id="ceType"><option value="work" ${d.type==='work'?'selected':''}>🔧 Работа</option><option value="material" ${d.type==='material'?'selected':''}>📦 Материал</option></select></div><div class="field"><label>Единица</label><input type="text" id="ceUnit" value="${esc(d.unit)}" placeholder="м², пог. м, шт."></div><div class="field"><label>Цена, ₽</label><input type="number" id="cePrice" value="${d.price}" min="0" step="any"></div><div class="field"><label>Раздел</label><input type="text" id="ceGroup" value="${esc(d.group)}" placeholder="Отделка, Плитка, Сантехника..."></div><div class="field"><label>Этап</label><select id="ceStage">${STAGES_ALL.map(s=>`<option value="${s}" ${d.stage===s?'selected':''}>${s}</option>`).join('')}</select></div></div><div class="field" style="margin-top:12px"><label>Применимо к помещениям</label><div class="room-chips" id="ceRooms">${ROOM_TYPES.map(rt=>`<label class="room-chip ${(d.rooms||[]).includes(rt.key)?'on':''}"><input type="checkbox" value="${rt.key}" ${(d.rooms||[]).includes(rt.key)?'checked':''}>${rt.emoji} ${rt.label}</label>`).join('')}</div><p class="hint" style="margin-top:8px">Отметьте, в каких комнатах применяется эта расценка. Если ничего не выбрано — применяется ко всем.</p></div><div class="actions"><button class="btn" onclick="saveCatalogEdit()">${isEdit?'💾 Сохранить':'➕ Добавить'}</button><button class="btn secondary" onclick="closeCatalogEdit()">Отмена</button>${isEdit?`<button class="btn danger" onclick="deleteCatalogFromModal()">🗑 Удалить</button>`:''}</div></div></div>`;
 }
 function saveCatalogEdit(){
   if(!catalogEditState) return;
@@ -1071,8 +909,7 @@ function parseCatalogRows(rows){
   for(let i=start; i<rows.length; i++){
     const row = rows[i];
     if(!row || row[colMap.name] === undefined || row[colMap.name] === '') continue;
-    const name = String(row[colMap.name]||'').trim();
-    if(!name) continue;
+    const name = String(row[colMap.name]||'').trim(); if(!name) continue;
     const typeRaw = String(row[colMap.type]||'').toLowerCase();
     const type = (typeRaw.includes('мат') || typeRaw.includes('material')) ? 'material' : 'work';
     let unit = String(row[colMap.unit]||'м²').trim() || 'м²';
@@ -1107,19 +944,7 @@ function showImportPreview(parsed){
   const host = document.getElementById('catalogModalHost');
   const preview = parsed.items.slice(0, 25);
   const more = parsed.items.length > preview.length;
-  host.innerHTML = `
-    <div class="modal-overlay" onclick="closeImportPreview()">
-      <div class="modal" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="closeImportPreview()" aria-label="Закрыть">×</button>
-        <h2>📊 Импорт из Excel</h2>
-        <p class="hint">Найдено позиций: <b>${parsed.items.length}</b>. Дубликаты по наименованию будут пропущены.</p>
-        <div style="max-height:340px;overflow-y:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px;padding:10px">
-          ${preview.map(it=>`<div class="listitem" style="padding:8px 0"><div class="itemhead"><div class="grow"><strong>${esc(it.name)}</strong><div class="itemmeta">${it.type==='material'?'📦 Материал':'🔧 Работа'} · ${esc(it.group)} · ${esc(it.unit)}</div></div><b style="white-space:nowrap">${fmt(it.price)}</b></div></div>`).join('')}
-          ${more?`<p class="hint" style="text-align:center;margin-top:8px">... и ещё ${parsed.items.length - preview.length}</p>`:''}
-        </div>
-        <div class="actions"><button class="btn" onclick="commitImport()">📥 Импортировать ${parsed.items.length}</button><button class="btn secondary" onclick="closeImportPreview()">Отмена</button></div>
-      </div>
-    </div>`;
+  host.innerHTML = `<div class="modal-overlay" onclick="closeImportPreview()"><div class="modal" onclick="event.stopPropagation()"><button class="modal-close" onclick="closeImportPreview()" aria-label="Закрыть">×</button><h2>📊 Импорт из Excel</h2><p class="hint">Найдено позиций: <b>${parsed.items.length}</b>. Дубликаты по наименованию будут пропущены.</p><div style="max-height:340px;overflow-y:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px;padding:10px">${preview.map(it=>`<div class="listitem" style="padding:8px 0"><div class="itemhead"><div class="grow"><strong>${esc(it.name)}</strong><div class="itemmeta">${it.type==='material'?'📦 Материал':'🔧 Работа'} · ${esc(it.group)} · ${esc(it.unit)}</div></div><b style="white-space:nowrap">${fmt(it.price)}</b></div></div>`).join('')}${more?`<p class="hint" style="text-align:center;margin-top:8px">... и ещё ${parsed.items.length - preview.length}</p>`:''}</div><div class="actions"><button class="btn" onclick="commitImport()">📥 Импортировать ${parsed.items.length}</button><button class="btn secondary" onclick="closeImportPreview()">Отмена</button></div></div></div>`;
   window._pendingImport = parsed.items;
 }
 function commitImport(){
@@ -1132,10 +957,8 @@ function commitImport(){
     if(existingNames.has(key)){ skipped++; return; }
     CATALOG.push(it); existingNames.add(key); added++;
   });
-  db.catalog = CATALOG; save();
-  window._pendingImport = null; closeCatalogModals();
-  toast(`✅ Добавлено: ${added}${skipped?', пропущено: '+skipped:''}`);
-  render();
+  db.catalog = CATALOG; save(); window._pendingImport = null; closeCatalogModals();
+  toast(`✅ Добавлено: ${added}${skipped?', пропущено: '+skipped:''}`); render();
 }
 async function downloadExcelTemplate(){
   try {
@@ -1183,21 +1006,10 @@ function startVoiceRecognition(callback, hint){
 function showVoiceModal(active, hint){
   const host = document.getElementById('voiceModalHost');
   if(!active){ host.innerHTML = ''; return; }
-  host.innerHTML = `
-    <div class="modal-overlay" style="background:rgba(0,0,0,.7)">
-      <div class="modal" style="text-align:center;max-width:420px">
-        <div class="voice-pulse">🎤</div>
-        <h2 style="margin-top:12px">Говорите...</h2>
-        <p class="lead">${esc(hint || 'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»')}</p>
-        <button class="btn secondary" onclick="stopVoice()" style="margin-top:16px">Отменить</button>
-      </div>
-    </div>`;
+  host.innerHTML = `<div class="modal-overlay" style="background:rgba(0,0,0,.7)"><div class="modal" style="text-align:center;max-width:420px"><div class="voice-pulse">🎤</div><h2 style="margin-top:12px">Говорите...</h2><p class="lead">${esc(hint || 'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»')}</p><button class="btn secondary" onclick="stopVoice()" style="margin-top:16px">Отменить</button></div></div>`;
 }
 function stopVoice(){ if(recognition){ try{ recognition.abort(); }catch(e){} } voiceCallback = null; showVoiceModal(false); }
-function openVoiceAdd(){
-  startVoiceRecognition(text => { const draft = parseVoiceText(text); openCatalogEditWithDraft(draft, text); },
-    'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»');
-}
+function openVoiceAdd(){ startVoiceRecognition(text => { const draft = parseVoiceText(text); openCatalogEditWithDraft(draft, text); }, 'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»'); }
 
 const NUM_WORDS = {один:1,одна:1,одно:1,два:2,две:2,три:3,четыре:4,пять:5,шесть:6,семь:7,восемь:8,девять:9,десять:10};
 function parseNumOrWord(s){ s = String(s).toLowerCase().trim().replace(/[.,]/,'.'); if(NUM_WORDS[s] !== undefined) return NUM_WORDS[s]; return parseFloat(s) || 0; }
@@ -1261,9 +1073,7 @@ function parseVoiceEstimateItem(text, o){
   const roomId = room ? room.id : ''; const roomName = room ? room.name : '';
   let qty = 1, unit = 'м²';
   const qm = text.match(/(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять|двадцать|тридцать|сорок|пятьдесят|сто)\s*(квадратн[а-яё]*\s*метр[а-яё]*|кв\.?\s*м|м2|м²|погонн[а-яё]*\s*метр[а-яё]*|пог\.?\s*м|м\.?п\.?|штук[а-яё]*|шт\.?|точек|точк[а-яё]*|комплект[а-яё]*|мешк[а-яё]*|ведр[а-яё]*|канистр[а-яё]*|пакет[а-яё]*|лист[а-яё]*|рулон[а-яё]*)/i);
-  if(qm){
-    qty = parseNumOrWord(qm[1]) || 1;
-    const uw = qm[2].toLowerCase();
+  if(qm){ qty = parseNumOrWord(qm[1]) || 1; const uw = qm[2].toLowerCase();
     if(/квадратн|кв|м2|м²/.test(uw)) unit = 'м²';
     else if(/погонн|пог|м\.?п/.test(uw)) unit = 'пог. м';
     else if(/штук|шт/.test(uw)) unit = 'шт.';
@@ -1316,12 +1126,7 @@ function parseVoiceText(text){
   else if(/пакет/i.test(text)) unit = 'пакет';
   else if(/лист/i.test(text)) unit = 'лист';
   else if(/рулон/i.test(text)) unit = 'рулон';
-  name = name
-    .replace(/(\d[\d\s]*(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/gi, '')
-    .replace(/за\s+\d[\d\s]*(?:[.,]\d+)?/gi, '')
-    .replace(/(?:за\s+)?(?:квадратн\w*|погонн\w*)\s+метр\w*/gi, '')
-    .replace(/\bм\.?п\.?\b|\bм²\b|\bм2\b|\bшт\.?\b|\bточек\b|\bточк[аи]\b|\bкомплект\w*|\bмешок\b|\bмешк[аи]\b|\bведро\b|\bведр[ао]\b|\bканистр\w*|\bпакет\w*|\bлист\w*|\bрулон\w*/gi, '')
-    .replace(/\s+/g, ' ').trim();
+  name = name.replace(/(\d[\d\s]*(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/gi, '').replace(/за\s+\d[\d\s]*(?:[.,]\d+)?/gi, '').replace(/(?:за\s+)?(?:квадратн\w*|погонн\w*)\s+метр\w*/gi, '').replace(/\bм\.?п\.?\b|\bм²\b|\bм2\b|\bшт\.?\b|\bточек\b|\bточк[аи]\b|\bкомплект\w*|\bмешок\b|\bмешк[аи]\b|\bведро\b|\bведр[ао]\b|\bканистр\w*|\bпакет\w*|\bлист\w*|\bрулон\w*/gi, '').replace(/\s+/g, ' ').trim();
   const workVerbs = /^(укладка|монтаж|демонтаж|установка|разводка|штукатурка|шпаклёвка|шпаклевка|покраска|поклейка|стяжка|грунтовка|утепление|обшивка|отделка|затирка|сборка|замена|ремонт|подключение|перенос|шлифовка|штробление|заливка)/i;
   const materialKeywords = /(?:смесь|клей|плитк[аи]\b|грунтовк|кабель|труб[аы]\b|дверь|ламинат|обои|краск|ванн[аы]\b|унитаз|плитка|смеситель|раковина|подрозетник|мешок|ведро|канистра|пакет|лист|рулон|ГКЛ|профил|саморез|уголок|плинтус)/i;
   if(workVerbs.test(name)) type = 'work';
@@ -1364,32 +1169,14 @@ function startVoiceEstimateItem(){
   const o = obj(); if(!o){ alert('Сначала выберите объект'); return; }
   if(!o.rooms || !o.rooms.length){ alert('В объекте нет помещений.'); return; }
   const roomNames = o.rooms.map(r => r.name).join(', ');
-  startVoiceRecognition(text => { const parsed = parseVoiceEstimateItem(text, o); openEstimateItemVoicePreview(parsed, text); },
-    'Помещения: ' + roomNames + '. Например: «Добавь в спальню штукатурку стен 30 квадратных метров по 650 рублей»');
+  startVoiceRecognition(text => { const parsed = parseVoiceEstimateItem(text, o); openEstimateItemVoicePreview(parsed, text); }, 'Помещения: ' + roomNames + '. Например: «Добавь в спальню штукатурку стен 30 квадратных метров по 650 рублей»');
 }
 function openEstimateItemVoicePreview(draft, originalText){ estimateItemVoiceState = { draft, originalText }; renderEstimateItemVoicePreview(); }
 function renderEstimateItemVoicePreview(){
   if(!estimateItemVoiceState) return;
   const d = estimateItemVoiceState.draft; const o = obj(); if(!o){ closeEstimateItemVoicePreview(); return; }
   const host = document.getElementById('catalogModalHost');
-  host.innerHTML = `
-    <div class="modal-overlay" onclick="closeEstimateItemVoicePreview()">
-      <div class="modal" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="closeEstimateItemVoicePreview()" aria-label="Закрыть">×</button>
-        <h2>🎤 Позиция в смету (голос)</h2>
-        <p class="hint" style="margin-bottom:12px">Распознано: «${esc(estimateItemVoiceState.originalText)}»</p>
-        <div class="grid">
-          <div class="field" style="grid-column:1/-1"><label>Наименование</label><input type="text" id="iveName" value="${esc(d.name)}"></div>
-          <div class="field"><label>Помещение</label><select id="iveRoom"><option value="">— Общее —</option>${(o.rooms||[]).map(r=>`<option value="${r.id}" ${d.roomId===r.id?'selected':''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div>
-          <div class="field"><label>Тип</label><select id="iveType"><option value="work" ${d.type==='work'?'selected':''}>🔧 Работа</option><option value="material" ${d.type==='material'?'selected':''}>📦 Материал</option></select></div>
-          <div class="field"><label>Количество</label><input type="number" id="iveQty" value="${d.qty}" step="any" min="0"></div>
-          <div class="field"><label>Единица</label><input type="text" id="iveUnit" value="${esc(d.unit)}"></div>
-          <div class="field"><label>Цена за ед., ₽</label><input type="number" id="ivePrice" value="${d.price}" step="any" min="0"></div>
-          <div class="field"><label>Раздел</label><input type="text" id="iveGroup" value="${esc(d.group)}"></div>
-        </div>
-        <div class="actions"><button class="btn" onclick="commitEstimateItemVoice()">✅ Добавить в смету</button><button class="btn secondary" onclick="closeEstimateItemVoicePreview()">Отмена</button></div>
-      </div>
-    </div>`;
+  host.innerHTML = `<div class="modal-overlay" onclick="closeEstimateItemVoicePreview()"><div class="modal" onclick="event.stopPropagation()"><button class="modal-close" onclick="closeEstimateItemVoicePreview()" aria-label="Закрыть">×</button><h2>🎤 Позиция в смету (голос)</h2><p class="hint" style="margin-bottom:12px">Распознано: «${esc(estimateItemVoiceState.originalText)}»</p><div class="grid"><div class="field" style="grid-column:1/-1"><label>Наименование</label><input type="text" id="iveName" value="${esc(d.name)}"></div><div class="field"><label>Помещение</label><select id="iveRoom"><option value="">— Общее —</option>${(o.rooms||[]).map(r=>`<option value="${r.id}" ${d.roomId===r.id?'selected':''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div><div class="field"><label>Тип</label><select id="iveType"><option value="work" ${d.type==='work'?'selected':''}>🔧 Работа</option><option value="material" ${d.type==='material'?'selected':''}>📦 Материал</option></select></div><div class="field"><label>Количество</label><input type="number" id="iveQty" value="${d.qty}" step="any" min="0"></div><div class="field"><label>Единица</label><input type="text" id="iveUnit" value="${esc(d.unit)}"></div><div class="field"><label>Цена за ед., ₽</label><input type="number" id="ivePrice" value="${d.price}" step="any" min="0"></div><div class="field"><label>Раздел</label><input type="text" id="iveGroup" value="${esc(d.group)}"></div></div><div class="actions"><button class="btn" onclick="commitEstimateItemVoice()">✅ Добавить в смету</button><button class="btn secondary" onclick="closeEstimateItemVoicePreview()">Отмена</button></div></div></div>`;
 }
 function commitEstimateItemVoice(){
   if(!estimateItemVoiceState) return;
@@ -1397,15 +1184,7 @@ function commitEstimateItemVoice(){
   const roomId = document.getElementById('iveRoom').value;
   const room = roomId ? o.rooms.find(r=>r.id===roomId) : null;
   const price = num(document.getElementById('ivePrice').value);
-  o.items.push({
-    id: 'i_'+uid(), name: document.getElementById('iveName').value.trim() || 'Новая позиция',
-    roomId: roomId || '', roomName: room ? room.name : '',
-    group: document.getElementById('iveGroup').value.trim() || 'Голосовой ввод',
-    stage: 'Черновые', type: document.getElementById('iveType').value,
-    unit: document.getElementById('iveUnit').value.trim() || 'м²',
-    qty: num(document.getElementById('iveQty').value),
-    price: price, cost: price * 0.75
-  });
+  o.items.push({ id: 'i_'+uid(), name: document.getElementById('iveName').value.trim() || 'Новая позиция', roomId: roomId || '', roomName: room ? room.name : '', group: document.getElementById('iveGroup').value.trim() || 'Голосовой ввод', stage: 'Черновые', type: document.getElementById('iveType').value, unit: document.getElementById('iveUnit').value.trim() || 'м²', qty: num(document.getElementById('iveQty').value), price: price, cost: price * 0.75 });
   save(); closeCatalogModals(); toast('✅ Позиция добавлена в смету'); render();
 }
 
@@ -1474,7 +1253,7 @@ function setWizardCount(typeKey, count){
   if(rt.max > 1 && rooms.length > 1) rooms.forEach((r,i)=>r.name = `${rt.label} ${i+1}`); else if(rooms.length === 1) rooms[0].name = rt.label;
   render();
 }
-function setWizardField(k,v){ if(wizard) wizard[k] = v; }
+function setWizardField(k,v){ if(wizard){ wizard[k] = v; } }
 function setWizardRoom(id, key, value){
   if(!wizard) return; const r = wizard.rooms.find(x=>x.id===id); if(!r) return;
   r[key] = key==='name' ? value : num(value);
@@ -1561,70 +1340,37 @@ async function exportExcel(){
     const items = getEstimateItems(o);
     const t = totals(o, items);
     const rows = [
-      ['Объект', o.name],
-      ['Тип', o.kind || ''],
-      ['Адрес', o.address || ''],
-      ['Заказчик', o.client || ''],
-      ['Дата', today()],
-      [],
+      ['Объект', o.name], ['Тип', o.kind || ''], ['Адрес', o.address || ''], ['Заказчик', o.client || ''], ['Дата', today()], [],
       ['№','Тип','Помещение','Этап','Раздел','Наименование','Кол-во','Ед.','Цена','Сумма','Себестоимость']
     ];
     items.forEach((i, idx) => {
       const room = i.roomId ? (o.rooms||[]).find(r=>r.id===i.roomId) : null;
-      rows.push([
-        idx + 1,
-        i.type === 'material' ? 'Материал' : 'Работа',
-        room ? room.name : (i.roomName || 'Общее'),
-        i.stage || '',
-        i.group || '',
-        i.name || '',
-        i.qty,
-        i.unit,
-        i.price,
-        num(i.qty) * num(i.price),
-        i.cost
-      ]);
+      rows.push([idx + 1, i.type === 'material' ? 'Материал' : 'Работа', room ? room.name : (i.roomName || 'Общее'), i.stage || '', i.group || '', i.name || '', i.qty, i.unit, i.price, num(i.qty) * num(i.price), i.cost]);
     });
     rows.push([]);
     rows.push(['', '', '', '', '', 'Работы', '', '', '', t.work, '']);
     rows.push(['', '', '', '', '', 'Материалы', '', '', '', t.mat, '']);
     rows.push(['', '', '', '', '', 'Наценка', '', '', '', t.markup, '']);
     rows.push(['', '', '', '', '', 'ИТОГО', '', '', '', t.total, '']);
-
     const blob = await buildExcelBlob(rows, 'Смета');
-    const filename = 'buildmate-smeta-' + (o.contractNo || o.id) + '-' + today() + '.xlsx';
-    await saveBlob(blob, filename);
-  } catch(e){
-    alert('Ошибка при создании Excel: ' + e.message);
-  }
+    await saveBlob(blob, 'buildmate-smeta-' + (o.contractNo || o.id) + '-' + today() + '.xlsx');
+  } catch(e){ alert('Ошибка при создании Excel: ' + e.message); }
 }
-
 async function exportCatalogExcel(){
   try {
     toast('⏳ Формирую Excel...', '#64748b');
     const rows = [['Тип','Этап','Раздел','Наименование','Единица','Цена','Помещения']];
-    CATALOG.forEach(p => {
-      rows.push([
-        p.type === 'material' ? 'Материал' : 'Работа',
-        p.stage || '', p.group || '', p.name || '', p.unit || '', p.price || 0,
-        (p.rooms || []).join(',')
-      ]);
-    });
+    CATALOG.forEach(p => { rows.push([p.type === 'material' ? 'Материал' : 'Работа', p.stage || '', p.group || '', p.name || '', p.unit || '', p.price || 0, (p.rooms || []).join(',')]); });
     const blob = await buildExcelBlob(rows, 'Расценки');
     await saveBlob(blob, 'buildmate-catalog-' + today() + '.xlsx');
   } catch(e){ alert('Ошибка: ' + e.message); }
 }
-
 async function exportBackup(){
   if(saveTimeout){ clearTimeout(saveTimeout); save(); saveTimeout=null; }
   db.catalog = CATALOG;
-  try {
-    const json = JSON.stringify(db, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    await saveBlob(blob, 'buildmate-backup-' + today() + '.json');
-  } catch(e){ alert('Ошибка: ' + e.message); }
+  try { const json = JSON.stringify(db, null, 2); const blob = new Blob([json], { type: 'application/json' }); await saveBlob(blob, 'buildmate-backup-' + today() + '.json'); }
+  catch(e){ alert('Ошибка: ' + e.message); }
 }
-
 function importBackup(file){
   if(!file) return; const r = new FileReader();
   r.onload = () => {
@@ -1646,38 +1392,28 @@ function importBackup(file){
   r.readAsText(file);
 }
 
-// ============ PDF ЧЕРЕЗ pdfmake ============
+// ============ PDF ============
 function buildEstimateTableBody(items, o){
   const body = [[{ text:'№', bold:true, style:'th' }, { text:'Наименование', bold:true, style:'th' }, { text:'Ед.', bold:true, style:'th' }, { text:'Кол-во', bold:true, style:'th', alignment:'right' }, { text:'Цена', bold:true, style:'th', alignment:'right' }, { text:'Сумма', bold:true, style:'th', alignment:'right' }]];
   items.forEach((i, n) => {
     const room = i.roomId ? (o.rooms||[]).find(r=>r.id===i.roomId) : null;
     const label = room ? room.name : (i.roomName || '');
     const name = label ? (i.name + ' (' + label + ')') : i.name;
-    body.push([
-      String(n+1), name, i.unit, String(num(i.qty)), fmt(i.price), fmt(num(i.qty) * num(i.price))
-    ]);
+    body.push([String(n+1), name, i.unit, String(num(i.qty)), fmt(i.price), fmt(num(i.qty) * num(i.price))]);
   });
   return body;
 }
-
 async function printDoc(kind){
   const o = obj(); if(!o){ alert('Выберите объект'); return; }
   try {
     toast('⏳ Формирую PDF...', '#64748b');
-    const t = totals(o);
-    const items = o.items;
-    const reqs = companyRequisites();
+    const t = totals(o); const items = o.items; const reqs = companyRequisites();
     const companyName = db.company && db.company.trim() ? db.company : '________________________';
     const city = db.region || 'Новосибирск';
-    const title = kind==='contract' ? 'Договор оказания услуг' :
-                  kind==='act' ? 'Акт выполненных работ' :
-                  kind==='invoice' ? 'Счёт на оплату' : 'Смета на ремонт';
-
+    const title = kind==='contract'?'Договор оказания услуг':kind==='act'?'Акт выполненных работ':kind==='invoice'?'Счёт на оплату':'Смета на ремонт';
     const tableBody = buildEstimateTableBody(items, o);
-
     const content = [];
-
-    if (kind === 'contract') {
+    if(kind==='contract'){
       content.push({ text: title + ' № ' + (o.contractNo || ''), style: 'h1' });
       content.push({ text: 'г. ' + city + ' «' + (o.contractDate || today()) + '»', margin: [0, 8, 0, 12] });
       content.push({ text: 'Исполнитель: ' + (reqs || '________________________') + ', Заказчик: ' + (o.client || '________________________') + ' заключили настоящий договор.', margin: [0, 0, 0, 10] });
@@ -1691,12 +1427,12 @@ async function printDoc(kind){
       content.push({ text: 'Исполнитель: ' + companyName + (db.director ? ' (' + db.director + ')' : '') + ' ___________', margin: [0, 8, 0, 0] });
       content.push({ text: 'Заказчик: ' + (o.client || '________________') + ' ___________', margin: [0, 8, 0, 0] });
       content.push({ text: 'Приложение № 1. Смета', style: 'h3', pageBreak: 'before' });
-    } else if (kind === 'act') {
+    } else if(kind==='act'){
       content.push({ text: title, style: 'h1' });
       content.push({ text: 'Объект: ' + o.name + ' (' + (o.kind || '—') + '). Адрес: ' + (o.address || '—'), margin: [0, 8, 0, 6] });
       content.push({ text: 'Исполнитель: ' + (reqs || '________________________') });
       content.push({ text: 'Приняты работы на сумму ' + fmt(t.total) + '.', margin: [0, 8, 0, 12] });
-    } else if (kind === 'invoice') {
+    } else if(kind==='invoice'){
       content.push({ text: title + ' № ' + (o.contractNo || '') + ' от ' + (o.contractDate || today()), style: 'h1' });
       content.push({ text: 'Исполнитель: ' + (reqs || '________________________'), margin: [0, 8, 0, 4] });
       content.push({ text: 'Заказчик: ' + (o.client || '—'), margin: [0, 0, 0, 12] });
@@ -1705,56 +1441,38 @@ async function printDoc(kind){
       content.push({ text: 'Компания: ' + (reqs || '________________________') + ' · Объект: ' + o.name + ' (' + (o.kind || '—') + ') · Адрес: ' + (o.address || '—'), margin: [0, 8, 0, 4], fontSize: 10 });
       content.push({ text: 'Заказчик: ' + (o.client || '—') + ' · Дата: ' + today(), margin: [0, 0, 0, 12], fontSize: 10 });
     }
-
-    content.push({
-      table: { headerRows: 1, widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto'], body: tableBody },
-      layout: 'lightHorizontalLines',
-      margin: [0, 10, 0, 0]
-    });
-
+    content.push({ table: { headerRows: 1, widths: ['auto','*','auto','auto','auto','auto'], body: tableBody }, layout: 'lightHorizontalLines', margin: [0, 10, 0, 0] });
     content.push({ text: 'Работы: ' + fmt(t.work), alignment: 'right', margin: [0, 12, 0, 2], fontSize: 11 });
     content.push({ text: 'Материалы: ' + fmt(t.mat), alignment: 'right', margin: [0, 0, 0, 2], fontSize: 11 });
     content.push({ text: 'Наценка: ' + fmt(t.markup), alignment: 'right', margin: [0, 0, 0, 2], fontSize: 11 });
     content.push({ text: 'ИТОГО: ' + fmt(t.total), alignment: 'right', bold: true, fontSize: 14, margin: [0, 6, 0, 0] });
-
-    if (kind === 'act') {
-      content.push({ text: 'Замечания: _______________', margin: [0, 20, 0, 0] });
-      content.push({ text: 'Исполнитель ' + (db.director ? '(' + db.director + ')' : '') + ' __________   Заказчик __________', margin: [0, 20, 0, 0] });
-    } else if (kind === 'invoice') {
-      content.push({ text: 'К оплате: ' + fmt(t.total), bold: true, margin: [0, 16, 0, 0] });
-      content.push({ text: 'Руководитель ' + (db.director ? '(' + db.director + ')' : '') + ' ___________', margin: [0, 20, 0, 0] });
-    }
-
+    if(kind === 'act'){ content.push({ text: 'Замечания: _______________', margin: [0, 20, 0, 0] }); content.push({ text: 'Исполнитель ' + (db.director ? '(' + db.director + ')' : '') + ' __________   Заказчик __________', margin: [0, 20, 0, 0] }); }
+    else if(kind === 'invoice'){ content.push({ text: 'К оплате: ' + fmt(t.total), bold: true, margin: [0, 16, 0, 0] }); content.push({ text: 'Руководитель ' + (db.director ? '(' + db.director + ')' : '') + ' ___________', margin: [0, 20, 0, 0] }); }
     content.push({ text: 'Сформировано в BuildMate Pro · ' + today(), fontSize: 8, color: '#888888', margin: [0, 20, 0, 0], alignment: 'right' });
-
-    const docDef = {
-      content: content,
-      styles: {
-        h1: { fontSize: 16, bold: true, alignment: 'center', margin: [0, 0, 0, 8] },
-        h3: { fontSize: 12, bold: true, margin: [0, 12, 0, 4] },
-        th: { fillColor: '#f0f0f0', fontSize: 9 }
-      },
-      defaultStyle: { fontSize: 9, lineHeight: 1.3 }
-    };
-
+    const docDef = { content, styles: { h1: { fontSize: 16, bold: true, alignment: 'center', margin: [0, 0, 0, 8] }, h3: { fontSize: 12, bold: true, margin: [0, 12, 0, 4] }, th: { fillColor: '#f0f0f0', fontSize: 9 } }, defaultStyle: { fontSize: 9, lineHeight: 1.3 } };
     const blob = await buildPdfBlob(docDef);
-    const safeKind = kind;
-    const filename = 'buildmate-' + safeKind + '-' + (o.contractNo || o.id) + '-' + today() + '.pdf';
-    await saveBlob(blob, filename);
-  } catch(e){
-    console.error(e);
-    alert('Ошибка при создании PDF: ' + e.message + '\n\nПопробуйте открыть приложение в браузере.');
-  }
+    await saveBlob(blob, 'buildmate-' + kind + '-' + (o.contractNo || o.id) + '-' + today() + '.pdf');
+  } catch(e){ console.error(e); alert('Ошибка при создании PDF: ' + e.message + '\n\nПопробуйте открыть приложение в браузере.'); }
 }
 
-function tableHtml(rows, t){ return ''; } // больше не используется
 function companyRequisites(){ return [db.company || '', db.inn ? `ИНН ${db.inn}` : '', db.ogrn ? `ОГРН ${db.ogrn}` : '', db.legalAddress || '', db.phone ? `тел. ${db.phone}` : '', db.email || '', db.website || ''].filter(Boolean).join(' · '); }
 
 // ============ ХЕЛПЕРЫ ============
 function card(title, body, extra=''){ return `<section class="card">${title?`<h2>${title}</h2>`:''}${body}${extra}</section>`; }
 function empty(s){ return `<div class="empty">${s}</div>`; }
-function input(label, value, attr, fn, step='any'){ const handler = String(fn||'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input ${attr||''} value="${esc(value??'')}" step="${step}" oninput="${call}"></div>`; }
-function inputText(label, value, fn, attr=''){ const handler = String(fn||'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input type="text" ${attr} value="${esc(value??'')}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="${call}"></div>`; }
+
+// ВАЖНО: oninput / onchange значения экранируются через esc(), чтобы кавычки
+// внутри стрелочной функции не разрывали HTML-атрибут.
+function input(label, value, attr, fn, step='any'){
+  const handler = String(fn||'noop');
+  const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`;
+  return `<div class="field"><label>${label}</label><input ${attr||''} value="${esc(value??'')}" step="${step}" oninput="${esc(call)}"></div>`;
+}
+function inputText(label, value, fn, attr=''){
+  const handler = String(fn||'noop');
+  const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`;
+  return `<div class="field"><label>${label}</label><input type="text" ${attr} value="${esc(value??'')}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="${esc(call)}"></div>`;
+}
 function noop(){}
 function getRoomLabel(i){ const o = obj(); const room = i.roomId ? (o?.rooms||[]).find(r=>r.id===i.roomId) : null; if(room) return roomEmoji(room)+' '+room.name; return i.roomName || (i.roomId ? 'Удалено' : 'Общее'); }
 function itemRow(i){
@@ -1829,7 +1547,18 @@ function render(){
   if(tab==='objects'){
     html = card('🏢 Объекты ремонта', `<div class="actions" style="margin-top:0"><button class="btn" onclick="makeObj()">➕ Добавить объект</button><button class="btn secondary" onclick="voiceObjectToWizard()">🎤 Создать голосом</button><button class="btn secondary" onclick="exportBackup()">💾 Копия JSON</button></div>`) + (db.objects.map(x=>`<div class="card"><div class="object"><div class="grow"><h3>${esc(x.name)}</h3><div class="muted">${esc(x.kind||'—')}</div><div class="muted">${esc(x.address||'Адрес не указан')}</div><div class="muted">${esc(x.client||'Заказчик не указан')}${x.phone?' · '+esc(x.phone):''} · ${esc(x.status)}</div><div style="margin-top:8px"><span class="badge">🚪 ${x.rooms?.length||0} помещений</span> <span class="badge">📝 ${x.items.length} позиций</span></div></div><div style="text-align:right"><div class="money">${fmt(totals(x).total)}</div><button class="btn small ${selected===x.id?'':'secondary'}" onclick="selectObj('${x.id}')">${selected===x.id?'✓ Выбран':'Выбрать'}</button><button class="btn small danger" style="margin-top:6px" onclick="deleteObj('${x.id}')">🗑 Удалить</button></div></div></div>`).join('') || empty('🏗️ Нет объектов. Нажмите «Добавить объект».'));
     if(o){
-      html += card('🏠 Карточка объекта', `<div class="obj-context"><span>✏️ Редактирование объекта:</span><b>${esc(o.name)} · ${esc(o.kind||'—')}</b></div><div class="grid">${inputText('Название', o.name, 'v=>setObj("name",v)', 'placeholder="Квартира 45 / Дом на Ленина 5"')}<div class="field"><label>Тип объекта</label><select onchange="setObj('kind',this.value)">${OBJECT_KINDS.map(x=>`<option value="${x}" ${x===o.kind?'selected':''}>${kindLabel(x)}</option>`).join('')}</select></div>${inputText('Адрес', o.address, 'v=>setObj("address",v)', 'placeholder="ул. Ленина 5, кв. 45"')}${inputText('Заказчик', o.client, 'v=>setObj("client",v)', 'placeholder="ФИО"')}${inputText('Телефон', o.phone, 'v=>setObj("phone",v)', 'type="tel" placeholder="+7 ..."')}<div class="field"><label>Статус</label><select onchange="setObj('status',this.value)">${['Расчёт','Смета отправлена','Согласовано','Договор подписан','В работе','Завершён','Приостановлен'].map(x=>`<option value="${x}" ${x===o.status?'selected':''}>${statusLabel(x)}</option>`).join('')}</select></div></div>`);
+      html += card('🏠 Карточка объекта', `
+        <div class="obj-context"><span>✏️ Редактирование объекта:</span><b>${esc(o.name)} · ${esc(o.kind||'—')}</b></div>
+        <div class="edit-hint">✏️ Все поля ниже редактируются. Изменения сохраняются автоматически при вводе.</div>
+        <div class="grid">
+          ${inputText('🏷️ Название', o.name, 'v=>setObj("name",v)', 'placeholder="Квартира 45 / Дом на Ленина 5"')}
+          <div class="field"><label>🏢 Тип объекта</label><select onchange="setObj('kind',this.value)">${OBJECT_KINDS.map(x=>`<option value="${x}" ${x===o.kind?'selected':''}>${kindLabel(x)}</option>`).join('')}</select></div>
+          ${inputText('📍 Адрес', o.address, 'v=>setObj("address",v)', 'placeholder="ул. Ленина 5, кв. 45"')}
+          ${inputText('👤 Заказчик', o.client, 'v=>setObj("client",v)', 'placeholder="ФИО"')}
+          ${inputText('📱 Телефон', o.phone, 'v=>setObj("phone",v)', 'type="tel" placeholder="+7 ..."')}
+          <div class="field"><label>📊 Статус</label><select onchange="setObj('status',this.value)">${['Расчёт','Смета отправлена','Согласовано','Договор подписан','В работе','Завершён','Приостановлен'].map(x=>`<option value="${x}" ${x===o.status?'selected':''}>${statusLabel(x)}</option>`).join('')}</select></div>
+        </div>
+      `);
       html += card(`🚪 Помещения объекта: ${o.name}`, `<p class="hint">После изменения габаритов нажмите «Пересчитать смету». Можно добавить помещения голосом.</p><div class="actions" style="margin-top:0"><button class="btn secondary" onclick="addObjRoom()">➕ Добавить помещение</button><button class="btn secondary" onclick="startVoiceRoomForCurrent()">🎤 Голосом</button><button class="btn" onclick="regenerateEstimate()">🔄 Пересчитать смету</button></div>${(o.rooms||[]).map(objRoomEditor).join('') || empty('🚪 Помещений пока нет — добавьте первое')}`);
       html += card('⚡ Быстрый переход', `<div class="actions" style="margin-top:0"><button class="btn secondary" onclick="navigate({tab:'estimate'})">📋 Смета</button><button class="btn secondary" onclick="navigate({tab:'docs'})">📄 Документы</button><button class="btn secondary" onclick="navigate({tab:'money'})">💵 Финансы</button></div>`);
     }
@@ -1872,20 +1601,9 @@ function render(){
   if(tab==='catalog'){
     html = card('💰 База расценок', `
       <p class="hint">В каталоге ${CATALOG.length} позиций (стандартных — ${DEFAULT_CATALOG.length}). Редактируйте, добавляйте вручную, импортируйте из Excel или надиктуйте голосом.</p>
-      <div class="actions" style="margin-top:0">
-        <button class="btn" onclick="openCatalogEdit()">➕ Добавить вручную</button>
-        <button class="btn secondary" onclick="openExcelImport()">📥 Импорт Excel</button>
-        <button class="btn secondary" onclick="openVoiceAdd()">🎤 Добавить голосом</button>
-      </div>
-      <div class="actions" style="margin-top:8px">
-        <button class="btn outline" onclick="downloadExcelTemplate()">📄 Скачать шаблон Excel</button>
-        <button class="btn outline" onclick="exportCatalogExcel()">📊 Прайс Excel</button>
-        <button class="btn outline" onclick="restoreFullCatalog()">🔄 Восстановить стандартный каталог</button>
-      </div>
-      <p class="hint" style="margin-top:14px">
-        <b>Формат Excel:</b> колонки — Наименование, Тип (Работа / Материал), Раздел, Единица, Цена, Этап (опционально), Помещения (опционально).<br>
-        Помещения указываются через запятую: «Спальня,Гостиная» или «bedroom,living».
-      </p>
+      <div class="actions" style="margin-top:0"><button class="btn" onclick="openCatalogEdit()">➕ Добавить вручную</button><button class="btn secondary" onclick="openExcelImport()">📥 Импорт Excel</button><button class="btn secondary" onclick="openVoiceAdd()">🎤 Добавить голосом</button></div>
+      <div class="actions" style="margin-top:8px"><button class="btn outline" onclick="downloadExcelTemplate()">📄 Скачать шаблон Excel</button><button class="btn outline" onclick="exportCatalogExcel()">📊 Прайс Excel</button><button class="btn outline" onclick="restoreFullCatalog()">🔄 Восстановить стандартный каталог</button></div>
+      <p class="hint" style="margin-top:14px"><b>Формат Excel:</b> колонки — Наименование, Тип (Работа / Материал), Раздел, Единица, Цена, Этап (опционально), Помещения (опционально).</p>
     `) + card(`📚 Каталог (${CATALOG.length} позиций)`, CATALOG.map(p=>`<div class="listitem"><div class="itemhead"><div class="grow"><strong>${p.type==='material'?'📦':'🔧'} ${esc(p.name)}</strong><div class="itemmeta">${p.type==='material'?'Материал':'Работа'} · ${esc(p.group)} · ${esc(p.unit)} · ${stageLabel(p.stage)}</div></div><div style="text-align:right"><b>${fmt(p.price)}</b><div><button class="btn small secondary" onclick="openCatalogEdit('${p.id}')">✏️ Изменить</button> <button class="btn small danger" onclick="deleteCatalog('${p.id}')">×</button></div></div></div></div>`).join(''));
   }
 
