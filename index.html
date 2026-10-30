@@ -429,6 +429,11 @@
       color: var(--gold)
     }
 
+    .badge.pink {
+      background: var(--pink-soft);
+      color: var(--pink)
+    }
+
     .listitem {
       border-top: 1px solid var(--line);
       padding: 16px 0
@@ -921,11 +926,13 @@
 
     .drawer-nav .donate {
       color: var(--pink);
-      margin-top: 6px
+      margin-top: 6px;
+      background: var(--pink-soft)
     }
 
     .drawer-nav .donate:hover {
-      background: var(--pink-soft)
+      background: var(--pink-soft);
+      filter: brightness(.97)
     }
 
     .drawer-footer {
@@ -1032,109 +1039,6 @@
       margin: 0
     }
 
-    .donate-amounts {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin-bottom: 14px
-    }
-
-    .donate-amounts button {
-      padding: 11px 6px;
-      border: 1px solid var(--line);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 14px
-    }
-
-    .donate-amounts button.active {
-      background: var(--pink);
-      color: #fff;
-      border-color: var(--pink);
-      box-shadow: 0 2px 8px rgba(225, 29, 72, .25)
-    }
-
-    .donate-block {
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 12px
-    }
-
-    .donate-block label {
-      font-size: 12px;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 800;
-      letter-spacing: .5px;
-      display: block;
-      margin-bottom: 8px;
-      line-height: 1.4
-    }
-
-    .copy-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap
-    }
-
-    .copy-row input {
-      flex: 1 1 160px;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: var(--card);
-      color: var(--text);
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: .3px;
-      min-width: 0
-    }
-
-    .copy-row button {
-      padding: 12px 14px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 0;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13px;
-      white-space: nowrap;
-      min-width: 100px;
-      flex-shrink: 0
-    }
-
-    .copy-row button:disabled {
-      background: var(--green-soft);
-      color: var(--green)
-    }
-
-    .qr-wrap {
-      text-align: center;
-      padding: 12px;
-      background: var(--bg);
-      border-radius: 12px;
-      margin-bottom: 12px
-    }
-
-    .qr-wrap img {
-      width: 190px;
-      height: 190px;
-      border-radius: 12px;
-      background: #fff;
-      padding: 6px;
-      border: 1px solid var(--line);
-      max-width: 100%
-    }
-
-    .qr-wrap .hint {
-      margin-top: 8px
-    }
-
     .thanks-block {
       background: var(--pink-soft);
       border-radius: 12px;
@@ -1167,6 +1071,180 @@
       }
     }
 
+    /* ===== ФОРМА ПОДДЕРЖКИ И QR ===== */
+    .support-hero {
+      background: linear-gradient(135deg, #fff1f5 0%, #ffe4ec 100%);
+      border: 1px solid #fecdd3;
+      border-radius: 20px;
+      padding: 22px 18px;
+      margin-bottom: 14px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (prefers-color-scheme:dark) {
+      .support-hero {
+        background: linear-gradient(135deg, #4c0519 0%, #4a0519 100%);
+        border-color: #831843
+      }
+    }
+
+    .support-hero h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--pink);
+      letter-spacing: -.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .support-hero .lead {
+      font-size: 14px;
+      color: var(--text);
+      margin: 0 0 16px;
+      line-height: 1.5;
+      opacity: .85
+    }
+
+    .support-hero .qr-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .support-hero .qr-img {
+      width: 220px;
+      height: 220px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      box-shadow: 0 4px 16px rgba(225, 29, 72, .15);
+      cursor: pointer;
+      transition: transform .2s ease;
+    }
+
+    .support-hero .qr-img:hover {
+      transform: scale(1.03)
+    }
+
+    .support-hero .qr-hint {
+      font-size: 13px;
+      color: var(--text);
+      opacity: .8;
+      max-width: 340px;
+      line-height: 1.45;
+    }
+
+    .support-hero .support-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .support-hero .heart-anim {
+      display: inline-block;
+      animation: heartbeat 1.6s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      15% {
+        transform: scale(1.2)
+      }
+
+      30% {
+        transform: scale(1)
+      }
+
+      45% {
+        transform: scale(1.15)
+      }
+
+      60% {
+        transform: scale(1)
+      }
+    }
+
+    .support-footer {
+      background: linear-gradient(135deg, #fff1f5 0%, #ffe4ec 100%);
+      border: 1px solid #fecdd3;
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    @media (prefers-color-scheme:dark) {
+      .support-footer {
+        background: linear-gradient(135deg, #4c0519 0%, #4a0519 100%);
+        border-color: #831843
+      }
+    }
+
+    .support-footer .sf-qr {
+      width: 76px;
+      height: 76px;
+      background: #fff;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .support-footer .sf-text {
+      flex: 1 1 160px;
+      min-width: 0
+    }
+
+    .support-footer .sf-text h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--pink);
+      letter-spacing: -.2px
+    }
+
+    .support-footer .sf-text p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text);
+      opacity: .8;
+      line-height: 1.4
+    }
+
+    .support-footer .sf-btn {
+      flex-shrink: 0
+    }
+
+    .modal-qr {
+      width: 280px;
+      height: 280px;
+      max-width: 100%;
+      background: #fff;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      display: block;
+      margin: 0 auto 16px
+    }
+
     @media (min-width:680px) {
       .stats {
         grid-template-columns: repeat(4, minmax(0, 1fr))
@@ -1190,16 +1268,17 @@
         padding: 15px
       }
 
-      .donate-amounts {
-        grid-template-columns: repeat(2, 1fr)
-      }
-
       .segment {
         flex-wrap: wrap
       }
 
       .segment button {
         flex: 1 1 calc(50% - 4px)
+      }
+
+      .support-hero .qr-img {
+        width: 180px;
+        height: 180px
       }
     }
 
@@ -1280,34 +1359,38 @@
   <script>
     // ============ ADMIN CHECK ============
     const ADMIN_USERNAME = 'aleksandr_druzh';
-    function getTgUser() { try { return window.Telegram?.WebApp?.initDataUnsafe?.user || null; } catch (e) { return null; } }
-    function isAdmin() { const u = getTgUser(); if (!u) return false; return String(u.username || '').toLowerCase() === ADMIN_USERNAME.toLowerCase(); }
+    function getTgUser() {try {return window.Telegram?.WebApp?.initDataUnsafe?.user || null;} catch (e) {return null;} }
+    function isAdmin() {const u = getTgUser(); if (!u) return false; return String(u.username || '').toLowerCase() === ADMIN_USERNAME.toLowerCase();}
 
     // ============ HARDCODED DONATE ============
+    // ⚠️ Публичные реквизиты автора.
+    // ВАЖНО: здесь ТОЛЬКО ссылка для QR-кода (получается в банковском приложении:
+    // «Поделиться реквизитами» / «QR-код для перевода» / «СБП-ссылка»).
+    // Никаких номеров телефонов и номеров карт в этом объекте быть не должно —
+    // они НЕ показываются пользователям.
     const HARDCODED_DONATE = {
       name: 'Александр Д.',
-      phone: '+79132599269',
-      card: '4817760216471478',
+      qrLink: 'https://www.sberbank.ru/ru/choise_bank?requisiteNumber=79132599269&bankCode=100000000111',              // ← СЮДА вставить ссылку СБП/банка для QR-кода
       bank: 'Сбербанк',
       telegram: 'aleksandr_druzh',
-      message: 'Спасибо, что пользуетесь BuildMate Pro! Если приложение помогает — вы можете поддержать автора небольшим переводом. Это помогает развивать проект.'
+      message: 'Спасибо, что пользуетесь BuildMate Pro! Если приложение помогает — вы можете поддержать автора переводом по QR-коду. Это помогает развивать проект.'
     };
 
     // ============ УТИЛИТЫ ============
-    const fmt = n => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(Number(n) || 0) + ' ₽';
+    const fmt = n => new Intl.NumberFormat('ru-RU', {maximumFractionDigits: 2}).format(Number(n) || 0) + ' ₽';
     const num = n => Math.max(0, Number(n) || 0);
     const uid = () => Math.random().toString(36).slice(2, 10);
     const today = () => new Date().toISOString().slice(0, 10);
-    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 
     const OBJECT_KINDS = ['Новостройка', 'Квартира вторичный фонд', 'Дом', 'Другое'];
     const STAGES_ALL = ['Демонтаж', 'Инженерия', 'Черновые', 'Чистовые', 'Сдача'];
-    const ROOM_EMOJI_MAP = { bedroom: '🛏️', living: '🛋️', kids: '🧸', kitchen: '🍳', bathroom: '🛁', toilet: '🚽', combined: '🚿', hallway: '🚪', balcony: '🌇' };
+    const ROOM_EMOJI_MAP = {bedroom: '🛏️', living: '🛋️', kids: '🧸', kitchen: '🍳', bathroom: '🛁', toilet: '🚽', combined: '🚿', hallway: '🚪', balcony: '🌇'};
 
-    function kindLabel(k) { return (k || 'Другое'); }
-    function statusLabel(s) { return s || ''; }
-    function stageLabel(s) { return s || 'Черновые'; }
-    function roomEmoji(room) { return room ? (ROOM_EMOJI_MAP[room.type] || '🚪') : '🚪'; }
+    function kindLabel(k) {return (k || 'Другое');}
+    function statusLabel(s) {return s || '';}
+    function stageLabel(s) {return s || 'Черновые';}
+    function roomEmoji(room) {return room ? (ROOM_EMOJI_MAP[room.type] || '🚪') : '🚪';}
 
     function toast(msg, color) {
       const existing = document.getElementById('toast');
@@ -1316,111 +1399,111 @@
       t.id = 'toast'; t.className = 'toast'; t.textContent = msg;
       if (color) t.style.background = color;
       document.body.appendChild(t);
-      setTimeout(() => { t.style.opacity = '0'; }, 1900);
-      setTimeout(() => { t.remove(); }, 2300);
+      setTimeout(() => {t.style.opacity = '0';}, 1900);
+      setTimeout(() => {t.remove();}, 2300);
     }
 
     function copyText(text, btn) {
       const success = () => {
-        if (btn) { const orig = btn.textContent; btn.textContent = 'Скопировано'; btn.disabled = true; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1600); }
-        toast('📋 Скопировано в буфер');
+        if (btn) {const orig = btn.textContent; btn.textContent = '✓'; btn.disabled = true; setTimeout(() => {btn.textContent = orig; btn.disabled = false;}, 1600);}
+        toast('📋 Скопировано');
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(success).catch(() => fallbackCopy(text, success));
-      } else { fallbackCopy(text, success); }
+      } else {fallbackCopy(text, success);}
     }
     function fallbackCopy(text, cb) {
       const ta = document.createElement('textarea');
       ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
       document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); cb(); } catch (e) { alert('Скопируйте вручную:\n' + text); }
+      try {document.execCommand('copy'); cb();} catch (e) {alert('Скопируйте вручную:\n' + text);}
       ta.remove();
     }
 
     // ============ ПОЛНЫЙ КАТАЛОГ (70 ПОЗИЦИЙ) ============
     const DEFAULT_CATALOG = [
-      { id: 'd1', group: 'Демонтаж', name: 'Демонтаж старой штукатурки', unit: 'м²', price: 220, type: 'work', stage: 'Демонтаж', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
-      { id: 'd2', group: 'Демонтаж', name: 'Демонтаж керамической плитки', unit: 'м²', price: 340, type: 'work', stage: 'Демонтаж', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'd3', group: 'Демонтаж', name: 'Демонтаж стяжки пола', unit: 'м²', price: 350, type: 'work', stage: 'Демонтаж', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'e1', group: 'Электрика', name: 'Штробление стен под кабель', unit: 'пог. м', price: 400, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'e2', group: 'Электрика', name: 'Прокладка кабеля ВВГнг', unit: 'пог. м', price: 120, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'e3', group: 'Электрика', name: 'Установка подрозетника и розетки', unit: 'точка', price: 900, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'e4', group: 'Электрика', name: 'Установка выключателя', unit: 'точка', price: 700, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'e5', group: 'Электрика', name: 'Монтаж светильника', unit: 'шт.', price: 650, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
-      { id: 'p1', group: 'Сантехника', name: 'Разводка водоснабжения (точка)', unit: 'точка', price: 1800, type: 'work', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'combined'] },
-      { id: 'p2', group: 'Сантехника', name: 'Монтаж канализации (точка)', unit: 'точка', price: 1400, type: 'work', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'toilet', 'combined'] },
-      { id: 'p3', group: 'Сантехника', name: 'Установка полотенцесушителя', unit: 'шт.', price: 3500, type: 'work', stage: 'Инженерия', rooms: ['bathroom', 'combined'] },
-      { id: 'p4', group: 'Сантехника', name: 'Монтаж защиты от протечек', unit: 'комплект', price: 4500, type: 'work', stage: 'Инженерия', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'c1', group: 'Штукатурка', name: 'Штукатурка стен по маякам', unit: 'м²', price: 650, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'c2', group: 'Штукатурка', name: 'Штукатурка потолка', unit: 'м²', price: 700, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'c3', group: 'Стяжка', name: 'Стяжка пола (ЦПС до 5 см)', unit: 'м²', price: 550, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
-      { id: 'c4', group: 'Стяжка', name: 'Самовыравнивающийся пол', unit: 'м²', price: 350, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'c5', group: 'Гидроизоляция', name: 'Гидроизоляция мокрых зон', unit: 'м²', price: 350, type: 'work', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'c6', group: 'Шпаклёвка', name: 'Шпаклёвка стен под обои (2 слоя)', unit: 'м²', price: 280, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'c7', group: 'Шпаклёвка', name: 'Шпаклёвка стен под покраску', unit: 'м²', price: 380, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'c8', group: 'Шпаклёвка', name: 'Шпаклёвка потолка под покраску', unit: 'м²', price: 420, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'c9', group: 'Грунтовка', name: 'Грунтование стен (2 слоя)', unit: 'м²', price: 80, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
-      { id: 'c10', group: 'ГКЛ', name: 'Монтаж короба из ГКЛ', unit: 'пог. м', price: 1200, type: 'work', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
-      { id: 'f1', group: 'Стены', name: 'Поклейка обоев', unit: 'м²', price: 260, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
-      { id: 'f2', group: 'Стены', name: 'Покраска стен (2 слоя)', unit: 'м²', price: 220, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'f3', group: 'Стены', name: 'Укладка плитки на стены', unit: 'м²', price: 1500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'f4', group: 'Стены', name: 'Затирка швов плитки', unit: 'м²', price: 220, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'f5', group: 'Пол', name: 'Укладка ламината', unit: 'м²', price: 350, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
-      { id: 'f6', group: 'Пол', name: 'Укладка плитки на пол', unit: 'м²', price: 1350, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
-      { id: 'f7', group: 'Потолок', name: 'Натяжной потолок', unit: 'м²', price: 700, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'f8', group: 'Потолок', name: 'Монтаж потолочного плинтуса', unit: 'пог. м', price: 150, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'f9', group: 'Пол', name: 'Монтаж напольного плинтуса', unit: 'пог. м', price: 180, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
-      { id: 'f10', group: 'Окна', name: 'Отделка оконных откосов', unit: 'пог. м', price: 450, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen'] },
-      { id: 'f11', group: 'Двери', name: 'Установка межкомнатной двери', unit: 'шт.', price: 3500, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
-      { id: 's1', group: 'Сантехника', name: 'Установка ванны', unit: 'шт.', price: 3500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
-      { id: 's2', group: 'Сантехника', name: 'Установка душевой кабины', unit: 'шт.', price: 6000, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
-      { id: 's3', group: 'Сантехника', name: 'Установка унитаза', unit: 'шт.', price: 2500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined'] },
-      { id: 's4', group: 'Сантехника', name: 'Монтаж инсталляции', unit: 'шт.', price: 5500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined'] },
-      { id: 's5', group: 'Сантехника', name: 'Установка раковины с тумбой', unit: 'шт.', price: 2800, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 's6', group: 'Сантехника', name: 'Установка смесителя', unit: 'шт.', price: 1500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined', 'kitchen'] },
-      { id: 'b1', group: 'Балкон', name: 'Утепление балкона', unit: 'м²', price: 500, type: 'work', stage: 'Черновые', rooms: ['balcony'] },
-      { id: 'b2', group: 'Балкон', name: 'Обшивка балкона (сайдинг/панели)', unit: 'м²', price: 450, type: 'work', stage: 'Чистовые', rooms: ['balcony'] },
-      { id: 'b3', group: 'Окна', name: 'Монтаж пластиковых окон', unit: 'м²', price: 3500, type: 'work', stage: 'Инженерия', rooms: ['balcony'] },
-      { id: 'm1', group: 'Смеси', name: 'Штукатурная смесь (30 кг)', unit: 'мешок', price: 520, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'm2', group: 'Смеси', name: 'Шпаклёвка (20 кг)', unit: 'мешок', price: 780, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'm3', group: 'Смеси', name: 'Стяжка / пескобетон (40 кг)', unit: 'мешок', price: 420, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'm4', group: 'Грунтовка', name: 'Грунтовка глубокого проникновения (10 л)', unit: 'канистра', price: 650, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
-      { id: 'm5', group: 'Гидроизоляция', name: 'Обмазочная гидроизоляция (5 кг)', unit: 'ведро', price: 1100, type: 'material', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'm6', group: 'Электрика', name: 'Кабель ВВГнг 3×2,5', unit: 'м', price: 75, type: 'material', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'm7', group: 'Электрика', name: 'Подрозетник + механизм', unit: 'шт.', price: 450, type: 'material', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'm8', group: 'Сантехника', name: 'Трубы и фитинги (комплект)', unit: 'комплект', price: 1200, type: 'material', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'toilet', 'combined'] },
-      { id: 'm9', group: 'ГКЛ', name: 'Влагостойкий ГКЛ 12,5 мм', unit: 'лист', price: 650, type: 'material', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
-      { id: 'm10', group: 'Стены', name: 'Обои (рулон 10 м²)', unit: 'рулон', price: 2500, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
-      { id: 'm11', group: 'Стены', name: 'Краска водоэмульсионная (10 л)', unit: 'ведро', price: 900, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'm12', group: 'Плитка', name: 'Плитка керамическая (стены)', unit: 'м²', price: 1700, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'm13', group: 'Плитка', name: 'Плитка / керамогранит (пол)', unit: 'м²', price: 1700, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'm14', group: 'Плитка', name: 'Плиточный клей (25 кг)', unit: 'мешок', price: 650, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'm15', group: 'Плитка', name: 'Затирка для швов (2 кг)', unit: 'пакет', price: 350, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'm16', group: 'Пол', name: 'Ламинат 33 класс', unit: 'м²', price: 1300, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
-      { id: 'm17', group: 'Пол', name: 'Подложка под ламинат', unit: 'м²', price: 150, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
-      { id: 'm18', group: 'Потолок', name: 'Натяжной потолок (ПВХ)', unit: 'м²', price: 600, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'm19', group: 'Двери', name: 'Дверь межкомнатная (комплект)', unit: 'комплект', price: 14000, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
-      { id: 'm20', group: 'Плинтус', name: 'Плинтус напольный', unit: 'пог. м', price: 250, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
-      { id: 'm21', group: 'Сантехника', name: 'Ванна акриловая', unit: 'шт.', price: 25000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
-      { id: 'm22', group: 'Сантехника', name: 'Душевая кабина', unit: 'шт.', price: 35000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
-      { id: 'm23', group: 'Сантехника', name: 'Унитаз с инсталляцией', unit: 'комплект', price: 20000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined'] },
-      { id: 'm24', group: 'Сантехника', name: 'Раковина с тумбой', unit: 'комплект', price: 14000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
-      { id: 'm25', group: 'Сантехника', name: 'Смеситель', unit: 'шт.', price: 4000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined', 'kitchen'] },
-      { id: 'm26', group: 'Расходники', name: 'Малярные расходники (комплект)', unit: 'комплект', price: 800, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
-      { id: 'm27', group: 'Балкон', name: 'Утеплитель (минвата)', unit: 'м²', price: 450, type: 'material', stage: 'Черновые', rooms: ['balcony'] },
-      { id: 'm28', group: 'Балкон', name: 'Панели для обшивки', unit: 'м²', price: 600, type: 'material', stage: 'Чистовые', rooms: ['balcony'] }
+      {id: 'd1', group: 'Демонтаж', name: 'Демонтаж старой штукатурки', unit: 'м²', price: 220, type: 'work', stage: 'Демонтаж', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony']},
+      {id: 'd2', group: 'Демонтаж', name: 'Демонтаж керамической плитки', unit: 'м²', price: 340, type: 'work', stage: 'Демонтаж', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'd3', group: 'Демонтаж', name: 'Демонтаж стяжки пола', unit: 'м²', price: 350, type: 'work', stage: 'Демонтаж', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'e1', group: 'Электрика', name: 'Штробление стен под кабель', unit: 'пог. м', price: 400, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'e2', group: 'Электрика', name: 'Прокладка кабеля ВВГнг', unit: 'пог. м', price: 120, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'e3', group: 'Электрика', name: 'Установка подрозетника и розетки', unit: 'точка', price: 900, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'e4', group: 'Электрика', name: 'Установка выключателя', unit: 'точка', price: 700, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'e5', group: 'Электрика', name: 'Монтаж светильника', unit: 'шт.', price: 650, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony']},
+      {id: 'p1', group: 'Сантехника', name: 'Разводка водоснабжения (точка)', unit: 'точка', price: 1800, type: 'work', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'combined']},
+      {id: 'p2', group: 'Сантехника', name: 'Монтаж канализации (точка)', unit: 'точка', price: 1400, type: 'work', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'toilet', 'combined']},
+      {id: 'p3', group: 'Сантехника', name: 'Установка полотенцесушителя', unit: 'шт.', price: 3500, type: 'work', stage: 'Инженерия', rooms: ['bathroom', 'combined']},
+      {id: 'p4', group: 'Сантехника', name: 'Монтаж защиты от протечек', unit: 'комплект', price: 4500, type: 'work', stage: 'Инженерия', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'c1', group: 'Штукатурка', name: 'Штукатурка стен по маякам', unit: 'м²', price: 650, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'c2', group: 'Штукатурка', name: 'Штукатурка потолка', unit: 'м²', price: 700, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'c3', group: 'Стяжка', name: 'Стяжка пола (ЦПС до 5 см)', unit: 'м²', price: 550, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony']},
+      {id: 'c4', group: 'Стяжка', name: 'Самовыравнивающийся пол', unit: 'м²', price: 350, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'c5', group: 'Гидроизоляция', name: 'Гидроизоляция мокрых зон', unit: 'м²', price: 350, type: 'work', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'c6', group: 'Шпаклёвка', name: 'Шпаклёвка стен под обои (2 слоя)', unit: 'м²', price: 280, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'c7', group: 'Шпаклёвка', name: 'Шпаклёвка стен под покраску', unit: 'м²', price: 380, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'c8', group: 'Шпаклёвка', name: 'Шпаклёвка потолка под покраску', unit: 'м²', price: 420, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'c9', group: 'Грунтовка', name: 'Грунтование стен (2 слоя)', unit: 'м²', price: 80, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony']},
+      {id: 'c10', group: 'ГКЛ', name: 'Монтаж короба из ГКЛ', unit: 'пог. м', price: 1200, type: 'work', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway']},
+      {id: 'f1', group: 'Стены', name: 'Поклейка обоев', unit: 'м²', price: 260, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway']},
+      {id: 'f2', group: 'Стены', name: 'Покраска стен (2 слоя)', unit: 'м²', price: 220, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'f3', group: 'Стены', name: 'Укладка плитки на стены', unit: 'м²', price: 1500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'f4', group: 'Стены', name: 'Затирка швов плитки', unit: 'м²', price: 220, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'f5', group: 'Пол', name: 'Укладка ламината', unit: 'м²', price: 350, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway']},
+      {id: 'f6', group: 'Пол', name: 'Укладка плитки на пол', unit: 'м²', price: 1350, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway']},
+      {id: 'f7', group: 'Потолок', name: 'Натяжной потолок', unit: 'м²', price: 700, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'f8', group: 'Потолок', name: 'Монтаж потолочного плинтуса', unit: 'пог. м', price: 150, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'f9', group: 'Пол', name: 'Монтаж напольного плинтуса', unit: 'пог. м', price: 180, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway']},
+      {id: 'f10', group: 'Окна', name: 'Отделка оконных откосов', unit: 'пог. м', price: 450, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen']},
+      {id: 'f11', group: 'Двери', name: 'Установка межкомнатной двери', unit: 'шт.', price: 3500, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'bathroom', 'toilet', 'combined', 'kitchen', 'hallway']},
+      {id: 's1', group: 'Сантехника', name: 'Установка ванны', unit: 'шт.', price: 3500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined']},
+      {id: 's2', group: 'Сантехника', name: 'Установка душевой кабины', unit: 'шт.', price: 6000, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined']},
+      {id: 's3', group: 'Сантехника', name: 'Установка унитаза', unit: 'шт.', price: 2500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined']},
+      {id: 's4', group: 'Сантехника', name: 'Монтаж инсталляции', unit: 'шт.', price: 5500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined']},
+      {id: 's5', group: 'Сантехника', name: 'Установка раковины с тумбой', unit: 'шт.', price: 2800, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 's6', group: 'Сантехника', name: 'Установка смесителя', unit: 'шт.', price: 1500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined', 'kitchen']},
+      {id: 'b1', group: 'Балкон', name: 'Утепление балкона', unit: 'м²', price: 500, type: 'work', stage: 'Черновые', rooms: ['balcony']},
+      {id: 'b2', group: 'Балкон', name: 'Обшивка балкона (сайдинг/панели)', unit: 'м²', price: 450, type: 'work', stage: 'Чистовые', rooms: ['balcony']},
+      {id: 'b3', group: 'Окна', name: 'Монтаж пластиковых окон', unit: 'м²', price: 3500, type: 'work', stage: 'Инженерия', rooms: ['balcony']},
+      {id: 'm1', group: 'Смеси', name: 'Штукатурная смесь (30 кг)', unit: 'мешок', price: 520, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'm2', group: 'Смеси', name: 'Шпаклёвка (20 кг)', unit: 'мешок', price: 780, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'm3', group: 'Смеси', name: 'Стяжка / пескобетон (40 кг)', unit: 'мешок', price: 420, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'm4', group: 'Грунтовка', name: 'Грунтовка глубокого проникновения (10 л)', unit: 'канистра', price: 650, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony']},
+      {id: 'm5', group: 'Гидроизоляция', name: 'Обмазочная гидроизоляция (5 кг)', unit: 'ведро', price: 1100, type: 'material', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'm6', group: 'Электрика', name: 'Кабель ВВГнг 3×2,5', unit: 'м', price: 75, type: 'material', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'm7', group: 'Электрика', name: 'Подрозетник + механизм', unit: 'шт.', price: 450, type: 'material', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'm8', group: 'Сантехника', name: 'Трубы и фитинги (комплект)', unit: 'комплект', price: 1200, type: 'material', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'toilet', 'combined']},
+      {id: 'm9', group: 'ГКЛ', name: 'Влагостойкий ГКЛ 12,5 мм', unit: 'лист', price: 650, type: 'material', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway']},
+      {id: 'm10', group: 'Стены', name: 'Обои (рулон 10 м²)', unit: 'рулон', price: 2500, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway']},
+      {id: 'm11', group: 'Стены', name: 'Краска водоэмульсионная (10 л)', unit: 'ведро', price: 900, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'm12', group: 'Плитка', name: 'Плитка керамическая (стены)', unit: 'м²', price: 1700, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'm13', group: 'Плитка', name: 'Плитка / керамогранит (пол)', unit: 'м²', price: 1700, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'm14', group: 'Плитка', name: 'Плиточный клей (25 кг)', unit: 'мешок', price: 650, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'm15', group: 'Плитка', name: 'Затирка для швов (2 кг)', unit: 'пакет', price: 350, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'm16', group: 'Пол', name: 'Ламинат 33 класс', unit: 'м²', price: 1300, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway']},
+      {id: 'm17', group: 'Пол', name: 'Подложка под ламинат', unit: 'м²', price: 150, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway']},
+      {id: 'm18', group: 'Потолок', name: 'Натяжной потолок (ПВХ)', unit: 'м²', price: 600, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'm19', group: 'Двери', name: 'Дверь межкомнатная (комплект)', unit: 'комплект', price: 14000, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway']},
+      {id: 'm20', group: 'Плинтус', name: 'Плинтус напольный', unit: 'пог. м', price: 250, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway']},
+      {id: 'm21', group: 'Сантехника', name: 'Ванна акриловая', unit: 'шт.', price: 25000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined']},
+      {id: 'm22', group: 'Сантехника', name: 'Душевая кабина', unit: 'шт.', price: 35000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined']},
+      {id: 'm23', group: 'Сантехника', name: 'Унитаз с инсталляцией', unit: 'комплект', price: 20000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined']},
+      {id: 'm24', group: 'Сантехника', name: 'Раковина с тумбой', unit: 'комплект', price: 14000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen']},
+      {id: 'm25', group: 'Сантехника', name: 'Смеситель', unit: 'шт.', price: 4000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined', 'kitchen']},
+      {id: 'm26', group: 'Расходники', name: 'Малярные расходники (комплект)', unit: 'комплект', price: 800, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway']},
+      {id: 'm27', group: 'Балкон', name: 'Утеплитель (минвата)', unit: 'м²', price: 450, type: 'material', stage: 'Черновые', rooms: ['balcony']},
+      {id: 'm28', group: 'Балкон', name: 'Панели для обшивки', unit: 'м²', price: 600, type: 'material', stage: 'Чистовые', rooms: ['balcony']}
     ];
 
     const ROOM_TYPES = [
-      { key: 'bedroom', label: 'Спальня', emoji: '🛏️', max: 4, wet: false },
-      { key: 'living', label: 'Гостиная', emoji: '🛋️', max: 1, wet: false },
-      { key: 'kids', label: 'Детская', emoji: '🧸', max: 3, wet: false },
-      { key: 'kitchen', label: 'Кухня', emoji: '🍳', max: 1, wet: false },
-      { key: 'bathroom', label: 'Ванная', emoji: '🛁', max: 1, wet: true },
-      { key: 'toilet', label: 'Санузел (туалет)', emoji: '🚽', max: 1, wet: true },
-      { key: 'combined', label: 'Совмещённый санузел', emoji: '🚿', max: 1, wet: true },
-      { key: 'hallway', label: 'Прихожая / Коридор', emoji: '🚪', max: 1, wet: false },
-      { key: 'balcony', label: 'Балкон / Лоджия', emoji: '🌇', max: 2, wet: false }
+      {key: 'bedroom', label: 'Спальня', emoji: '🛏️', max: 4, wet: false},
+      {key: 'living', label: 'Гостиная', emoji: '🛋️', max: 1, wet: false},
+      {key: 'kids', label: 'Детская', emoji: '🧸', max: 3, wet: false},
+      {key: 'kitchen', label: 'Кухня', emoji: '🍳', max: 1, wet: false},
+      {key: 'bathroom', label: 'Ванная', emoji: '🛁', max: 1, wet: true},
+      {key: 'toilet', label: 'Санузел (туалет)', emoji: '🚽', max: 1, wet: true},
+      {key: 'combined', label: 'Совмещённый санузел', emoji: '🚿', max: 1, wet: true},
+      {key: 'hallway', label: 'Прихожая / Коридор', emoji: '🚪', max: 1, wet: false},
+      {key: 'balcony', label: 'Балкон / Лоджия', emoji: '🌇', max: 2, wet: false}
     ];
 
     const RESIDENTIAL_PRESET = ['c1', 'c6', 'f1', 'f5', 'f9', 'e3', 'f11', 'm1', 'm2', 'm4', 'm6', 'm10', 'm16', 'm17', 'm20', 'm19'];
@@ -1439,19 +1522,18 @@
     // ============ ХРАНИЛИЩЕ ============
     const STORAGE_KEY = 'smetchik22_pro';
     let db;
-    try { db = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch (e) { db = null; }
+    try {db = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');} catch (e) {db = null;}
     if (!db) {
       db = {
         company: '', region: 'Новосибирск', markup: 10, waste: 10,
         inn: '', ogrn: '', legalAddress: '', director: '', phone: '', email: '', website: '',
         contractPrefix: 'BM', objects: [], versions: {}, catalog: [],
-        donateName: '', donatePhone: '', donateCard: '', donateBank: '', donateTelegram: '', donateMessage: ''
+        donateQrLink: '', donateTelegram: '', donateMessage: '', donateName: ''
       };
     }
-    ['inn', 'ogrn', 'legalAddress', 'director', 'phone', 'email', 'website', 'donateName', 'donatePhone', 'donateCard', 'donateBank', 'donateTelegram', 'donateMessage'].forEach(k => { if (db[k] === undefined) db[k] = ''; });
+    ['inn', 'ogrn', 'legalAddress', 'director', 'phone', 'email', 'website', 'donateTelegram', 'donateMessage', 'donateName', 'donateQrLink'].forEach(k => {if (db[k] === undefined) db[k] = '';});
     if (!db.contractPrefix) db.contractPrefix = 'BM';
-    // Убираем предзаполненное название компании, если пользователь его не менял
-    if (db.company === 'Сметчик_22' || db.company === 'BuildMate Pro') { db.company = ''; }
+    if (db.company === 'Сметчик_22' || db.company === 'BuildMate Pro') {db.company = '';}
     if (typeof db.company !== 'string') db.company = '';
 
     if (!Array.isArray(db.catalog)) db.catalog = [];
@@ -1465,8 +1547,7 @@
         }
       });
       if (restored > 0) {
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); } catch (e) { }
-        console.log('BuildMate Pro: восстановлено стандартных расценок — ' + restored);
+        try {localStorage.setItem(STORAGE_KEY, JSON.stringify(db));} catch (e) { }
       }
     })();
     let CATALOG = db.catalog;
@@ -1486,7 +1567,7 @@
         }
         if (o.kind && !OBJECT_KINDS.includes(o.kind)) {
           const found = OBJECT_KINDS.find(k => o.kind.includes(k));
-          if (found) { o.kind = found; changed = true; }
+          if (found) {o.kind = found; changed = true;}
         }
       });
       if (changed) save();
@@ -1508,9 +1589,9 @@
     }
     function saveDebounced() {
       if (saveTimeout) clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(() => { save(); saveTimeout = null; }, 250);
+      saveTimeout = setTimeout(() => {save(); saveTimeout = null;}, 250);
     }
-    function obj() { return db.objects.find(o => o.id === selected); }
+    function obj() {return db.objects.find(o => o.id === selected);}
 
     function restoreFullCatalog() {
       if (!confirm('Добавить все стандартные расценки (70 позиций), которых сейчас нет в базе? Ваши собственные позиции и правки существующих сохранятся.')) return;
@@ -1538,8 +1619,7 @@
           region: db.region || 'Новосибирск',
           markup: db.markup ?? 10, waste: db.waste ?? 10,
           contractPrefix: db.contractPrefix || 'BM',
-          donateName: db.donateName || '', donatePhone: db.donatePhone || '',
-          donateCard: db.donateCard || '', donateBank: db.donateBank || '',
+          donateName: db.donateName || '', donateQrLink: db.donateQrLink || '',
           donateTelegram: db.donateTelegram || '', donateMessage: db.donateMessage || ''
         };
       }
@@ -1559,12 +1639,12 @@
       save(); settingsDraft = null;
     }
     function saveSettings() {
-      if (!settingsDraft) { toast('Нет изменений', '#64748b'); return; }
+      if (!settingsDraft) {toast('Нет изменений', '#64748b'); return;}
       commitSettingsDraft();
       toast('💾 Настройки сохранены');
       render();
     }
-    function resetSettingsDraft() { settingsDraft = null; initSettingsDraft(); render(); toast('↩ Изменения отменены', '#64748b'); }
+    function resetSettingsDraft() {settingsDraft = null; initSettingsDraft(); render(); toast('↩ Изменения отменены', '#64748b');}
     function settingsDirty() {
       if (!settingsDraft) return false;
       for (const k of Object.keys(settingsDraft)) {
@@ -1575,7 +1655,7 @@
 
     // ============ НАВИГАЦИЯ ============
     function applyState(st) {
-      st = st || { tab: 'home', editingItem: null };
+      st = st || {tab: 'home', editingItem: null};
       tab = st.tab || 'home';
       editingItem = st.editingItem || null;
       render();
@@ -1587,21 +1667,21 @@
         commitSettingsDraft();
         if (wasDirty) toast('💾 Настройки сохранены автоматически');
       }
-      if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
+      if (saveTimeout) {clearTimeout(saveTimeout); save(); saveTimeout = null;}
       closeCatalogModals();
       stopVoice();
-      const st = { tab: newState.tab || tab, editingItem: newState.editingItem || null };
+      const st = {tab: newState.tab || tab, editingItem: newState.editingItem || null};
       if (st.tab !== tab || st.editingItem !== editingItem) {
-        try { history.pushState(st, '', location.href); } catch (e) { }
+        try {history.pushState(st, '', location.href);} catch (e) { }
       }
       applyState(st);
     }
     function goBack() {
-      if (menuOpen) { closeMenu(); return; }
-      if (donateOpen) { closeDonate(); return; }
-      if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) { closeCatalogModals(); return; }
+      if (menuOpen) {closeMenu(); return;}
+      if (donateOpen) {closeDonate(); return;}
+      if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) {closeCatalogModals(); return;}
       if (!history.state) {
-        try { window.Telegram?.WebApp?.close?.(); } catch (e) { }
+        try {window.Telegram?.WebApp?.close?.();} catch (e) { }
         return;
       }
       history.back();
@@ -1609,7 +1689,7 @@
     function updateBackButton() {
       const atRoot = !history.state;
       const bb = window.Telegram?.WebApp?.BackButton;
-      if (bb) { try { bb.show(); } catch (e) { } }
+      if (bb) {try {bb.show();} catch (e) { } }
       const bEl = document.getElementById('backBtn');
       if (bEl) bEl.classList.toggle('hidden', atRoot);
     }
@@ -1617,44 +1697,44 @@
       if (tab === 'settings' && (!e.state || e.state.tab !== 'settings') && settingsDraft) {
         commitSettingsDraft();
       }
-      if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
+      if (saveTimeout) {clearTimeout(saveTimeout); save(); saveTimeout = null;}
       applyState(e.state);
     });
     if (window.Telegram?.WebApp?.BackButton) {
       window.Telegram.WebApp.BackButton.onClick(() => {
-        if (menuOpen) { closeMenu(); return; }
-        if (donateOpen) { closeDonate(); return; }
-        if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) { closeCatalogModals(); return; }
+        if (menuOpen) {closeMenu(); return;}
+        if (donateOpen) {closeDonate(); return;}
+        if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) {closeCatalogModals(); return;}
         if (!history.state) {
-          try { window.Telegram.WebApp.close(); } catch (e) { }
+          try {window.Telegram.WebApp.close();} catch (e) { }
         } else {
           history.back();
         }
       });
-      try { window.Telegram.WebApp.BackButton.show(); } catch (e) { }
+      try {window.Telegram.WebApp.BackButton.show();} catch (e) { }
     }
 
     // ============ БОКОВОЕ МЕНЮ ============
-    function openMenu() { menuOpen = true; renderDrawer(); try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred?.('light'); } catch (e) { } }
-    function closeMenu() { menuOpen = false; renderDrawer(); }
+    function openMenu() {menuOpen = true; renderDrawer(); try {window.Telegram?.WebApp?.HapticFeedback?.impactOccurred?.('light');} catch (e) { } }
+    function closeMenu() {menuOpen = false; renderDrawer();}
     function renderDrawer() {
       const host = document.getElementById('drawerHost');
-      if (!menuOpen) { host.innerHTML = ''; return; }
+      if (!menuOpen) {host.innerHTML = ''; return;}
       const admin = isAdmin();
       const items = [
-        { key: 'home', label: '📊 Обзор', section: 'Основное' },
-        { key: 'objects', label: '🏢 Объекты', section: 'Основное' },
-        { key: 'estimate', label: '📋 Смета', section: 'Основное' },
-        { key: 'stages', label: '📅 Этапы', section: 'Работа' },
-        { key: 'procurement', label: '🛒 Закупки', section: 'Работа' },
-        { key: 'money', label: '💵 Финансы', section: 'Работа' },
-        { key: 'catalog', label: '💰 Расценки', section: 'Настройки' },
-        { key: 'docs', label: '📄 Документы', section: 'Настройки' },
-        { key: 'settings', label: '⚙️ Настройки', section: 'Настройки' }
+        {key: 'home', label: '📊 Обзор', section: 'Основное'},
+        {key: 'objects', label: '🏢 Объекты', section: 'Основное'},
+        {key: 'estimate', label: '📋 Смета', section: 'Основное'},
+        {key: 'stages', label: '📅 Этапы', section: 'Работа'},
+        {key: 'procurement', label: '🛒 Закупки', section: 'Работа'},
+        {key: 'money', label: '💵 Финансы', section: 'Работа'},
+        {key: 'catalog', label: '💰 Расценки', section: 'Настройки'},
+        {key: 'docs', label: '📄 Документы', section: 'Настройки'},
+        {key: 'settings', label: '⚙️ Настройки', section: 'Настройки'}
       ];
       let nav = ''; let lastSection = '';
       items.forEach(it => {
-        if (it.section !== lastSection) { nav += `<div class="drawer-section">${it.section}</div>`; lastSection = it.section; }
+        if (it.section !== lastSection) {nav += `<div class="drawer-section">${it.section}</div>`; lastSection = it.section;}
         nav += `<button class="${tab === it.key ? 'active' : ''}" onclick="navigateFromMenu('${it.key}')">${it.label}</button>`;
       });
       host.innerHTML = `
@@ -1670,68 +1750,158 @@
       <nav class="drawer-nav">
         ${nav}
         <div class="drawer-section">Поддержка</div>
-        <button class="donate" onclick="closeMenu(); openDonate()">❤️ Поддержать автора</button>
+        <button class="donate" onclick="closeMenu(); openDonate()">❤️ Поддержать автора <span class="badge pink" style="margin-left:auto">QR</span></button>
       </nav>
-      <div class="drawer-footer">BuildMate Pro · v1.4<br>Сделано для прорабов и мастеров</div>
+      <div class="drawer-footer">BuildMate Pro · v1.5<br>Сделано для прорабов и мастеров</div>
     </aside>`;
     }
-    function navigateFromMenu(key) { closeMenu(); navigate({ tab: key, editingItem: null }); }
+    function navigateFromMenu(key) {closeMenu(); navigate({tab: key, editingItem: null});}
 
-    // ============ ДОНАТ ============
-    const DONATE_PRESETS = [100, 300, 500, 1000];
-    let donateAmount = 300;
-
+    // ============ ДОНАТ — ТОЛЬКО QR ============
     function getDonateReqs() {
       const admin = isAdmin();
-      const hasLocal = admin && (db.donatePhone || db.donateCard);
+      // Для админа — приоритет его локальных настроек (для тестов).
+      // Для остальных — всегда HARDCODED_DONATE.
+      const hasLocal = admin && !!db.donateQrLink;
       const src = hasLocal ? {
-        name: db.donateName, phone: db.donatePhone, card: db.donateCard, bank: db.donateBank,
-        telegram: db.donateTelegram, message: db.donateMessage
+        name: db.donateName || HARDCODED_DONATE.name,
+        qrLink: db.donateQrLink,
+        bank: HARDCODED_DONATE.bank || '',
+        telegram: db.donateTelegram || HARDCODED_DONATE.telegram,
+        message: db.donateMessage || HARDCODED_DONATE.message
       } : HARDCODED_DONATE;
       return {
-        name: src.name || HARDCODED_DONATE.name || 'Автор приложения',
-        phone: src.phone || HARDCODED_DONATE.phone || '',
-        card: src.card || HARDCODED_DONATE.card || '',
-        bank: src.bank || HARDCODED_DONATE.bank || '',
-        telegram: String(src.telegram || HARDCODED_DONATE.telegram || '').replace(/^@/, ''),
-        message: src.message || HARDCODED_DONATE.message || 'Спасибо за поддержку!'
+        name: src.name || 'Автор приложения',
+        qrLink: String(src.qrLink || '').trim(),
+        bank: src.bank || '',
+        telegram: String(src.telegram || '').replace(/^@/, ''),
+        message: src.message || 'Спасибо за поддержку!'
       };
     }
-    function openDonate() { donateOpen = true; renderDonate(); try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred?.('light'); } catch (e) { } }
-    function closeDonate() { donateOpen = false; renderDonate(); }
-    function setDonateAmount(v) { donateAmount = v; renderDonate(); }
+
+    function getQrImageUrl(data, size) {
+      const s = size || 300;
+      return 'https://api.qrserver.com/v1/create-qr-code/?size=' + s + 'x' + s + '&margin=8&data=' + encodeURIComponent(data || 'BuildMate Pro');
+    }
+
+    function hasActiveDonate() {
+      const r = getDonateReqs();
+      return !!r.qrLink;
+    }
+
+    function openDonate() {
+      if (!hasActiveDonate()) {
+        if (isAdmin()) {
+          alert('QR-код для донатов ещё не настроен.\n\nОткройте «Настройки» → «❤️ Поддержка автора» и вставьте ссылку для QR-кода из вашего банковского приложения.');
+        } else {
+          toast('Автор пока не настроил QR-код для донатов', '#64748b');
+        }
+        return;
+      }
+      donateOpen = true;
+      renderDonate();
+      try {window.Telegram?.WebApp?.HapticFeedback?.impactOccurred?.('light');} catch (e) { }
+    }
+    function closeDonate() {donateOpen = false; renderDonate();}
 
     function renderDonate() {
       const host = document.getElementById('donateHost');
-      if (!donateOpen) { host.innerHTML = ''; return; }
+      if (!donateOpen) {host.innerHTML = ''; return;}
       const r = getDonateReqs();
-      const hasPhone = !!r.phone, hasCard = !!r.card;
-      const qrData = [hasPhone ? 'СБП: ' + r.phone : '', hasCard ? 'Карта: ' + r.card : '', r.name ? 'Получатель: ' + r.name : ''].filter(Boolean).join('\n');
-      const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=' + encodeURIComponent(qrData || 'BuildMate Pro');
-      let body = `
+      if (!r.qrLink) {closeDonate(); return;}
+      const qrUrl = getQrImageUrl(r.qrLink, 300);
+
+      host.innerHTML = `
     <div class="modal-overlay" onclick="closeDonate()">
       <div class="modal" onclick="event.stopPropagation()">
         <button class="modal-close" onclick="closeDonate()" aria-label="Закрыть">×</button>
         <h2>❤️ Поддержать автора</h2>
         <p class="lead">${esc(r.message)}</p>
-        <div class="donate-amounts">${DONATE_PRESETS.map(a => `<button class="${donateAmount === a ? 'active' : ''}" onclick="setDonateAmount(${a})">${a} ₽</button>`).join('')}</div>`;
-      if (hasPhone) body += `<div class="donate-block"><label>📱 СБП — перевод по номеру телефона</label><div class="copy-row"><input readonly value="${esc(r.phone)}" onclick="this.select()"><button onclick="copyText('${esc(r.phone).replace(/'/g, "\\'")}', this)">📋 Копировать</button></div></div>`;
-      if (hasCard) body += `<div class="donate-block"><label>💳 Номер карты${r.bank ? ' · ' + esc(r.bank) : ''}</label><div class="copy-row"><input readonly value="${esc(r.card)}" onclick="this.select()"><button onclick="copyText('${esc(r.card).replace(/'/g, "\\'")}', this)">📋 Копировать</button></div></div>`;
-      if (hasPhone || hasCard) body += `<div class="qr-wrap"><img src="${qrUrl}" alt="QR-код реквизитов"><p class="hint">Отсканируйте QR для быстрого доступа к реквизитам</p></div>`;
-      if (!hasPhone && !hasCard) {
-        body += `<div class="donate-block" style="text-align:center"><p class="hint" style="margin:0">Автор пока не указал реквизиты для донатов${isAdmin() ? '<br>Настройки → «Реквизиты для донатов»' : ''}.</p></div>`;
+
+        <div style="text-align:center;margin-bottom:16px">
+          <img src="${qrUrl}" alt="QR-код для перевода" class="modal-qr" onclick="openQrDirect()" style="cursor:pointer">
+          <p class="hint" style="margin-top:8px;text-align:center">
+            Отсканируйте QR-код в приложении вашего банка<br>или нажмите на него, чтобы открыть платёжную ссылку.
+          </p>
+        </div>
+
+        <div class="thanks-block">
+          🙏 Спасибо за поддержку! Каждый перевод помогает делать приложение лучше.
+          ${r.name ? '<br><b>Получатель: ' + esc(r.name) + '</b>' : ''}
+        </div>
+
+        <div class="actions" style="margin-top:0">
+          <button class="btn pink" style="flex:1;min-width:160px" onclick="openQrDirect()">💳 Открыть в банке</button>
+          <button class="btn secondary" style="flex:1;min-width:160px" onclick="copyText('${esc(r.qrLink).replace(/'/g, "\\'")}', this)">📋 Скопировать ссылку</button>
+        </div>
+        ${r.telegram ? `<button class="btn secondary" style="width:100%;margin-top:8px" onclick="openAuthorChat()">💬 Написать автору в Telegram</button>` : ''}
+        <button class="btn outline" style="width:100%;margin-top:8px" onclick="closeDonate()">Закрыть</button>
+      </div>
+    </div>`;
+    }
+
+    function openQrDirect() {
+      const r = getDonateReqs();
+      if (!r.qrLink) {toast('Ссылка для QR не задана', '#64748b'); return;}
+      // Если это URL — открываем в Telegram/inline браузере
+      if (/^https?:\/\//i.test(r.qrLink)) {
+        if (window.Telegram?.WebApp?.openLink) {
+          try {window.Telegram.WebApp.openLink(r.qrLink); return;} catch (e) { }
+        }
+        if (window.Telegram?.WebApp?.openTelegramLink && /t\.me\//i.test(r.qrLink)) {
+          try {window.Telegram.WebApp.openTelegramLink(r.qrLink); return;} catch (e) { }
+        }
+        window.open(r.qrLink, '_blank');
+      } else {
+        // Если это не URL — просто копируем (например, СБП-ID)
+        copyText(r.qrLink);
       }
-      body += `<div class="thanks-block">🙏 Спасибо за поддержку! Каждый перевод помогает делать приложение лучше.${r.name && r.name !== 'Автор приложения' ? '<br><b>Получатель: ' + esc(r.name) + '</b>' : ''}</div>`;
-      if (r.telegram) body += `<button class="btn secondary" style="width:100%;margin-bottom:8px" onclick="openAuthorChat()">💬 Написать автору в Telegram</button>`;
-      body += `<button class="btn pink" style="width:100%" onclick="closeDonate()">Закрыть</button></div></div>`;
-      host.innerHTML = body;
     }
     function openAuthorChat() {
       const r = getDonateReqs();
-      if (!r.telegram) { toast('Telegram автора не указан', '#64748b'); return; }
+      if (!r.telegram) {toast('Telegram автора не указан', '#64748b'); return;}
       const url = 'https://t.me/' + r.telegram;
-      if (window.Telegram?.WebApp?.openTelegramLink) { try { window.Telegram.WebApp.openTelegramLink(url); return; } catch (e) { } }
+      if (window.Telegram?.WebApp?.openTelegramLink) {try {window.Telegram.WebApp.openTelegramLink(url); return;} catch (e) { } }
       window.open(url, '_blank');
+    }
+
+    // ============ БЛОК ПОДДЕРЖКИ В ИНТЕРФЕЙСЕ ============
+    // Большая карточка для главной страницы
+    function renderSupportHero() {
+      if (!hasActiveDonate()) return '';
+      const r = getDonateReqs();
+      const qrUrl = getQrImageUrl(r.qrLink, 220);
+      return `
+    <section class="support-hero">
+      <h2><span class="heart-anim">❤️</span> Поддержать автора</h2>
+      <p class="lead">${esc(r.message)}</p>
+      <div class="qr-block">
+        <img src="${qrUrl}" alt="QR-код для поддержки" class="qr-img" onclick="openDonate()">
+        <div class="qr-hint">
+          Отсканируйте QR-код в приложении банка,<br>или нажмите на него для подробностей.
+        </div>
+      </div>
+      <div class="support-actions">
+        <button class="btn pink" onclick="openDonate()">❤️ Поддержать</button>
+        <button class="btn secondary" onclick="openQrDirect()">💳 Открыть в банке</button>
+      </div>
+    </section>`;
+    }
+
+    // Компактный футер для остальных вкладок
+    function renderSupportFooter() {
+      if (!hasActiveDonate()) return '';
+      const r = getDonateReqs();
+      const qrUrl = getQrImageUrl(r.qrLink, 152);
+      return `
+    <section class="support-footer">
+      <img src="${qrUrl}" alt="QR" class="sf-qr" onclick="openDonate()" style="cursor:pointer">
+      <div class="sf-text">
+        <h3>❤️ Поддержать автора</h3>
+        <p>Отсканируйте QR в приложении банка или нажмите кнопку.</p>
+      </div>
+      <button class="btn pink sf-btn" onclick="openDonate()">Поддержать</button>
+    </section>`;
     }
 
     // ============ МОДАЛКИ ============
@@ -1745,16 +1915,16 @@
       const host = document.getElementById('catalogModalHost');
       if (host) host.innerHTML = '';
     }
-    function closeCatalogEdit() { closeCatalogModals(); }
-    function closeImportPreview() { closeCatalogModals(); }
-    function closeEstimateItemVoicePreview() { closeCatalogModals(); }
-    function closeEstimateAddModal() { closeCatalogModals(); }
+    function closeCatalogEdit() {closeCatalogModals();}
+    function closeImportPreview() {closeCatalogModals();}
+    function closeEstimateItemVoicePreview() {closeCatalogModals();}
+    function closeEstimateAddModal() {closeCatalogModals();}
 
     // ============ ДОБАВЛЕНИЕ ПОЗИЦИИ В СМЕТУ ============
     function openAddEstimateItem() {
       const o = obj();
-      if (!o) { alert('Сначала добавьте объект'); return; }
-      estimateAddState = { mode: 'select', search: '' };
+      if (!o) {alert('Сначала добавьте объект'); return;}
+      estimateAddState = {mode: 'select', search: ''};
       renderAddEstimateItemModal();
     }
 
@@ -1796,20 +1966,20 @@
           group: 'Прочее', stage: 'Черновые', roomId: '', roomName: ''
         };
       }
-      estimateAddState = { mode: 'form', draft, search: estimateAddState.search || '' };
+      estimateAddState = {mode: 'form', draft, search: estimateAddState.search || ''};
       renderAddEstimateItemModal();
     }
 
     function backToAddEstimateSelect() {
       if (!estimateAddState) return;
-      estimateAddState = { mode: 'select', search: estimateAddState.search || '' };
+      estimateAddState = {mode: 'select', search: estimateAddState.search || ''};
       renderAddEstimateItemModal();
     }
 
     function renderAddEstimateItemModal() {
       if (!estimateAddState) return;
       const o = obj();
-      if (!o) { closeCatalogModals(); return; }
+      if (!o) {closeCatalogModals(); return;}
       const host = document.getElementById('catalogModalHost');
 
       if (estimateAddState.mode === 'select') {
@@ -1931,8 +2101,8 @@
     function openCatalogEdit(id) {
       if (id) {
         const item = CATALOG.find(x => x.id === id);
-        if (!item) { alert('Расценка не найдена'); return; }
-        catalogEditState = { mode: 'edit', draft: JSON.parse(JSON.stringify(item)) };
+        if (!item) {alert('Расценка не найдена'); return;}
+        catalogEditState = {mode: 'edit', draft: JSON.parse(JSON.stringify(item))};
       } else {
         catalogEditState = {
           mode: 'new',
@@ -1945,7 +2115,7 @@
       renderCatalogEditModal();
     }
     function openCatalogEditWithDraft(draft, originalText) {
-      catalogEditState = { mode: 'new', draft, originalText };
+      catalogEditState = {mode: 'new', draft, originalText};
       renderCatalogEditModal();
     }
 
@@ -2012,7 +2182,7 @@
     function saveCatalogEdit() {
       if (!catalogEditState) return;
       const name = document.getElementById('ceName').value.trim();
-      if (!name) { alert('Укажите наименование'); return; }
+      if (!name) {alert('Укажите наименование'); return;}
       const rooms = [...document.querySelectorAll('#ceRooms input:checked')].map(el => el.value);
       const draft = {
         id: catalogEditState.draft.id,
@@ -2058,12 +2228,12 @@
         const s = document.createElement('script');
         s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
         s.onload = () => resolve();
-        s.onerror = () => { xlsxLoadingPromise = null; reject(new Error('Не удалось загрузить библиотеку для работы с Excel. Проверьте интернет.')); };
+        s.onerror = () => {xlsxLoadingPromise = null; reject(new Error('Не удалось загрузить библиотеку для работы с Excel.'));};
         document.head.appendChild(s);
       });
       return xlsxLoadingPromise;
     }
-    function openExcelImport() { document.getElementById('xlsxFileInput').click(); }
+    function openExcelImport() {document.getElementById('xlsxFileInput').click();}
 
     function handleXlsxUpload(file) {
       if (!file) return;
@@ -2072,25 +2242,21 @@
         reader.onload = (e) => {
           try {
             const data = new Uint8Array(e.target.result);
-            const wb = XLSX.read(data, { type: 'array' });
+            const wb = XLSX.read(data, {type: 'array'});
             const sheet = wb.Sheets[wb.SheetNames[0]];
-            if (!sheet) { alert('В файле нет ни одного листа'); return; }
-            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+            if (!sheet) {alert('В файле нет ни одного листа'); return;}
+            const rows = XLSX.utils.sheet_to_json(sheet, {header: 1, defval: ''});
             const parsed = parseCatalogRows(rows);
-            if (!parsed.items.length) {
-              alert('Не удалось найти позиции для импорта.\n\nУбедитесь, что в файле есть колонки:\nНаименование | Тип | Раздел | Единица | Цена');
-              return;
-            }
+            if (!parsed.items.length) {alert('Не удалось найти позиции для импорта.'); return;}
             showImportPreview(parsed);
-          } catch (err) { alert('Ошибка чтения файла: ' + err.message); }
+          } catch (err) {alert('Ошибка чтения файла: ' + err.message);}
         };
         reader.readAsArrayBuffer(file);
       }).catch(err => alert(err.message));
     }
 
     function parseCatalogRows(rows) {
-      let colMap = null;
-      let start = 0;
+      let colMap = null, start = 0;
       if (rows.length > 0) {
         const header = rows[0].map(c => String(c).toLowerCase().trim());
         const keys = ['наименование', 'название', 'name', 'тип', 'type', 'единица', 'ед', 'unit', 'цена', 'price', 'стоимость', 'раздел', 'категория', 'group', 'этап', 'stage', 'помещения', 'rooms', 'комнаты'];
@@ -2108,8 +2274,7 @@
           start = 1;
         }
       }
-      if (!colMap) { colMap = { name: 0, type: 1, unit: 2, price: 3, group: 4, stage: 5, rooms: 6 }; }
-
+      if (!colMap) {colMap = {name: 0, type: 1, unit: 2, price: 3, group: 4, stage: 5, rooms: 6};}
       const items = [];
       for (let i = start; i < rows.length; i++) {
         const row = rows[i];
@@ -2132,13 +2297,13 @@
           const parsedRooms = parseRoomsField(String(row[colMap.rooms]));
           if (parsedRooms.length) rooms = parsedRooms;
         }
-        items.push({ id: 'c_' + uid(), name, type, unit, price, group, stage, rooms });
+        items.push({id: 'c_' + uid(), name, type, unit, price, group, stage, rooms});
       }
-      return { items };
+      return {items};
     }
 
     function parseRoomsField(str) {
-      const map = { 'спальня': 'bedroom', 'спальни': 'bedroom', 'гостиная': 'living', 'гостиной': 'living', 'детская': 'kids', 'детской': 'kids', 'кухня': 'kitchen', 'кухни': 'kitchen', 'ванная': 'bathroom', 'ванной': 'bathroom', 'санузел': 'toilet', 'туалет': 'toilet', 'совмещенный': 'combined', 'совмещённый': 'combined', 'прихожая': 'hallway', 'прихожей': 'hallway', 'коридор': 'hallway', 'балкон': 'balcony', 'лоджия': 'balcony' };
+      const map = {'спальня': 'bedroom', 'спальни': 'bedroom', 'гостиная': 'living', 'гостиной': 'living', 'детская': 'kids', 'детской': 'kids', 'кухня': 'kitchen', 'кухни': 'kitchen', 'ванная': 'bathroom', 'ванной': 'bathroom', 'санузел': 'toilet', 'туалет': 'toilet', 'совмещенный': 'combined', 'совмещённый': 'combined', 'прихожая': 'hallway', 'прихожей': 'hallway', 'коридор': 'hallway', 'балкон': 'balcony', 'лоджия': 'balcony'};
       const result = new Set();
       str.toLowerCase().split(/[,;]+/).forEach(part => {
         part = part.trim();
@@ -2179,16 +2344,12 @@
       const existingNames = new Set(CATALOG.map(x => x.name.toLowerCase().trim()));
       items.forEach(it => {
         const key = it.name.toLowerCase().trim();
-        if (existingNames.has(key)) { skipped++; return; }
-        CATALOG.push(it);
-        existingNames.add(key);
-        added++;
+        if (existingNames.has(key)) {skipped++; return;}
+        CATALOG.push(it); existingNames.add(key); added++;
       });
-      db.catalog = CATALOG;
-      save();
-      window._pendingImport = null;
-      closeCatalogModals();
-      toast(`✅ Добавлено: ${added}${skipped ? ', пропущено дубликатов: ' + skipped : ''}`);
+      db.catalog = CATALOG; save();
+      window._pendingImport = null; closeCatalogModals();
+      toast(`✅ Добавлено: ${added}${skipped ? ', пропущено: ' + skipped : ''}`);
       render();
     }
 
@@ -2204,7 +2365,7 @@
         ];
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(data);
-        ws['!cols'] = [{ wch: 38 }, { wch: 10 }, { wch: 16 }, { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 30 }];
+        ws['!cols'] = [{wch: 38}, {wch: 10}, {wch: 16}, {wch: 10}, {wch: 10}, {wch: 12}, {wch: 30}];
         XLSX.utils.book_append_sheet(wb, ws, 'Расценки');
         XLSX.writeFile(wb, 'buildmate-pro-template.xlsx');
         toast('📥 Шаблон скачан');
@@ -2217,45 +2378,31 @@
 
     function startVoiceRecognition(callback, hint) {
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) {
-        alert('Голосовой ввод не поддерживается в этом браузере.\n\nПопробуйте Chrome на Android или настольный Chrome.');
-        return;
-      }
-      if (recognition) { try { recognition.abort(); } catch (e) { } }
+      if (!SR) {alert('Голосовой ввод не поддерживается в этом браузере.\n\nПопробуйте Chrome на Android или настольный Chrome.'); return;}
+      if (recognition) {try {recognition.abort();} catch (e) { } }
       voiceCallback = callback;
       recognition = new SR();
-      recognition.lang = 'ru-RU';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
+      recognition.lang = 'ru-RU'; recognition.interimResults = false; recognition.maxAlternatives = 1;
       showVoiceModal(true, hint);
       recognition.onresult = (event) => {
         const text = event.results[0][0].transcript || '';
         showVoiceModal(false);
-        const cb = voiceCallback;
-        voiceCallback = null;
+        const cb = voiceCallback; voiceCallback = null;
         if (text && cb) cb(text);
       };
       recognition.onerror = (e) => {
-        showVoiceModal(false);
-        voiceCallback = null;
-        if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
-          alert('Разрешите доступ к микрофону в настройках устройства.');
-        } else if (e.error === 'no-speech') {
-          toast('Речь не распознана, попробуйте ещё раз', '#64748b');
-        } else if (e.error === 'aborted') {
-          // отмена
-        } else {
-          alert('Ошибка распознавания: ' + e.error);
-        }
+        showVoiceModal(false); voiceCallback = null;
+        if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {alert('Разрешите доступ к микрофону.');}
+        else if (e.error === 'no-speech') {toast('Речь не распознана', '#64748b');}
+        else if (e.error === 'aborted') { }
+        else {alert('Ошибка распознавания: ' + e.error);}
       };
-      recognition.onend = () => { showVoiceModal(false); };
-      try { recognition.start(); }
-      catch (e) { showVoiceModal(false); voiceCallback = null; alert('Не удалось начать запись: ' + e.message); }
+      recognition.onend = () => {showVoiceModal(false);};
+      try {recognition.start();} catch (e) {showVoiceModal(false); voiceCallback = null; alert('Не удалось начать запись.');}
     }
-
     function showVoiceModal(active, hint) {
       const host = document.getElementById('voiceModalHost');
-      if (!active) { host.innerHTML = ''; return; }
+      if (!active) {host.innerHTML = ''; return;}
       host.innerHTML = `
     <div class="modal-overlay" style="background:rgba(0,0,0,.7)">
       <div class="modal" style="text-align:center;max-width:420px">
@@ -2266,174 +2413,105 @@
       </div>
     </div>`;
     }
-
-    function stopVoice() {
-      if (recognition) { try { recognition.abort(); } catch (e) { } }
-      voiceCallback = null;
-      showVoiceModal(false);
-    }
+    function stopVoice() {if (recognition) {try {recognition.abort();} catch (e) { } } voiceCallback = null; showVoiceModal(false);}
 
     function openVoiceAdd() {
-      startVoiceRecognition(text => {
-        const draft = parseVoiceText(text);
-        openCatalogEditWithDraft(draft, text);
-      }, 'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»');
+      startVoiceRecognition(text => {const draft = parseVoiceText(text); openCatalogEditWithDraft(draft, text);},
+        'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»');
     }
 
-    // ============ ПАРСЕРЫ ============
-    const NUM_WORDS = { один: 1, одна: 1, одно: 1, два: 2, две: 2, три: 3, четыре: 4, пять: 5, шесть: 6, семь: 7, восемь: 8, девять: 9, десять: 10 };
-    function parseNumOrWord(s) {
-      s = String(s).toLowerCase().trim().replace(/[.,]/, '.');
-      if (NUM_WORDS[s] !== undefined) return NUM_WORDS[s];
-      return parseFloat(s) || 0;
-    }
+    // ============ ПАРСЕРЫ ГОЛОСА ============
+    const NUM_WORDS = {один: 1, одна: 1, одно: 1, два: 2, две: 2, три: 3, четыре: 4, пять: 5, шесть: 6, семь: 7, восемь: 8, девять: 9, десять: 10};
+    function parseNumOrWord(s) {s = String(s).toLowerCase().trim().replace(/[.,]/, '.'); if (NUM_WORDS[s] !== undefined) return NUM_WORDS[s]; return parseFloat(s) || 0;}
 
     function getRoomKeywords(type) {
-      const map = {
-        bedroom: ['спальн'], living: ['гостин'], kids: ['детск'], kitchen: ['кухн'],
-        bathroom: ['ванн'], toilet: ['санузел', 'туалет'], combined: ['совмещ', 'комбинир'],
-        hallway: ['прихож', 'коридор'], balcony: ['балкон', 'лоджи']
-      };
+      const map = {bedroom: ['спальн'], living: ['гостин'], kids: ['детск'], kitchen: ['кухн'], bathroom: ['ванн'], toilet: ['санузел', 'туалет'], combined: ['совмещ', 'комбинир'], hallway: ['прихож', 'коридор'], balcony: ['балкон', 'лоджи']};
       return map[type] || [];
     }
-
     function detectRoomInText(text, o) {
       if (!o || !o.rooms) return null;
       const lower = text.toLowerCase();
-      for (const room of o.rooms) {
-        if (lower.includes(room.name.toLowerCase())) return room;
-      }
-      for (const room of o.rooms) {
-        const kws = getRoomKeywords(room.type);
-        for (const kw of kws) {
-          if (lower.includes(kw)) return room;
-        }
-      }
+      for (const room of o.rooms) {if (lower.includes(room.name.toLowerCase())) return room;}
+      for (const room of o.rooms) {const kws = getRoomKeywords(room.type); for (const kw of kws) {if (lower.includes(kw)) return room;} }
       return null;
     }
-
     function extractDimensions(text) {
-      const result = { length: 0, width: 0, height: 0 };
-      const dimPattern = /(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять)\s*(?:на|[xх\*×])\s*(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять)/i;
-      const m = text.match(dimPattern);
-      if (m) {
-        result.length = parseNumOrWord(m[1]);
-        result.width = parseNumOrWord(m[2]);
-      }
-      const heightMatch = text.match(/(?:высот[а-яё]*|потол[а-яё]*|потолк[а-яё]*)\s*(\d+(?:[.,]\d+)?)/i);
-      if (heightMatch) result.height = parseFloat(heightMatch[1].replace(',', '.'));
+      const result = {length: 0, width: 0, height: 0};
+      const m = text.match(/(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять)\s*(?:на|[xх\*×])\s*(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять)/i);
+      if (m) {result.length = parseNumOrWord(m[1]); result.width = parseNumOrWord(m[2]);}
+      const h = text.match(/(?:высот[а-яё]*|потол[а-яё]*|потолк[а-яё]*)\s*(\d+(?:[.,]\d+)?)/i);
+      if (h) result.height = parseFloat(h[1].replace(',', '.'));
       return result;
     }
-
     function parseVoiceObject(text) {
       const lower = text.toLowerCase();
       let kind = 'Новостройка';
       if (/\bдом\b|коттедж|частн|таунхаус/i.test(lower)) kind = 'Дом';
       else if (/вторичн/i.test(lower)) kind = 'Квартира вторичный фонд';
       else if (/квартир|новострой/i.test(lower)) kind = 'Новостройка';
-
       let name = '';
       const nameMatch = text.match(/(?:квартир[аыуе]?|дом[а-яё]*|объект[а-яё]*)(?:\s+(?:номер|№))?\s*[а-яёa-z0-9][а-яёa-z0-9\s-]*?(?=,|\s+спальн|\s+гостин|\s+кухн|\s+ванн|\s+санузел|\s+детск|\s+прихож|\s+балкон|\s+туалет|$)/i);
-      if (nameMatch) {
-        name = nameMatch[0].trim();
-        name = name.replace(/^квартиру/i, 'Квартира').replace(/^квартиры/i, 'Квартира').replace(/^квартира/i, 'Квартира');
-        name = name.replace(/^дом[а-яё]*/i, 'Дом');
-        name = name.replace(/^объект[а-яё]*/i, 'Объект');
-      }
-      if (!name || /^(квартира|дом|объект)$/i.test(name)) {
-        name = kind === 'Дом' ? 'Новый дом' : (kind === 'Квартира вторичный фонд' ? 'Квартира (вторичка)' : 'Новая квартира');
-      }
-
+      if (nameMatch) {name = nameMatch[0].trim().replace(/^квартиру/i, 'Квартира').replace(/^квартиры/i, 'Квартира').replace(/^дом[а-яё]*/i, 'Дом').replace(/^объект[а-яё]*/i, 'Объект');}
+      if (!name || /^(квартира|дом|объект)$/i.test(name)) {name = kind === 'Дом' ? 'Новый дом' : (kind === 'Квартира вторичный фонд' ? 'Квартира (вторичка)' : 'Новая квартира');}
       const roomPatterns = [
-        { re: /спальн[а-яё]*/gi, type: 'bedroom', baseName: 'Спальня' },
-        { re: /гостин[а-яё]*/gi, type: 'living', baseName: 'Гостиная' },
-        { re: /детск[а-яё]*/gi, type: 'kids', baseName: 'Детская' },
-        { re: /кухн[а-яё]*/gi, type: 'kitchen', baseName: 'Кухня' },
-        { re: /совмещ[её]нн[а-яё]*/gi, type: 'combined', baseName: 'Совмещённый санузел' },
-        { re: /ванн[а-яё]*/gi, type: 'bathroom', baseName: 'Ванная' },
-        { re: /санузел[а-яё]*|туалет[а-яё]*/gi, type: 'toilet', baseName: 'Санузел' },
-        { re: /прихож[а-яё]*|коридор[а-яё]*/gi, type: 'hallway', baseName: 'Прихожая' },
-        { re: /балкон[а-яё]*|лоджи[а-яё]*/gi, type: 'balcony', baseName: 'Балкон' }
+        {re: /спальн[а-яё]*/gi, type: 'bedroom', baseName: 'Спальня'},
+        {re: /гостин[а-яё]*/gi, type: 'living', baseName: 'Гостиная'},
+        {re: /детск[а-яё]*/gi, type: 'kids', baseName: 'Детская'},
+        {re: /кухн[а-яё]*/gi, type: 'kitchen', baseName: 'Кухня'},
+        {re: /совмещ[её]нн[а-яё]*/gi, type: 'combined', baseName: 'Совмещённый санузел'},
+        {re: /ванн[а-яё]*/gi, type: 'bathroom', baseName: 'Ванная'},
+        {re: /санузел[а-яё]*|туалет[а-яё]*/gi, type: 'toilet', baseName: 'Санузел'},
+        {re: /прихож[а-яё]*|коридор[а-яё]*/gi, type: 'hallway', baseName: 'Прихожая'},
+        {re: /балкон[а-яё]*|лоджи[а-яё]*/gi, type: 'balcony', baseName: 'Балкон'}
       ];
-
       const matches = [];
-      roomPatterns.forEach(p => {
-        const re = new RegExp(p.re.source, 'gi');
-        let m;
-        while ((m = re.exec(text)) !== null) {
-          const overlapping = matches.some(existing => existing.type === 'combined' && m.index >= existing.index && m.index < existing.index + existing.length);
-          if (overlapping) continue;
-          matches.push({ index: m.index, length: m[0].length, type: p.type, baseName: p.baseName });
-        }
-      });
+      roomPatterns.forEach(p => {const re = new RegExp(p.re.source, 'gi'); let m; while ((m = re.exec(text)) !== null) {if (matches.some(ex => ex.type === 'combined' && m.index >= ex.index && m.index < ex.index + ex.length)) continue; matches.push({index: m.index, length: m[0].length, type: p.type, baseName: p.baseName});} });
       matches.sort((a, b) => a.index - b.index);
-
-      const rooms = [];
-      const typeCount = {};
+      const rooms = []; const typeCount = {};
       matches.forEach((m, i) => {
-        const nextMatch = matches[i + 1];
-        const segmentEnd = nextMatch ? nextMatch.index : text.length;
-        const segment = text.slice(m.index + m.length, segmentEnd);
-        const dims = extractDimensions(segment);
+        const nextMatch = matches[i + 1]; const segmentEnd = nextMatch ? nextMatch.index : text.length;
+        const dims = extractDimensions(text.slice(m.index + m.length, segmentEnd));
         typeCount[m.type] = (typeCount[m.type] || 0) + 1;
         let roomName = m.baseName;
         if (typeCount[m.type] > 1) roomName += ' ' + typeCount[m.type];
         const isWet = m.type === 'bathroom' || m.type === 'toilet' || m.type === 'combined';
-        rooms.push({
-          id: uid(), type: m.type, name: roomName,
-          length: dims.length || 4, width: dims.width || 3, height: dims.height || 2.7,
-          doors: 1, doorW: 0.8, doorH: 2.0,
-          windows: isWet ? 0 : 1, windowArea: 1.8
-        });
+        rooms.push({id: uid(), type: m.type, name: roomName, length: dims.length || 4, width: dims.width || 3, height: dims.height || 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: isWet ? 0 : 1, windowArea: 1.8});
       });
-      return { name, kind, rooms };
+      return {name, kind, rooms};
     }
-
     function parseVoiceEstimateItem(text, o) {
       const room = detectRoomInText(text, o);
-      const roomId = room ? room.id : '';
-      const roomName = room ? room.name : '';
-
+      const roomId = room ? room.id : ''; const roomName = room ? room.name : '';
       let qty = 1, unit = 'м²';
-      const qtyPattern = /(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять|двадцать|тридцать|сорок|пятьдесят|сто)\s*(квадратн[а-яё]*\s*метр[а-яё]*|кв\.?\s*м|м2|м²|погонн[а-яё]*\s*метр[а-яё]*|пог\.?\s*м|м\.?п\.?|штук[а-яё]*|шт\.?|точек|точк[а-яё]*|комплект[а-яё]*|мешк[а-яё]*|ведр[а-яё]*|канистр[а-яё]*|пакет[а-яё]*|лист[а-яё]*|рулон[а-яё]*)/i;
-      const qtyMatch = text.match(qtyPattern);
-      if (qtyMatch) {
-        qty = parseNumOrWord(qtyMatch[1]) || 1;
-        const unitWord = qtyMatch[2].toLowerCase();
-        if (/квадратн|кв|м2|м²/.test(unitWord)) unit = 'м²';
-        else if (/погонн|пог|м\.?п/.test(unitWord)) unit = 'пог. м';
-        else if (/штук|шт/.test(unitWord)) unit = 'шт.';
-        else if (/точек|точк/.test(unitWord)) unit = 'точка';
-        else if (/комплект/.test(unitWord)) unit = 'комплект';
-        else if (/мешк/.test(unitWord)) unit = 'мешок';
-        else if (/ведр/.test(unitWord)) unit = 'ведро';
-        else if (/канистр/.test(unitWord)) unit = 'канистра';
-        else if (/пакет/.test(unitWord)) unit = 'пакет';
-        else if (/лист/.test(unitWord)) unit = 'лист';
-        else if (/рулон/.test(unitWord)) unit = 'рулон';
+      const qm = text.match(/(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять|двадцать|тридцать|сорок|пятьдесят|сто)\s*(квадратн[а-яё]*\s*метр[а-яё]*|кв\.?\s*м|м2|м²|погонн[а-яё]*\s*метр[а-яё]*|пог\.?\s*м|м\.?п\.?|штук[а-яё]*|шт\.?|точек|точк[а-яё]*|комплект[а-яё]*|мешк[а-яё]*|ведр[а-яё]*|канистр[а-яё]*|пакет[а-яё]*|лист[а-яё]*|рулон[а-яё]*)/i);
+      if (qm) {
+        qty = parseNumOrWord(qm[1]) || 1;
+        const uw = qm[2].toLowerCase();
+        if (/квадратн|кв|м2|м²/.test(uw)) unit = 'м²';
+        else if (/погонн|пог|м\.?п/.test(uw)) unit = 'пог. м';
+        else if (/штук|шт/.test(uw)) unit = 'шт.';
+        else if (/точек|точк/.test(uw)) unit = 'точка';
+        else if (/комплект/.test(uw)) unit = 'комплект';
+        else if (/мешк/.test(uw)) unit = 'мешок';
+        else if (/ведр/.test(uw)) unit = 'ведро';
+        else if (/канистр/.test(uw)) unit = 'канистра';
+        else if (/пакет/.test(uw)) unit = 'пакет';
+        else if (/лист/.test(uw)) unit = 'лист';
+        else if (/рулон/.test(uw)) unit = 'рулон';
       }
-
       let price = 0;
-      const pricePattern = /(?:по|за|цена\s+)\s*(\d+(?:[.,]\d+)?)|(\d+(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/i;
-      const priceMatch = text.match(pricePattern);
-      if (priceMatch) {
-        const numStr = priceMatch[1] || priceMatch[2];
-        price = parseFloat(String(numStr).replace(',', '.')) || 0;
-      }
-
+      const pm = text.match(/(?:по|за|цена\s+)\s*(\d+(?:[.,]\d+)?)|(\d+(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/i);
+      if (pm) {price = parseFloat(String(pm[1] || pm[2]).replace(',', '.')) || 0;}
       const workVerbs = /(?:укладк|монтаж|демонтаж|установк|разводк|покраск|поклейк|стяжк|затирк|замен[аы]|заливк|шлифовк|штроблени|утеплени|обшивк|отделк|настилк|облицовк|ремонт|подключени|перенос)/i;
       const materialNouns = /(?:смесь|клей|плитк[а-яё]*|кабель|труб[а-яё]+|обои|краск[а-яё]*|ламинат|подложк|гидроизоляц|утеплител|профил|плинтус|подрозетник|розетк|выключател|унитаз|смеситель|раковин|дверь)/i;
       const materialUnits = /^(?:мешок|ведро|канистра|пакет|лист|рулон)$/;
-
       let type = 'work';
       if (workVerbs.test(text)) type = 'work';
       else if (materialNouns.test(text)) type = 'material';
       else if (materialUnits.test(unit)) type = 'material';
-
       let name = text;
       name = name.replace(/(?:добавь|включи|добавить|запиши|внеси|положи)\s+/i, '');
-      name = name.replace(/\bв\s+[а-яё]+\s+/i, '');
-      name = name.replace(/\bво\s+[а-яё]+\s+/i, '');
+      name = name.replace(/\bв\s+[а-яё]+\s+/i, '').replace(/\bво\s+[а-яё]+\s+/i, '');
       const allRoomKws = ['спальн', 'гостин', 'детск', 'кухн', 'ванн', 'санузел', 'туалет', 'прихож', 'коридор', 'балкон', 'лоджи', 'совмещ'];
       allRoomKws.forEach(kw => {
         name = name.replace(new RegExp('\\b(?:в|во)\\s+' + kw + '[а-яё]*\\b', 'gi'), '');
@@ -2442,156 +2520,14 @@
       name = name.replace(/(?:по|за|цена\s+)\s*\d+(?:[.,]\d+)?\s*(?:₽|руб(?:лей|ля|ль)?)?/gi, '');
       name = name.replace(/\d+(?:[.,]\d+)?\s*(?:₽|руб(?:лей|ля|ль)?)/gi, '');
       name = name.replace(/\d+(?:[.,]\d+)?\s*(?:квадратн[а-яё]*\s*метр[а-яё]*|кв\.?\s*м|м2|м²|погонн[а-яё]*\s*метр[а-яё]*|пог\.?\s*м|штук[а-яё]*|шт\.?|точек|точк[а-яё]*|комплект[а-яё]*|мешк[а-яё]*|ведр[а-яё]*|канистр[а-яё]*|пакет[а-яё]*|лист[а-яё]*|рулон[а-яё]*)/gi, '');
-      name = name.replace(/\s+/g, ' ').trim();
-      name = name.replace(/^[,.\s]+|[,.\s]+$/g, '');
+      name = name.replace(/\s+/g, ' ').trim().replace(/^[,.\s]+|[,.\s]+$/g, '');
       name = name.charAt(0).toUpperCase() + name.slice(1);
-
-      return {
-        id: 'i_' + uid(), name: name || text, type, unit, price, qty,
-        roomId, roomName, group: 'Голосовой ввод', stage: 'Черновые', cost: price * 0.75
-      };
+      return {id: 'i_' + uid(), name: name || text, type, unit, price, qty, roomId, roomName, group: 'Голосовой ввод', stage: 'Черновые', cost: price * 0.75};
     }
-
-    function voiceObjectToWizard() {
-      startVoiceRecognition(text => {
-        const parsed = parseVoiceObject(text);
-        if (!parsed.rooms.length && !parsed.name) { toast('Не удалось распознать объект', '#dc2626'); return; }
-        if (!wizard) wizard = emptyWizard();
-        if (parsed.name && !wizard.name) wizard.name = parsed.name;
-        if (parsed.kind) wizard.kind = parsed.kind;
-        let added = 0;
-        parsed.rooms.forEach(pr => {
-          const sameType = wizard.rooms.filter(r => r.type === pr.type).length;
-          if (sameType > 0) pr.name = pr.name.replace(/\s+\d+$/, '') + ' ' + (sameType + 1);
-          if (!wizard.rooms.find(r => r.name === pr.name)) {
-            wizard.rooms.push(pr); added++;
-          }
-        });
-        navigate({ tab: 'wizard' });
-        if (added > 0) toast('🎤 Распознано помещений: ' + added);
-      }, 'Например: «Квартира 45, спальня 4 на 3, гостиная 5 на 4, кухня 3 на 3, санузел 2 на 1.5»');
-    }
-
-    function startVoiceRoomForCurrent() {
-      const o = obj();
-      if (!o) { alert('Сначала выберите объект'); return; }
-      startVoiceRecognition(text => {
-        const parsed = parseVoiceObject(text);
-        if (!parsed.rooms.length) { toast('Не удалось распознать помещения', '#dc2626'); return; }
-        let added = 0;
-        parsed.rooms.forEach(pr => {
-          const sameType = o.rooms.filter(r => r.type === pr.type).length;
-          if (sameType > 0) pr.name = pr.name.replace(/\s+\d+$/, '') + ' ' + (sameType + 1);
-          if (!o.rooms.find(r => r.name === pr.name)) { o.rooms.push(pr); added++; }
-        });
-        save(); render();
-        toast('✅ Добавлено помещений: ' + added);
-      }, 'Например: «Спальня 4 на 3, гостиная 5 на 4, кухня 3 на 3»');
-    }
-
-    function startVoiceEstimateItem() {
-      const o = obj();
-      if (!o) { alert('Сначала выберите объект'); return; }
-      if (!o.rooms || !o.rooms.length) {
-        alert('В объекте нет помещений. Сначала добавьте помещения на вкладке «Объекты».');
-        return;
-      }
-      const roomNames = o.rooms.map(r => r.name).join(', ');
-      startVoiceRecognition(text => {
-        const parsed = parseVoiceEstimateItem(text, o);
-        openEstimateItemVoicePreview(parsed, text);
-      }, 'Помещения: ' + roomNames + '. Например: «Добавь в спальню штукатурку стен 30 квадратных метров по 650 рублей»');
-    }
-
-    function openEstimateItemVoicePreview(draft, originalText) {
-      estimateItemVoiceState = { draft, originalText };
-      renderEstimateItemVoicePreview();
-    }
-
-    function renderEstimateItemVoicePreview() {
-      if (!estimateItemVoiceState) return;
-      const d = estimateItemVoiceState.draft;
-      const o = obj();
-      if (!o) { closeEstimateItemVoicePreview(); return; }
-      const host = document.getElementById('catalogModalHost');
-      host.innerHTML = `
-    <div class="modal-overlay" onclick="closeEstimateItemVoicePreview()">
-      <div class="modal" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="closeEstimateItemVoicePreview()" aria-label="Закрыть">×</button>
-        <h2>🎤 Позиция в смету (голос)</h2>
-        <p class="hint" style="margin-bottom:12px">Распознано: «${esc(estimateItemVoiceState.originalText)}»</p>
-        <div class="grid">
-          <div class="field" style="grid-column:1/-1">
-            <label>Наименование</label>
-            <input type="text" id="iveName" value="${esc(d.name)}">
-          </div>
-          <div class="field">
-            <label>Помещение</label>
-            <select id="iveRoom">
-              <option value="">— Общее —</option>
-              ${(o.rooms || []).map(r => `<option value="${r.id}" ${d.roomId === r.id ? 'selected' : ''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}
-            </select>
-          </div>
-          <div class="field">
-            <label>Тип</label>
-            <select id="iveType">
-              <option value="work" ${d.type === 'work' ? 'selected' : ''}>🔧 Работа</option>
-              <option value="material" ${d.type === 'material' ? 'selected' : ''}>📦 Материал</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Количество</label>
-            <input type="number" id="iveQty" value="${d.qty}" step="any" min="0">
-          </div>
-          <div class="field">
-            <label>Единица</label>
-            <input type="text" id="iveUnit" value="${esc(d.unit)}">
-          </div>
-          <div class="field">
-            <label>Цена за ед., ₽</label>
-            <input type="number" id="ivePrice" value="${d.price}" step="any" min="0">
-          </div>
-          <div class="field">
-            <label>Раздел</label>
-            <input type="text" id="iveGroup" value="${esc(d.group)}">
-          </div>
-        </div>
-        <div class="actions">
-          <button class="btn" onclick="commitEstimateItemVoice()">✅ Добавить в смету</button>
-          <button class="btn secondary" onclick="closeEstimateItemVoicePreview()">Отмена</button>
-        </div>
-      </div>
-    </div>`;
-    }
-
-    function commitEstimateItemVoice() {
-      if (!estimateItemVoiceState) return;
-      const o = obj(); if (!o) { closeCatalogModals(); return; }
-      const roomId = document.getElementById('iveRoom').value;
-      const room = roomId ? o.rooms.find(r => r.id === roomId) : null;
-      const price = num(document.getElementById('ivePrice').value);
-      const item = {
-        id: 'i_' + uid(),
-        name: document.getElementById('iveName').value.trim() || 'Новая позиция',
-        roomId: roomId || '', roomName: room ? room.name : '',
-        group: document.getElementById('iveGroup').value.trim() || 'Голосовой ввод',
-        stage: 'Черновые',
-        type: document.getElementById('iveType').value,
-        unit: document.getElementById('iveUnit').value.trim() || 'м²',
-        qty: num(document.getElementById('iveQty').value),
-        price: price, cost: price * 0.75
-      };
-      o.items.push(item);
-      save();
-      closeCatalogModals();
-      toast('✅ Позиция добавлена в смету');
-      render();
-    }
-
     function parseVoiceText(text) {
       let name = text, price = 0, unit = 'м²', type = 'work';
-      const priceMatch = text.match(/(\d[\d\s]*(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/i) || text.match(/за\s+(\d[\d\s]*(?:[.,]\d+)?)/i);
-      if (priceMatch) price = parseFloat(priceMatch[1].replace(/\s/g, '').replace(',', '.')) || 0;
+      const pm = text.match(/(\d[\d\s]*(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/i) || text.match(/за\s+(\d[\d\s]*(?:[.,]\d+)?)/i);
+      if (pm) price = parseFloat(pm[1].replace(/\s/g, '').replace(',', '.')) || 0;
       if (/квадратн|м2|м²|кв\s*метр/i.test(text)) unit = 'м²';
       else if (/погонн|пог\.?\s*метр|м\.п\./i.test(text)) unit = 'пог. м';
       else if (/штук|шт\b|штук[аи]/i.test(text)) unit = 'шт.';
@@ -2614,25 +2550,103 @@
       if (workVerbs.test(name)) type = 'work';
       else if (materialKeywords.test(text)) type = 'material';
       name = name.charAt(0).toUpperCase() + name.slice(1);
-      return { id: 'c_' + uid(), name: name || text, type, unit, price, group: 'Голосовой ввод', stage: 'Черновые', rooms: ROOM_TYPES.map(t => t.key) };
+      return {id: 'c_' + uid(), name: name || text, type, unit, price, group: 'Голосовой ввод', stage: 'Черновые', rooms: ROOM_TYPES.map(t => t.key)};
+    }
+    function voiceObjectToWizard() {
+      startVoiceRecognition(text => {
+        const parsed = parseVoiceObject(text);
+        if (!parsed.rooms.length && !parsed.name) {toast('Не удалось распознать объект', '#dc2626'); return;}
+        if (!wizard) wizard = emptyWizard();
+        if (parsed.name && !wizard.name) wizard.name = parsed.name;
+        if (parsed.kind) wizard.kind = parsed.kind;
+        let added = 0;
+        parsed.rooms.forEach(pr => {
+          const sameType = wizard.rooms.filter(r => r.type === pr.type).length;
+          if (sameType > 0) pr.name = pr.name.replace(/\s+\d+$/, '') + ' ' + (sameType + 1);
+          if (!wizard.rooms.find(r => r.name === pr.name)) {wizard.rooms.push(pr); added++;}
+        });
+        navigate({tab: 'wizard'});
+        if (added > 0) toast('🎤 Распознано помещений: ' + added);
+      }, 'Например: «Квартира 45, спальня 4 на 3, гостиная 5 на 4, кухня 3 на 3, санузел 2 на 1.5»');
+    }
+    function startVoiceRoomForCurrent() {
+      const o = obj(); if (!o) {alert('Сначала выберите объект'); return;}
+      startVoiceRecognition(text => {
+        const parsed = parseVoiceObject(text);
+        if (!parsed.rooms.length) {toast('Не удалось распознать помещения', '#dc2626'); return;}
+        let added = 0;
+        parsed.rooms.forEach(pr => {
+          const sameType = o.rooms.filter(r => r.type === pr.type).length;
+          if (sameType > 0) pr.name = pr.name.replace(/\s+\d+$/, '') + ' ' + (sameType + 1);
+          if (!o.rooms.find(r => r.name === pr.name)) {o.rooms.push(pr); added++;}
+        });
+        save(); render(); toast('✅ Добавлено помещений: ' + added);
+      }, 'Например: «Спальня 4 на 3, гостиная 5 на 4, кухня 3 на 3»');
+    }
+    function startVoiceEstimateItem() {
+      const o = obj(); if (!o) {alert('Сначала выберите объект'); return;}
+      if (!o.rooms || !o.rooms.length) {alert('В объекте нет помещений.'); return;}
+      const roomNames = o.rooms.map(r => r.name).join(', ');
+      startVoiceRecognition(text => {
+        const parsed = parseVoiceEstimateItem(text, o);
+        openEstimateItemVoicePreview(parsed, text);
+      }, 'Помещения: ' + roomNames + '. Например: «Добавь в спальню штукатурку стен 30 квадратных метров по 650 рублей»');
+    }
+    function openEstimateItemVoicePreview(draft, originalText) {
+      estimateItemVoiceState = {draft, originalText};
+      renderEstimateItemVoicePreview();
+    }
+    function renderEstimateItemVoicePreview() {
+      if (!estimateItemVoiceState) return;
+      const d = estimateItemVoiceState.draft; const o = obj();
+      if (!o) {closeEstimateItemVoicePreview(); return;}
+      const host = document.getElementById('catalogModalHost');
+      host.innerHTML = `
+    <div class="modal-overlay" onclick="closeEstimateItemVoicePreview()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeEstimateItemVoicePreview()" aria-label="Закрыть">×</button>
+        <h2>🎤 Позиция в смету (голос)</h2>
+        <p class="hint" style="margin-bottom:12px">Распознано: «${esc(estimateItemVoiceState.originalText)}»</p>
+        <div class="grid">
+          <div class="field" style="grid-column:1/-1"><label>Наименование</label><input type="text" id="iveName" value="${esc(d.name)}"></div>
+          <div class="field"><label>Помещение</label><select id="iveRoom"><option value="">— Общее —</option>${(o.rooms || []).map(r => `<option value="${r.id}" ${d.roomId === r.id ? 'selected' : ''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div>
+          <div class="field"><label>Тип</label><select id="iveType"><option value="work" ${d.type === 'work' ? 'selected' : ''}>🔧 Работа</option><option value="material" ${d.type === 'material' ? 'selected' : ''}>📦 Материал</option></select></div>
+          <div class="field"><label>Количество</label><input type="number" id="iveQty" value="${d.qty}" step="any" min="0"></div>
+          <div class="field"><label>Единица</label><input type="text" id="iveUnit" value="${esc(d.unit)}"></div>
+          <div class="field"><label>Цена за ед., ₽</label><input type="number" id="ivePrice" value="${d.price}" step="any" min="0"></div>
+          <div class="field"><label>Раздел</label><input type="text" id="iveGroup" value="${esc(d.group)}"></div>
+        </div>
+        <div class="actions"><button class="btn" onclick="commitEstimateItemVoice()">✅ Добавить в смету</button><button class="btn secondary" onclick="closeEstimateItemVoicePreview()">Отмена</button></div>
+      </div>
+    </div>`;
+    }
+    function commitEstimateItemVoice() {
+      if (!estimateItemVoiceState) return;
+      const o = obj(); if (!o) {closeCatalogModals(); return;}
+      const roomId = document.getElementById('iveRoom').value;
+      const room = roomId ? o.rooms.find(r => r.id === roomId) : null;
+      const price = num(document.getElementById('ivePrice').value);
+      o.items.push({
+        id: 'i_' + uid(),
+        name: document.getElementById('iveName').value.trim() || 'Новая позиция',
+        roomId: roomId || '', roomName: room ? room.name : '',
+        group: document.getElementById('iveGroup').value.trim() || 'Голосовой ввод',
+        stage: 'Черновые', type: document.getElementById('iveType').value,
+        unit: document.getElementById('iveUnit').value.trim() || 'м²',
+        qty: num(document.getElementById('iveQty').value),
+        price: price, cost: price * 0.75
+      });
+      save(); closeCatalogModals(); toast('✅ Позиция добавлена в смету'); render();
     }
 
     // ============ РАСЧЁТЫ ============
-    function calcWallArea(r) {
-      return Math.max(0, 2 * (num(r.length) + num(r.width)) * num(r.height)
-        - num(r.doors) * num(r.doorW) * num(r.doorH)
-        - num(r.windows) * num(r.windowArea));
-    }
+    function calcWallArea(r) {return Math.max(0, 2 * (num(r.length) + num(r.width)) * num(r.height) - num(r.doors) * num(r.doorW) * num(r.doorH) - num(r.windows) * num(r.windowArea));}
     function totals(o, items) {
       const list = items || o?.items || [];
       let work = 0, mat = 0, cost = 0;
-      for (const i of list) {
-        const s = num(i.qty) * num(i.price);
-        if (i.type === 'material') mat += s; else work += s;
-        cost += num(i.qty) * num(i.cost);
-      }
+      for (const i of list) {const s = num(i.qty) * num(i.price); if (i.type === 'material') mat += s; else work += s; cost += num(i.qty) * num(i.cost);}
       const subtotal = work + mat;
-      return { work, mat, subtotal, markup: subtotal * num(db.markup) / 100, total: subtotal * (1 + num(db.markup) / 100), cost, profit: subtotal * (1 + num(db.markup) / 100) - cost };
+      return {work, mat, subtotal, markup: subtotal * num(db.markup) / 100, total: subtotal * (1 + num(db.markup) / 100), cost, profit: subtotal * (1 + num(db.markup) / 100) - cost};
     }
     function getBaseQty(p, room) {
       const unit = (p.unit || '').toLowerCase(), name = (p.name || '').toLowerCase(), group = (p.group || '').toLowerCase();
@@ -2660,67 +2674,66 @@
           else if (unit === 'м') qty = Math.max(1, Math.ceil(baseQty * 0.5));
           else qty = Math.max(1, Math.ceil(baseQty));
         }
-        items.push({ id: uid(), name: p.name, roomName: room.name, roomId: room.id, group: p.group, stage: p.stage || 'Черновые', type: p.type, unit: p.unit, qty: +(+qty.toFixed(2)), price: p.price, cost: +(p.price * 0.75).toFixed(2) });
+        items.push({id: uid(), name: p.name, roomName: room.name, roomId: room.id, group: p.group, stage: p.stage || 'Черновые', type: p.type, unit: p.unit, qty: +(+qty.toFixed(2)), price: p.price, cost: +(p.price * 0.75).toFixed(2)});
       });
       return items;
     }
 
     // ============ МАСТЕР ============
-    function emptyWizard() { return { name: '', address: '', client: '', phone: '', kind: 'Новостройка', rooms: [] }; }
-    function makeObj() { wizard = emptyWizard(); navigate({ tab: 'wizard', editingItem: null }); }
+    function emptyWizard() {return {name: '', address: '', client: '', phone: '', kind: 'Новостройка', rooms: []};}
+    function makeObj() {wizard = emptyWizard(); navigate({tab: 'wizard', editingItem: null});}
     function quickStart(typeKey) {
       const rt = ROOM_TYPES.find(t => t.key === typeKey); if (!rt) return;
-      wizard = { name: rt.label + ' — новый объект', address: '', client: '', phone: '', kind: 'Новостройка', rooms: [{ id: uid(), type: typeKey, name: rt.label, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8 }] };
-      navigate({ tab: 'wizard', editingItem: null });
+      wizard = {name: rt.label + ' — новый объект', address: '', client: '', phone: '', kind: 'Новостройка', rooms: [{id: uid(), type: typeKey, name: rt.label, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8}]};
+      navigate({tab: 'wizard', editingItem: null});
     }
-    function getWizardRoomsOfType(typeKey) { return wizard.rooms.filter(r => r.type === typeKey); }
+    function getWizardRoomsOfType(typeKey) {return wizard.rooms.filter(r => r.type === typeKey);}
     function addRoomInstance(typeKey) {
       const rt = ROOM_TYPES.find(t => t.key === typeKey); const existing = getWizardRoomsOfType(typeKey); const n = existing.length + 1;
       const name = rt.max > 1 ? `${rt.label} ${n}` : rt.label;
-      wizard.rooms.push({ id: uid(), type: typeKey, name, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8 });
+      wizard.rooms.push({id: uid(), type: typeKey, name, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8});
     }
-    function toggleWizardRoom(typeKey) { const existing = getWizardRoomsOfType(typeKey); if (existing.length) wizard.rooms = wizard.rooms.filter(r => r.type !== typeKey); else addRoomInstance(typeKey); render(); }
+    function toggleWizardRoom(typeKey) {const ex = getWizardRoomsOfType(typeKey); if (ex.length) wizard.rooms = wizard.rooms.filter(r => r.type !== typeKey); else addRoomInstance(typeKey); render();}
     function setWizardCount(typeKey, count) {
       const rt = ROOM_TYPES.find(t => t.key === typeKey); count = Math.max(0, Math.min(num(count), rt.max || 4));
       const existing = getWizardRoomsOfType(typeKey); const current = existing.length;
       if (count === 0) wizard.rooms = wizard.rooms.filter(r => r.type !== typeKey);
-      else if (count < current) { const toRemove = existing.slice(count).map(r => r.id); wizard.rooms = wizard.rooms.filter(r => !toRemove.includes(r.id)); }
-      else if (count > current) { for (let i = current; i < count; i++) addRoomInstance(typeKey); }
+      else if (count < current) {const toRemove = existing.slice(count).map(r => r.id); wizard.rooms = wizard.rooms.filter(r => !toRemove.includes(r.id));}
+      else if (count > current) {for (let i = current; i < count; i++) addRoomInstance(typeKey);}
       const rooms = getWizardRoomsOfType(typeKey);
       if (rt.max > 1 && rooms.length > 1) rooms.forEach((r, i) => r.name = `${rt.label} ${i + 1}`); else if (rooms.length === 1) rooms[0].name = rt.label;
       render();
     }
-    function setWizardField(k, v) { if (wizard) wizard[k] = v; }
+    function setWizardField(k, v) {if (wizard) wizard[k] = v;}
     function setWizardRoom(id, key, value) {
       if (!wizard) return; const r = wizard.rooms.find(x => x.id === id); if (!r) return;
       r[key] = key === 'name' ? value : num(value);
       const areaEl = document.getElementById('area_' + id);
-      if (areaEl) { const wa = calcWallArea(r); const fa = num(r.length) * num(r.width); areaEl.textContent = `Стен: ${wa.toFixed(1)} м² · Пол: ${fa.toFixed(1)} м²`; }
+      if (areaEl) {const wa = calcWallArea(r); const fa = num(r.length) * num(r.width); areaEl.textContent = `Стен: ${wa.toFixed(1)} м² · Пол: ${fa.toFixed(1)} м²`;}
     }
     function confirmWizard() {
-      if (!wizard) return; if (wizard.rooms.length === 0) { alert('Отметьте хотя бы одну комнату'); return; }
+      if (!wizard) return; if (wizard.rooms.length === 0) {alert('Отметьте хотя бы одну комнату'); return;}
       const prefix = db.contractPrefix || 'BM';
       const o = {
         id: uid(), name: wizard.name.trim() || 'Новый объект', address: wizard.address || '', client: wizard.client || '', phone: wizard.phone || '',
         kind: wizard.kind || 'Новостройка', status: 'Расчёт', created: today(),
-        rooms: wizard.rooms.map(r => ({ ...r })), items: [], payments: [], expenses: [],
-        stages: [{ id: uid(), name: 'Демонтаж', start: today(), duration: 3 }, { id: uid(), name: 'Инженерия', start: today(), duration: 5 }, { id: uid(), name: 'Черновые', start: today(), duration: 10 }, { id: uid(), name: 'Чистовые', start: today(), duration: 14 }, { id: uid(), name: 'Сдача', start: today(), duration: 2 }],
+        rooms: wizard.rooms.map(r => ({...r})), items: [], payments: [], expenses: [],
+        stages: [{id: uid(), name: 'Демонтаж', start: today(), duration: 3}, {id: uid(), name: 'Инженерия', start: today(), duration: 5}, {id: uid(), name: 'Черновые', start: today(), duration: 10}, {id: uid(), name: 'Чистовые', start: today(), duration: 14}, {id: uid(), name: 'Сдача', start: today(), duration: 2}],
         procurement: [], photos: [], notes: '', contractNo: prefix + '-' + (db.objects.length + 1), contractDate: today(),
         contractTerms: 'Оплата по этапам согласно согласованной смете.'
       };
-      o.rooms.forEach(room => { buildRoomItems(room).forEach(it => o.items.push(it)); });
+      o.rooms.forEach(room => {buildRoomItems(room).forEach(it => o.items.push(it));});
       db.objects.unshift(o); selected = o.id; wizard = null; estimateRoomFilter = []; save();
-      try { history.replaceState({ tab: 'objects', editingItem: null }, '', location.href); } catch (e) { }
-      navigate({ tab: 'estimate', editingItem: null });
+      try {history.replaceState({tab: 'objects', editingItem: null}, '', location.href);} catch (e) { }
+      navigate({tab: 'estimate', editingItem: null});
       toast('🎉 Объект создан: ' + o.items.length + ' позиций');
     }
-    function cancelWizard() { wizard = null; goBack(); }
-
+    function cancelWizard() {wizard = null; goBack();}
     function setObjRoom(roomId, key, value) {
       const o = obj(); if (!o) return; const r = o.rooms.find(x => x.id === roomId); if (!r) return;
       r[key] = key === 'name' ? value : num(value); saveDebounced();
       const areaEl = document.getElementById('objarea_' + roomId);
-      if (areaEl) { const wa = calcWallArea(r); const fa = num(r.length) * num(r.width); areaEl.textContent = `Стен: ${wa.toFixed(1)} м² · Пол: ${fa.toFixed(1)} м²`; }
+      if (areaEl) {const wa = calcWallArea(r); const fa = num(r.length) * num(r.width); areaEl.textContent = `Стен: ${wa.toFixed(1)} м² · Пол: ${fa.toFixed(1)} м²`;}
     }
     function delObjRoom(roomId) {
       const o = obj(); if (!o) return; if (!confirm('Удалить помещение и связанные позиции сметы?')) return;
@@ -2728,70 +2741,49 @@
       estimateRoomFilter = estimateRoomFilter.filter(id => id !== roomId); save(); render(); toast('🗑 Помещение удалено', '#dc2626');
     }
     function addObjRoom() {
-      const o = obj(); if (!o) { alert('Сначала создайте объект'); return; }
+      const o = obj(); if (!o) {alert('Сначала создайте объект'); return;}
       const list = ROOM_TYPES.map((t, i) => `${i + 1}. ${t.emoji} ${t.label}`).join('\n');
       const idx = prompt(`Добавление помещения в объект:\n«${o.name}» (${kindLabel(o.kind)})\n\nВыберите тип:\n${list}`);
       if (!idx) return; const rt = ROOM_TYPES[Number(idx) - 1]; if (!rt) return;
       const existing = o.rooms.filter(r => r.type === rt.key); const n = existing.length + 1;
       const name = rt.max > 1 && existing.length ? `${rt.label} ${n}` : rt.label;
-      o.rooms.push({ id: uid(), type: rt.key, name, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8 });
+      o.rooms.push({id: uid(), type: rt.key, name, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8});
       save(); render(); toast(`✅ Помещение «${name}» добавлено`);
     }
     function regenerateEstimate() {
-      const o = obj(); if (!o) return; if (!o.rooms || !o.rooms.length) { alert('Добавьте помещения'); return; }
+      const o = obj(); if (!o) return; if (!o.rooms || !o.rooms.length) {alert('Добавьте помещения'); return;}
       if (!confirm(`Пересоздать смету по помещениям? Текущие ${o.items.length} позиций будут заменены.`)) return;
       o.items = []; o.rooms.forEach(room => buildRoomItems(room).forEach(it => o.items.push(it)));
       save(); render(); toast(`🔄 Смета пересоздана: ${o.items.length} позиций`);
     }
-
-    function deleteObj(id) { if (confirm('Удалить объект и все его данные?')) { db.objects = db.objects.filter(x => x.id !== id); if (selected === id) selected = db.objects[0]?.id || null; estimateRoomFilter = []; save(); render(); toast('🗑 Объект удалён', '#dc2626'); } }
-    function selectObj(id) { selected = id; estimateRoomFilter = []; navigate({ tab: 'objects', editingItem: null }); }
-    function setObj(k, v) { const o = obj(); if (o) { o[k] = v; saveDebounced(); } }
-
-    function changeEstimateObject(id) { if (!id) return; selected = id; estimateRoomFilter = []; save(); render(); }
-    function toggleEstimateRoom(roomId) { if (estimateRoomFilter.includes(roomId)) estimateRoomFilter = estimateRoomFilter.filter(x => x !== roomId); else estimateRoomFilter.push(roomId); render(); }
-    function selectAllEstimateRooms() { const o = obj(); if (!o) return; estimateRoomFilter = (o.rooms || []).map(r => r.id); render(); }
-    function clearEstimateRooms() { estimateRoomFilter = []; render(); }
-    function getEstimateItems(o) { if (!o) return []; if (!estimateRoomFilter.length) return o.items; return o.items.filter(i => i.roomId && estimateRoomFilter.includes(i.roomId)); }
-
-    function addItem(p) {
-      const o = obj(); if (!o) { alert('Сначала добавьте объект'); return; }
-      o.items.push({ id: uid(), name: p?.name || 'Новая позиция', roomName: p?.roomName || '', roomId: p?.roomId || '', group: p?.group || 'Прочее', stage: p?.stage || 'Черновые', type: p?.type || 'work', unit: p?.unit || 'м²', qty: 1, price: p?.price || 0, cost: p?.price || 0 });
-      save(); navigate({ tab: 'estimate', editingItem: null });
-    }
-    function setItem(id, k, v) { const i = obj()?.items.find(x => x.id === id); if (i) { i[k] = ['name', 'unit', 'group', 'type', 'stage', 'roomName', 'roomId'].includes(k) ? v : num(v); saveDebounced(); } }
-    function editItem(id) {
-      navigate({ tab: 'estimate', editingItem: id });
-      setTimeout(() => { const el = document.getElementById('editCard'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('highlight'); setTimeout(() => el.classList.remove('highlight'), 1500); } }, 80);
-    }
-    function delItem(id) { obj().items = obj().items.filter(x => x.id !== id); save(); if (editingItem === id) { editingItem = null; history.back(); } else render(); }
-
-    function saveVersion() { const o = obj(); if (!o) return; db.versions[o.id] = db.versions[o.id] || []; db.versions[o.id].push({ ts: new Date().toISOString(), items: JSON.parse(JSON.stringify(o.items)), total: totals(o).total }); save(); toast('💾 Версия сохранена'); }
-
-    function addProcurement() { const o = obj(); if (!o) return; const name = prompt('Материал'); if (!name) return; const qty = num(prompt('Количество', '1')); const price = num(prompt('Цена', '0')); const unit = prompt('Единица', 'шт.') || 'шт.'; o.procurement.push({ id: uid(), name, qty, price, unit, date: today() }); save(); render(); }
-    function delProcurement(id) { obj().procurement = obj().procurement.filter(x => x.id !== id); save(); render(); }
-
+    function deleteObj(id) {if (confirm('Удалить объект и все его данные?')) {db.objects = db.objects.filter(x => x.id !== id); if (selected === id) selected = db.objects[0]?.id || null; estimateRoomFilter = []; save(); render(); toast('🗑 Объект удалён', '#dc2626');} }
+    function selectObj(id) {selected = id; estimateRoomFilter = []; navigate({tab: 'objects', editingItem: null});}
+    function setObj(k, v) {const o = obj(); if (o) {o[k] = v; saveDebounced();} }
+    function changeEstimateObject(id) {if (!id) return; selected = id; estimateRoomFilter = []; save(); render();}
+    function toggleEstimateRoom(roomId) {if (estimateRoomFilter.includes(roomId)) estimateRoomFilter = estimateRoomFilter.filter(x => x !== roomId); else estimateRoomFilter.push(roomId); render();}
+    function selectAllEstimateRooms() {const o = obj(); if (!o) return; estimateRoomFilter = (o.rooms || []).map(r => r.id); render();}
+    function clearEstimateRooms() {estimateRoomFilter = []; render();}
+    function getEstimateItems(o) {if (!o) return []; if (!estimateRoomFilter.length) return o.items; return o.items.filter(i => i.roomId && estimateRoomFilter.includes(i.roomId));}
+    function setItem(id, k, v) {const i = obj()?.items.find(x => x.id === id); if (i) {i[k] = ['name', 'unit', 'group', 'type', 'stage', 'roomName', 'roomId'].includes(k) ? v : num(v); saveDebounced();} }
+    function editItem(id) {navigate({tab: 'estimate', editingItem: id}); setTimeout(() => {const el = document.getElementById('editCard'); if (el) {el.scrollIntoView({behavior: 'smooth', block: 'start'}); el.classList.add('highlight'); setTimeout(() => el.classList.remove('highlight'), 1500);} }, 80);}
+    function delItem(id) {obj().items = obj().items.filter(x => x.id !== id); save(); if (editingItem === id) {editingItem = null; history.back();} else render();}
+    function saveVersion() {const o = obj(); if (!o) return; db.versions[o.id] = db.versions[o.id] || []; db.versions[o.id].push({ts: new Date().toISOString(), items: JSON.parse(JSON.stringify(o.items)), total: totals(o).total}); save(); toast('💾 Версия сохранена');}
+    function addProcurement() {const o = obj(); if (!o) return; const name = prompt('Материал'); if (!name) return; const qty = num(prompt('Количество', '1')); const price = num(prompt('Цена', '0')); const unit = prompt('Единица', 'шт.') || 'шт.'; o.procurement.push({id: uid(), name, qty, price, unit, date: today()}); save(); render();}
+    function delProcurement(id) {obj().procurement = obj().procurement.filter(x => x.id !== id); save(); render();}
     function addMoney() {
       const o = obj(); if (!o) return;
       const type = document.getElementById('moneyType').value; const amount = num(document.getElementById('moneyAmount').value);
       const date = document.getElementById('moneyDate').value; const note = document.getElementById('moneyNote').value;
-      if (!amount) { alert('Укажите сумму'); return; }
-      (type === 'payment' ? o.payments : o.expenses).unshift({ id: uid(), amount, date, note }); save(); render();
+      if (!amount) {alert('Укажите сумму'); return;}
+      (type === 'payment' ? o.payments : o.expenses).unshift({id: uid(), amount, date, note}); save(); render();
       toast(type === 'payment' ? '💰 Оплата добавлена' : '💸 Расход добавлен');
     }
-    function delMoney(id, type) { const o = obj(); const k = type === 'payment' ? 'payments' : 'expenses'; o[k] = o[k].filter(x => x.id !== id); save(); render(); }
-
-    function addCatalog() { openCatalogEdit(); }
-    function editCatalog(id) { openCatalogEdit(id); }
-    function deleteCatalog(id) {
-      if (!confirm('Удалить расценку из базы?')) return;
-      CATALOG = CATALOG.filter(x => x.id !== id);
-      db.catalog = CATALOG;
-      save(); render(); toast('🗑 Расценка удалена', '#dc2626');
-    }
-
+    function delMoney(id, type) {const o = obj(); const k = type === 'payment' ? 'payments' : 'expenses'; o[k] = o[k].filter(x => x.id !== id); save(); render();}
+    function addCatalog() {openCatalogEdit();}
+    function editCatalog(id) {openCatalogEdit(id);}
+    function deleteCatalog(id) {if (!confirm('Удалить расценку из базы?')) return; CATALOG = CATALOG.filter(x => x.id !== id); db.catalog = CATALOG; save(); render(); toast('🗑 Расценка удалена', '#dc2626');}
     function download(name, content, type = 'text/plain;charset=utf-8') {
-      const b = new Blob(['\ufeff', content], { type }); const u = URL.createObjectURL(b);
+      const b = new Blob(['\ufeff', content], {type}); const u = URL.createObjectURL(b);
       const a = document.createElement('a'); a.href = u; a.download = name; a.click(); URL.revokeObjectURL(u);
     }
     function exportCSV() {
@@ -2799,7 +2791,7 @@
       const rows = [
         ['Объект', o.name], ['Тип', o.kind || ''], ['Заказчик', o.client], [],
         ['Тип', 'Помещение', 'Этап', 'Раздел', 'Наименование', 'Кол-во', 'Ед.', 'Цена', 'Сумма', 'Себестоимость'],
-        ...items.map(i => { const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null; return [i.type === 'material' ? 'Материал' : 'Работа', room ? room.name : (i.roomName || 'Общее'), i.stage || '', i.group, i.name, i.qty, i.unit, i.price, num(i.qty) * num(i.price), i.cost]; }), [],
+        ...items.map(i => {const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null; return [i.type === 'material' ? 'Материал' : 'Работа', room ? room.name : (i.roomName || 'Общее'), i.stage || '', i.group, i.name, i.qty, i.unit, i.price, num(i.qty) * num(i.price), i.cost];}), [],
         ['Работы', t.work], ['Материалы', t.mat], ['Наценка', t.markup], ['Итого', t.total]
       ];
       download('buildmate-pro-' + o.id + '.csv', rows.map(r => r.map(v => '"' + String(v ?? '').replace(/"/g, '""') + '"').join(';')).join('\r\n'), 'text/csv;charset=utf-8'); toast('📊 CSV выгружен');
@@ -2812,7 +2804,7 @@
         'text/csv;charset=utf-8'); toast('📊 Прайс выгружен');
     }
     function exportBackup() {
-      if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
+      if (saveTimeout) {clearTimeout(saveTimeout); save(); saveTimeout = null;}
       db.catalog = CATALOG;
       download('buildmate-pro-backup-' + today() + '.json', JSON.stringify(db, null, 2), 'application/json;charset=utf-8');
       toast('💾 Резервная копия сохранена');
@@ -2821,57 +2813,54 @@
       if (!file) return; const r = new FileReader();
       r.onload = () => {
         try {
-          const x = JSON.parse(r.result);
-          if (!x.objects) throw Error();
+          const x = JSON.parse(r.result); if (!x.objects) throw Error();
           db = x;
-          ['inn', 'ogrn', 'legalAddress', 'director', 'phone', 'email', 'website', 'donateName', 'donatePhone', 'donateCard', 'donateBank', 'donateTelegram', 'donateMessage'].forEach(k => { if (db[k] === undefined) db[k] = ''; });
+          ['inn', 'ogrn', 'legalAddress', 'director', 'phone', 'email', 'website', 'donateTelegram', 'donateMessage', 'donateName', 'donateQrLink'].forEach(k => {if (db[k] === undefined) db[k] = '';});
           if (!db.contractPrefix) db.contractPrefix = 'BM';
-          if (db.company === 'Сметчик_22' || db.company === 'BuildMate Pro') { db.company = ''; }
+          if (db.company === 'Сметчик_22' || db.company === 'BuildMate Pro') {db.company = '';}
           if (!Array.isArray(db.catalog)) db.catalog = [];
           const existingIds = new Set(db.catalog.map(x => x.id));
-          DEFAULT_CATALOG.forEach(defItem => { if (!existingIds.has(defItem.id)) { db.catalog.push(JSON.parse(JSON.stringify(defItem))); } });
+          DEFAULT_CATALOG.forEach(defItem => {if (!existingIds.has(defItem.id)) {db.catalog.push(JSON.parse(JSON.stringify(defItem)));} });
           CATALOG = db.catalog;
           settingsDraft = null; estimateRoomFilter = []; closeCatalogModals();
           migrateDB(); selected = db.objects[0]?.id || null;
           save(); render(); toast('✅ Резервная копия загружена');
-        } catch (e) { alert('Ошибка чтения файла'); }
+        } catch (e) {alert('Ошибка чтения файла');}
       };
       r.readAsText(file);
     }
-    function resetData() { if (confirm('Удалить все данные? Сначала сделайте резервную копию.')) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+    function resetData() {if (confirm('Удалить все данные? Сначала сделайте резервную копию.')) {localStorage.removeItem(STORAGE_KEY); location.reload();} }
 
-    function tableHtml(rows, t) { return `<table><thead><tr><th>№</th><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>${rows}</tbody></table><div class="sum"><p>Работы: <b>${fmt(t.work)}</b></p><p>Материалы: <b>${fmt(t.mat)}</b></p><p>Наценка: <b>${fmt(t.markup)}</b></p><h3>Итого: ${fmt(t.total)}</h3></div>`; }
-    function companyRequisites() { return [db.company || '', db.inn ? `ИНН ${db.inn}` : '', db.ogrn ? `ОГРН ${db.ogrn}` : '', db.legalAddress || '', db.phone ? `тел. ${db.phone}` : '', db.email || '', db.website || ''].filter(Boolean).join(' · '); }
-    function companyNameDisplay() { return db.company && db.company.trim() ? esc(db.company) : '________________________'; }
+    function tableHtml(rows, t) {return `<table><thead><tr><th>№</th><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>${rows}</tbody></table><div class="sum"><p>Работы: <b>${fmt(t.work)}</b></p><p>Материалы: <b>${fmt(t.mat)}</b></p><p>Наценка: <b>${fmt(t.markup)}</b></p><h3>Итого: ${fmt(t.total)}</h3></div>`;}
+    function companyRequisites() {return [db.company || '', db.inn ? `ИНН ${db.inn}` : '', db.ogrn ? `ОГРН ${db.ogrn}` : '', db.legalAddress || '', db.phone ? `тел. ${db.phone}` : '', db.email || '', db.website || ''].filter(Boolean).join(' · ');}
+    function companyNameDisplay() {return db.company && db.company.trim() ? esc(db.company) : '________________________';}
     function printDoc(kind) {
       const o = obj(); if (!o) return; const t = totals(o);
-      const rows = o.items.map((i, n) => { const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null; const label = room ? room.name : (i.roomName || ''); const nm = label ? `${esc(i.name)} (${esc(label)})` : esc(i.name); return `<tr><td>${n + 1}</td><td>${nm}</td><td>${esc(i.unit)}</td><td>${num(i.qty)}</td><td>${fmt(i.price)}</td><td>${fmt(num(i.qty) * num(i.price))}</td></tr>`; }).join('');
+      const rows = o.items.map((i, n) => {const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null; const label = room ? room.name : (i.roomName || ''); const nm = label ? `${esc(i.name)} (${esc(label)})` : esc(i.name); return `<tr><td>${n + 1}</td><td>${nm}</td><td>${esc(i.unit)}</td><td>${num(i.qty)}</td><td>${fmt(i.price)}</td><td>${fmt(num(i.qty) * num(i.price))}</td></tr>`;}).join('');
       let title = kind === 'contract' ? 'Договор оказания услуг' : kind === 'act' ? 'Акт выполненных работ' : kind === 'invoice' ? 'Счёт на оплату' : 'Смета на ремонт';
-      const reqs = companyRequisites(); const city = db.region || 'Новосибирск';
-      const companyForDoc = companyNameDisplay();
+      const reqs = companyRequisites(); const city = db.region || 'Новосибирск'; const companyForDoc = companyNameDisplay();
       let body = '';
-      if (kind === 'contract') { body = `<h1>${title} № ${esc(o.contractNo)}</h1><p>г. ${esc(city)} «${esc(o.contractDate)}»</p><p>Исполнитель: ${reqs ? esc(reqs) : '________________________'}, Заказчик: ${esc(o.client || '________________________')} заключили настоящий договор.</p><h3>1. Предмет</h3><p>Исполнитель выполняет ремонтные работы на объекте: ${esc(o.name)} (${esc(o.kind || '—')}) по адресу: ${esc(o.address || '________________________')}.</p><h3>2. Стоимость</h3><p>Стоимость по смете: <b>${fmt(t.total)}</b>. ${esc(o.contractTerms || '')}</p><h3>3. Приёмка</h3><p>Порядок и сроки согласовываются дополнительно.</p><h3>4. Подписи</h3><p>Исполнитель: ${companyForDoc} ${db.director ? `(${esc(db.director)})` : ''} ___________</p><p>Заказчик: ${esc(o.client || '________________')} ___________</p><h3>Приложение. Смета</h3>${tableHtml(rows, t)}`; }
-      else if (kind === 'act') { body = `<h1>${title}</h1><p>Объект: ${esc(o.name)} (${esc(o.kind || '—')}). Адрес: ${esc(o.address || '—')}</p><p>Исполнитель: ${reqs ? esc(reqs) : '________________________'}</p><p>Приняты работы на сумму <b>${fmt(t.total)}</b>.</p>${tableHtml(rows, t)}<p>Замечания: _______________</p><p>Исполнитель ${db.director ? `(${esc(db.director)})` : ''} __________ Заказчик __________</p>`; }
-      else if (kind === 'invoice') { body = `<h1>${title} № ${esc(o.contractNo)} от ${esc(o.contractDate)}</h1><p><b>Исполнитель:</b> ${reqs ? esc(reqs) : '________________________'}<br><b>Заказчик:</b> ${esc(o.client || '—')}</p>${tableHtml(rows, t)}<p>К оплате: <b>${fmt(t.total)}</b></p><p>Руководитель ${db.director ? `(${esc(db.director)})` : ''} ___________</p>`; }
-      else { body = `<h1>${title}</h1><p><b>Компания:</b> ${reqs ? esc(reqs) : '________________________'} · <b>Объект:</b> ${esc(o.name)} (${esc(o.kind || '—')}) · <b>Адрес:</b> ${esc(o.address || '—')}</p><p><b>Заказчик:</b> ${esc(o.client || '—')} · <b>Дата:</b> ${today()}</p>${tableHtml(rows, t)}`; }
-      const w = window.open('', '_blank'); if (!w) { alert('Разрешите открытие окна'); return; }
+      if (kind === 'contract') {body = `<h1>${title} № ${esc(o.contractNo)}</h1><p>г. ${esc(city)} «${esc(o.contractDate)}»</p><p>Исполнитель: ${reqs ? esc(reqs) : '________________________'}, Заказчик: ${esc(o.client || '________________________')} заключили настоящий договор.</p><h3>1. Предмет</h3><p>Исполнитель выполняет ремонтные работы на объекте: ${esc(o.name)} (${esc(o.kind || '—')}) по адресу: ${esc(o.address || '________________________')}.</p><h3>2. Стоимость</h3><p>Стоимость по смете: <b>${fmt(t.total)}</b>. ${esc(o.contractTerms || '')}</p><h3>3. Приёмка</h3><p>Порядок и сроки согласовываются дополнительно.</p><h3>4. Подписи</h3><p>Исполнитель: ${companyForDoc} ${db.director ? `(${esc(db.director)})` : ''} ___________</p><p>Заказчик: ${esc(o.client || '________________')} ___________</p><h3>Приложение. Смета</h3>${tableHtml(rows, t)}`;}
+      else if (kind === 'act') {body = `<h1>${title}</h1><p>Объект: ${esc(o.name)} (${esc(o.kind || '—')}). Адрес: ${esc(o.address || '—')}</p><p>Исполнитель: ${reqs ? esc(reqs) : '________________________'}</p><p>Приняты работы на сумму <b>${fmt(t.total)}</b>.</p>${tableHtml(rows, t)}<p>Замечания: _______________</p><p>Исполнитель ${db.director ? `(${esc(db.director)})` : ''} __________ Заказчик __________</p>`;}
+      else if (kind === 'invoice') {body = `<h1>${title} № ${esc(o.contractNo)} от ${esc(o.contractDate)}</h1><p><b>Исполнитель:</b> ${reqs ? esc(reqs) : '________________________'}<br><b>Заказчик:</b> ${esc(o.client || '—')}</p>${tableHtml(rows, t)}<p>К оплате: <b>${fmt(t.total)}</b></p><p>Руководитель ${db.director ? `(${esc(db.director)})` : ''} ___________</p>`;}
+      else {body = `<h1>${title}</h1><p><b>Компания:</b> ${reqs ? esc(reqs) : '________________________'} · <b>Объект:</b> ${esc(o.name)} (${esc(o.kind || '—')}) · <b>Адрес:</b> ${esc(o.address || '—')}</p><p><b>Заказчик:</b> ${esc(o.client || '—')} · <b>Дата:</b> ${today()}</p>${tableHtml(rows, t)}`;}
+      const w = window.open('', '_blank'); if (!w) {alert('Разрешите открытие окна'); return;}
       w.document.write(`<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>${title}</title><style>body{font:14px Arial,'Segoe UI',sans-serif;color:#111;margin:28px;line-height:1.5;overflow-wrap:break-word}h1{text-align:center;font-size:20px}h3{margin-top:22px}table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px}td,th{border:1px solid #aaa;padding:8px;text-align:left}th{background:#eee}.sum{margin-left:auto;width:300px}p{line-height:1.55}@media print{body{margin:15mm}}</style></head><body>${body}<p style="margin-top:35px;font-size:11px;color:#555">Сформировано в BuildMate Pro.</p><script>window.onload=()=>window.print()<\/script></body></html>`);
       w.document.close();
     }
 
     // ============ ХЕЛПЕРЫ ============
-    function card(title, body, extra = '') { return `<section class="card">${title ? `<h2>${title}</h2>` : ''}${body}${extra}</section>`; }
-    function empty(s) { return `<div class="empty">${s}</div>`; }
-    function input(label, value, attr, fn, step = 'any') { const handler = String(fn || 'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input ${attr || ''} value="${esc(value ?? '')}" step="${step}" oninput="${call}"></div>`; }
-    function inputText(label, value, fn, attr = '') { const handler = String(fn || 'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input type="text" ${attr} value="${esc(value ?? '')}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="${call}"></div>`; }
+    function card(title, body, extra = '') {return `<section class="card">${title ? `<h2>${title}</h2>` : ''}${body}${extra}</section>`;}
+    function empty(s) {return `<div class="empty">${s}</div>`;}
+    function input(label, value, attr, fn, step = 'any') {const handler = String(fn || 'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input ${attr || ''} value="${esc(value ?? '')}" step="${step}" oninput="${call}"></div>`;}
+    function inputText(label, value, fn, attr = '') {const handler = String(fn || 'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input type="text" ${attr} value="${esc(value ?? '')}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="${call}"></div>`;}
     function noop() { }
-    function getRoomLabel(i) { const o = obj(); const room = i.roomId ? (o?.rooms || []).find(r => r.id === i.roomId) : null; if (room) return roomEmoji(room) + ' ' + room.name; return i.roomName || (i.roomId ? 'Удалено' : 'Общее'); }
-
+    function getRoomLabel(i) {const o = obj(); const room = i.roomId ? (o?.rooms || []).find(r => r.id === i.roomId) : null; if (room) return roomEmoji(room) + ' ' + room.name; return i.roomName || (i.roomId ? 'Удалено' : 'Общее');}
     function itemRow(i) {
       const roomLabel = getRoomLabel(i);
       return `<div class="listitem"><div class="itemhead"><div class="grow"><strong>${esc(i.name)} <span style="color:var(--muted);font-weight:400">(${esc(roomLabel)})</span></strong><div class="itemmeta">${i.type === 'material' ? '📦 Материал' : '🔧 Работа'} · ${esc(i.group)} · ${num(i.qty)} ${esc(i.unit)} × ${fmt(i.price)}</div></div><div style="text-align:right"><div class="price">${fmt(num(i.qty) * num(i.price))}</div><div class="actions" style="justify-content:flex-end;margin-top:5px"><button class="btn small secondary" onclick="editItem('${i.id}')">✏️ Изменить</button><button class="btn small danger" onclick="delItem('${i.id}')">×</button></div></div></div></div>`;
     }
-    function moneyRow(p, type) { return `<div class="listitem"><div class="itemhead"><div class="grow"><strong>${esc(p.note || (type === 'payment' ? 'Оплата' : 'Расход'))}</strong><div class="itemmeta">${esc(p.date || '')}</div></div><div style="display:flex;align-items:center;gap:8px"><b>${fmt(p.amount)}</b><button class="btn small danger" onclick="delMoney('${p.id}','${type}')">×</button></div></div></div>`; }
+    function moneyRow(p, type) {return `<div class="listitem"><div class="itemhead"><div class="grow"><strong>${esc(p.note || (type === 'payment' ? 'Оплата' : 'Расход'))}</strong><div class="itemmeta">${esc(p.date || '')}</div></div><div style="display:flex;align-items:center;gap:8px"><b>${fmt(p.amount)}</b><button class="btn small danger" onclick="delMoney('${p.id}','${type}')">×</button></div></div></div>`;}
     function objRoomEditor(r) {
       return `<div class="listitem" style="border-top:1px solid var(--line);padding-top:16px"><div class="itemhead"><div class="grow"><strong>${roomEmoji(r)} ${esc(r.name)}</strong><div class="itemmeta" id="objarea_${r.id}">Стен: ${calcWallArea(r).toFixed(1)} м² · Пол: ${(num(r.length) * num(r.width)).toFixed(1)} м²</div></div></div><div class="grid cols3" style="margin-top:8px">${inputText('Название', r.name, `v=>setObjRoom('${r.id}','name',v)`)}<div class="field"><label>Длина, м</label><input type="number" step="0.1" value="${r.length}" oninput="setObjRoom('${r.id}','length',this.value)"></div><div class="field"><label>Ширина, м</label><input type="number" step="0.1" value="${r.width}" oninput="setObjRoom('${r.id}','width',this.value)"></div><div class="field"><label>Высота, м</label><input type="number" step="0.1" value="${r.height}" oninput="setObjRoom('${r.id}','height',this.value)"></div><div class="field"><label>Дверей</label><input type="number" value="${r.doors}" oninput="setObjRoom('${r.id}','doors',this.value)"></div><div class="field"><label>Дверь Ш, м</label><input type="number" step="0.1" value="${r.doorW}" oninput="setObjRoom('${r.id}','doorW',this.value)"></div><div class="field"><label>Дверь В, м</label><input type="number" step="0.1" value="${r.doorH}" oninput="setObjRoom('${r.id}','doorH',this.value)"></div><div class="field"><label>Окон</label><input type="number" value="${r.windows}" oninput="setObjRoom('${r.id}','windows',this.value)"></div><div class="field"><label>Окно, м²</label><input type="number" step="0.1" value="${r.windowArea}" oninput="setObjRoom('${r.id}','windowArea',this.value)"></div></div><div class="actions"><button class="btn small danger" onclick="delObjRoom('${r.id}')">🗑 Удалить помещение</button></div></div>`;
     }
@@ -2910,17 +2899,14 @@
         <button class="btn secondary" onclick="quickStart('hallway')">🚪 Смета прихожей</button>
         <button class="btn secondary" onclick="quickStart('balcony')">🌇 Смета балкона</button>
       </div>
-    `) + card('❤️ Поддержать автора', `
-      <p class="hint">Если приложение помогает вам в работе — можете отблагодарить автора переводом по СБП.</p>
-      <button class="btn pink" style="width:100%;margin-top:8px" onclick="openDonate()">❤️ Поддержать проект</button>
-    `) + card('📌 Последние объекты', db.objects.slice(0, 4).map(x => {
+    `) + renderSupportHero() + card('📌 Последние объекты', db.objects.slice(0, 4).map(x => {
           const xt = totals(x);
           return `<div class="listitem"><div class="object"><div class="grow"><h3>${esc(x.name)}</h3><div class="muted">${esc(x.kind || '—')} · ${esc(x.client || '—')} · ${esc(x.status)}</div><div class="muted" style="margin-top:4px">Работы: <b>${fmt(xt.work)}</b> · Материалы: <b>${fmt(xt.mat)}</b></div></div><div style="text-align:right"><div class="money">${fmt(xt.total)}</div><button class="btn small secondary" onclick="selectObj('${x.id}')">Открыть</button></div></div></div>`;
         }).join('') || empty('🏗️ Объектов пока нет. Создайте первый через мастер выше.'));
       }
 
       if (tab === 'wizard') {
-        if (!wizard) { tab = 'objects'; return render(); }
+        if (!wizard) {tab = 'objects'; return render();}
         html = card('✨ Новый объект', `
       <p class="hint">Введите название, выберите тип, отметьте комнаты и укажите габариты. Смета заполнится автоматически.</p>
       <button class="btn secondary" style="width:100%;margin-bottom:14px" onclick="voiceObjectToWizard()">🎤 Заполнить голосом</button>
@@ -2934,9 +2920,9 @@
     `) + card('🚪 Помещения и габариты', ROOM_TYPES.map(rt => {
           const roomsOfType = wizard.rooms.filter(r => r.type === rt.key); const checked = roomsOfType.length ? 'checked' : '';
           let countSelector = '';
-          if (checked && rt.max > 1) { const opts = []; for (let i = 1; i <= rt.max; i++) opts.push(`<option value="${i}" ${i === roomsOfType.length ? 'selected' : ''}>${i}</option>`); countSelector = `<span class="count"><label style="font-size:13px;color:var(--muted)">Кол-во:</label><select onchange="setWizardCount('${rt.key}',this.value)">${opts.join('')}</select></span>`; }
+          if (checked && rt.max > 1) {const opts = []; for (let i = 1; i <= rt.max; i++) opts.push(`<option value="${i}" ${i === roomsOfType.length ? 'selected' : ''}>${i}</option>`); countSelector = `<span class="count"><label style="font-size:13px;color:var(--muted)">Кол-во:</label><select onchange="setWizardCount('${rt.key}',this.value)">${opts.join('')}</select></span>`;}
           let fields = '';
-          if (checked) { fields = roomsOfType.map(room => `<div class="room-fields"><div class="itemmeta" style="margin-bottom:8px;font-weight:700;color:var(--text)">${rt.emoji} ${esc(room.name)}</div><div class="grid cols3"><div class="field"><label>Длина, м</label><input type="number" step="0.1" value="${room.length}" oninput="setWizardRoom('${room.id}','length',this.value)"></div><div class="field"><label>Ширина, м</label><input type="number" step="0.1" value="${room.width}" oninput="setWizardRoom('${room.id}','width',this.value)"></div><div class="field"><label>Высота, м</label><input type="number" step="0.1" value="${room.height}" oninput="setWizardRoom('${room.id}','height',this.value)"></div><div class="field"><label>Дверей</label><input type="number" value="${room.doors}" oninput="setWizardRoom('${room.id}','doors',this.value)"></div><div class="field"><label>Дверь Ш, м</label><input type="number" step="0.1" value="${room.doorW}" oninput="setWizardRoom('${room.id}','doorW',this.value)"></div><div class="field"><label>Дверь В, м</label><input type="number" step="0.1" value="${room.doorH}" oninput="setWizardRoom('${room.id}','doorH',this.value)"></div><div class="field"><label>Окон</label><input type="number" value="${room.windows}" oninput="setWizardRoom('${room.id}','windows',this.value)"></div><div class="field"><label>Окно, м²</label><input type="number" step="0.1" value="${room.windowArea}" oninput="setWizardRoom('${room.id}','windowArea',this.value)"></div></div><div class="hint" id="area_${room.id}" style="margin-top:8px;">Стен: ${calcWallArea(room).toFixed(1)} м² · Пол: ${(num(room.length) * num(room.width)).toFixed(1)} м²</div></div>`).join(''); }
+          if (checked) {fields = roomsOfType.map(room => `<div class="room-fields"><div class="itemmeta" style="margin-bottom:8px;font-weight:700;color:var(--text)">${rt.emoji} ${esc(room.name)}</div><div class="grid cols3"><div class="field"><label>Длина, м</label><input type="number" step="0.1" value="${room.length}" oninput="setWizardRoom('${room.id}','length',this.value)"></div><div class="field"><label>Ширина, м</label><input type="number" step="0.1" value="${room.width}" oninput="setWizardRoom('${room.id}','width',this.value)"></div><div class="field"><label>Высота, м</label><input type="number" step="0.1" value="${room.height}" oninput="setWizardRoom('${room.id}','height',this.value)"></div><div class="field"><label>Дверей</label><input type="number" value="${room.doors}" oninput="setWizardRoom('${room.id}','doors',this.value)"></div><div class="field"><label>Дверь Ш, м</label><input type="number" step="0.1" value="${room.doorW}" oninput="setWizardRoom('${room.id}','doorW',this.value)"></div><div class="field"><label>Дверь В, м</label><input type="number" step="0.1" value="${room.doorH}" oninput="setWizardRoom('${room.id}','doorH',this.value)"></div><div class="field"><label>Окон</label><input type="number" value="${room.windows}" oninput="setWizardRoom('${room.id}','windows',this.value)"></div><div class="field"><label>Окно, м²</label><input type="number" step="0.1" value="${room.windowArea}" oninput="setWizardRoom('${room.id}','windowArea',this.value)"></div></div><div class="hint" id="area_${room.id}" style="margin-top:8px;">Стен: ${calcWallArea(room).toFixed(1)} м² · Пол: ${(num(room.length) * num(room.width)).toFixed(1)} м²</div></div>`).join('');}
           return `<label class="room-check"><input type="checkbox" ${checked} onchange="toggleWizardRoom('${rt.key}')"><strong>${rt.emoji} ${rt.label}</strong>${countSelector}</label>${fields}`;
         }).join('')) + `<div class="actions"><button class="btn" onclick="confirmWizard()">✅ Создать объект (${wizard.rooms.length} пом.)</button><button class="btn secondary" onclick="cancelWizard()">Отмена</button></div>`;
       }
@@ -2951,37 +2937,37 @@
       }
 
       if (tab === 'estimate') {
-        if (!o) { html = card('📋 Смета', empty('Создайте объект на вкладке «Объекты» или через «Быстрый старт» в «Обзоре».')); }
+        if (!o) {html = card('📋 Смета', empty('Создайте объект на вкладке «Объекты» или через «Быстрый старт» в «Обзоре».'));}
         else {
           estimateRoomFilter = estimateRoomFilter.filter(id => (o.rooms || []).some(r => r.id === id));
           const items = getEstimateItems(o); const t = totals(o, items);
           const hasRooms = (o.rooms || []).length > 0; const filterActive = estimateRoomFilter.length > 0;
           let selectorCard = `<section class="card"><h2>🎯 Выбор сметы</h2><div class="field"><label>Квартира / объект</label><select onchange="changeEstimateObject(this.value)">${db.objects.length ? db.objects.map(x => `<option value="${x.id}" ${x.id === o.id ? 'selected' : ''}>${esc(x.name)} (${esc(x.kind || '—')})${x.address ? ' — ' + esc(x.address) : ''}</option>`).join('') : '<option value="">— нет объектов —</option>'}</select></div>`;
-          if (hasRooms) { selectorCard += `<div class="field" style="margin-top:12px"><label>Комнаты (${filterActive ? 'выбрано ' + estimateRoomFilter.length + ' из ' + o.rooms.length : 'все'})</label><div class="room-chips">${o.rooms.map(r => `<label class="room-chip ${estimateRoomFilter.includes(r.id) ? 'on' : ''}"><input type="checkbox" ${estimateRoomFilter.includes(r.id) ? 'checked' : ''} onchange="toggleEstimateRoom('${r.id}')">${roomEmoji(r)} ${esc(r.name)}</label>`).join('')}</div><div class="actions" style="margin-top:10px"><button class="btn small secondary" onclick="selectAllEstimateRooms()">✓ Все комнаты</button><button class="btn small secondary" onclick="clearEstimateRooms()" ${filterActive ? '' : 'disabled'}>↩ Сбросить</button></div></div>`; }
-          else { selectorCard += `<p class="hint" style="margin-top:10px">У объекта пока нет помещений — смета отображается целиком.</p>`; }
+          if (hasRooms) {selectorCard += `<div class="field" style="margin-top:12px"><label>Комнаты (${filterActive ? 'выбрано ' + estimateRoomFilter.length + ' из ' + o.rooms.length : 'все'})</label><div class="room-chips">${o.rooms.map(r => `<label class="room-chip ${estimateRoomFilter.includes(r.id) ? 'on' : ''}"><input type="checkbox" ${estimateRoomFilter.includes(r.id) ? 'checked' : ''} onchange="toggleEstimateRoom('${r.id}')">${roomEmoji(r)} ${esc(r.name)}</label>`).join('')}</div><div class="actions" style="margin-top:10px"><button class="btn small secondary" onclick="selectAllEstimateRooms()">✓ Все комнаты</button><button class="btn small secondary" onclick="clearEstimateRooms()" ${filterActive ? '' : 'disabled'}>↩ Сбросить</button></div></div>`;}
+          else {selectorCard += `<p class="hint" style="margin-top:10px">У объекта пока нет помещений — смета отображается целиком.</p>`;}
           selectorCard += `</section>`;
-          const scopeLabel = !hasRooms ? 'Весь объект' : (filterActive ? 'Выбрано: ' + estimateRoomFilter.map(id => { const r = o.rooms.find(r => r.id === id); return r ? roomEmoji(r) + ' ' + r.name : ''; }).filter(Boolean).join(', ') : 'Все комнаты');
+          const scopeLabel = !hasRooms ? 'Весь объект' : (filterActive ? 'Выбрано: ' + estimateRoomFilter.map(id => {const r = o.rooms.find(r => r.id === id); return r ? roomEmoji(r) + ' ' + r.name : '';}).filter(Boolean).join(', ') : 'Все комнаты');
           let headCard = card('📋 Смета', `<div class="muted">${esc(o.name)} · ${esc(o.kind || '—')} · ${esc(scopeLabel)}</div><div class="stats" style="margin-top:12px"><div class="stat"><div class="n">🔧 ${fmt(t.work)}</div><div class="l">Работы</div></div><div class="stat"><div class="n">📦 ${fmt(t.mat)}</div><div class="l">Материалы</div></div><div class="stat"><div class="n">📈 ${fmt(t.markup)}</div><div class="l">Наценка ${num(db.markup)}%</div></div><div class="stat"><div class="n">💰 ${fmt(t.total)}</div><div class="l">Итого</div></div></div><div class="actions"><button class="btn" onclick="openAddEstimateItem()">➕ Позиция</button>${hasRooms ? `<button class="btn secondary" onclick="startVoiceEstimateItem()">🎤 Голосом</button>` : ''}<button class="btn secondary" onclick="regenerateEstimate()">🔄 Пересчитать</button><button class="btn secondary" onclick="saveVersion()">💾 Версия</button><button class="btn outline" onclick="exportCSV()">📊 CSV${filterActive ? ' (фильтр)' : ''}</button><button class="btn outline" onclick="printDoc('estimate')">📄 PDF</button></div>`);
           let segment = `<div class="segment"><button class="${estimateView === 'sections' ? 'active' : ''}" onclick="estimateView='sections';render()">📑 Разделы</button><button class="${estimateView === 'stages' ? 'active' : ''}" onclick="estimateView='stages';render()">📅 Этапы</button><button class="${estimateView === 'rooms' ? 'active' : ''}" onclick="estimateView='rooms';render()">🚪 Комнаты</button></div>`;
           let bodyHtml = '';
-          if (estimateView === 'sections') { const works = items.filter(i => i.type === 'work'); const mats = items.filter(i => i.type === 'material'); bodyHtml += card('📝 Позиции', ''); if (works.length) { bodyHtml += `<div class="sectionlabel">🔧 Работы · ${fmt(t.work)}</div>` + works.map(itemRow).join(''); } if (mats.length) { bodyHtml += `<div class="sectionlabel">📦 Материалы · ${fmt(t.mat)}</div>` + mats.map(itemRow).join(''); } if (!works.length && !mats.length) bodyHtml += empty(filterActive ? '🔍 По выбранным комнатам позиций нет' : '📝 Добавьте позиции кнопкой «Позиция» или нажмите «Пересчитать»'); }
-          else if (estimateView === 'stages') { const stages = STAGES_ALL.slice(0, 4); bodyHtml += card('📝 Позиции', ''); stages.forEach(stage => { const list = items.filter(i => (i.stage || 'Черновые') === stage); if (!list.length) return; const st = list.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">${stageLabel(stage)} · ${fmt(st)}</div>` + list.map(itemRow).join(''); }); if (!items.length) bodyHtml += empty('📝 Пока пусто'); }
-          else { bodyHtml += card('📝 Позиции', ''); (o.rooms || []).forEach(room => { if (filterActive && !estimateRoomFilter.includes(room.id)) return; const list = items.filter(i => i.roomId === room.id); if (!list.length) return; const rt = list.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">${roomEmoji(room)} ${esc(room.name)} · ${fmt(rt)}</div>` + list.map(itemRow).join(''); }); if (!filterActive) { const other = items.filter(i => !i.roomId); if (other.length) { const ot = other.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">📋 Прочее · ${fmt(ot)}</div>` + other.map(itemRow).join(''); } } if (!items.length) bodyHtml += empty('📝 Пока пусто'); }
+          if (estimateView === 'sections') {const works = items.filter(i => i.type === 'work'); const mats = items.filter(i => i.type === 'material'); bodyHtml += card('📝 Позиции', ''); if (works.length) {bodyHtml += `<div class="sectionlabel">🔧 Работы · ${fmt(t.work)}</div>` + works.map(itemRow).join('');} if (mats.length) {bodyHtml += `<div class="sectionlabel">📦 Материалы · ${fmt(t.mat)}</div>` + mats.map(itemRow).join('');} if (!works.length && !mats.length) bodyHtml += empty(filterActive ? '🔍 По выбранным комнатам позиций нет' : '📝 Добавьте позиции кнопкой «Позиция» или нажмите «Пересчитать»');}
+          else if (estimateView === 'stages') {const stages = STAGES_ALL.slice(0, 4); bodyHtml += card('📝 Позиции', ''); stages.forEach(stage => {const list = items.filter(i => (i.stage || 'Черновые') === stage); if (!list.length) return; const st = list.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">${stageLabel(stage)} · ${fmt(st)}</div>` + list.map(itemRow).join('');}); if (!items.length) bodyHtml += empty('📝 Пока пусто');}
+          else {bodyHtml += card('📝 Позиции', ''); (o.rooms || []).forEach(room => {if (filterActive && !estimateRoomFilter.includes(room.id)) return; const list = items.filter(i => i.roomId === room.id); if (!list.length) return; const rt = list.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">${roomEmoji(room)} ${esc(room.name)} · ${fmt(rt)}</div>` + list.map(itemRow).join('');}); if (!filterActive) {const other = items.filter(i => !i.roomId); if (other.length) {const ot = other.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">📋 Прочее · ${fmt(ot)}</div>` + other.map(itemRow).join('');} } if (!items.length) bodyHtml += empty('📝 Пока пусто');}
           bodyHtml += `<div class="hr"></div><div class="totalrow"><span>🔧 Работы</span><b>${fmt(t.work)}</b></div><div class="totalrow"><span>📦 Материалы</span><b>${fmt(t.mat)}</b></div><div class="totalrow"><span>📈 Наценка (${num(db.markup)}%)</span><b>${fmt(t.markup)}</b></div><div class="totalrow"><strong>💰 ИТОГО ${filterActive ? 'по выбранным комнатам' : ''}</strong><b>${fmt(t.total)}</b></div>`;
           let editHtml = '';
-          if (editingItem) { const i = o.items.find(x => x.id === editingItem); if (i) editHtml = `<div id="editCard">${card('✏️ Редактирование позиции', `<div class="grid">${inputText('Наименование', i.name, `v=>setItem('${i.id}','name',v)`)}<div class="field"><label>Тип</label><select onchange="setItem('${i.id}','type',this.value)"><option value="work" ${i.type === 'work' ? 'selected' : ''}>🔧 Работа</option><option value="material" ${i.type === 'material' ? 'selected' : ''}>📦 Материал</option></select></div>${input('Единица', i.unit, '', `v=>setItem('${i.id}','unit',v)`)}${input('Количество', i.qty, '', `v=>setItem('${i.id}','qty',v)`)}${input('Цена', i.price, '', `v=>setItem('${i.id}','price',v)`)}${input('Себестоимость', i.cost, '', `v=>setItem('${i.id}','cost',v)`)}${inputText('Раздел', i.group, `v=>setItem('${i.id}','group',v)`)}<div class="field"><label>Помещение</label><select onchange="setItem('${i.id}','roomId',this.value)"><option value="">— Общее —</option>${(o.rooms || []).map(r => `<option value="${r.id}" ${i.roomId === r.id ? 'selected' : ''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div><div class="field"><label>Этап</label><select onchange="setItem('${i.id}','stage',this.value)">${STAGES_ALL.map(x => `<option value="${x}" ${i.stage === x ? 'selected' : ''}>${stageLabel(x)}</option>`).join('')}</select></div></div><div class="actions"><button class="btn" onclick="goBack()">✅ Готово</button><button class="btn secondary" onclick="document.getElementById('editCard').scrollIntoView({behavior:'smooth',block:'start'})">↑ К форме</button></div>`)}</div>`; }
+          if (editingItem) {const i = o.items.find(x => x.id === editingItem); if (i) editHtml = `<div id="editCard">${card('✏️ Редактирование позиции', `<div class="grid">${inputText('Наименование', i.name, `v=>setItem('${i.id}','name',v)`)}<div class="field"><label>Тип</label><select onchange="setItem('${i.id}','type',this.value)"><option value="work" ${i.type === 'work' ? 'selected' : ''}>🔧 Работа</option><option value="material" ${i.type === 'material' ? 'selected' : ''}>📦 Материал</option></select></div>${input('Единица', i.unit, '', `v=>setItem('${i.id}','unit',v)`)}${input('Количество', i.qty, '', `v=>setItem('${i.id}','qty',v)`)}${input('Цена', i.price, '', `v=>setItem('${i.id}','price',v)`)}${input('Себестоимость', i.cost, '', `v=>setItem('${i.id}','cost',v)`)}${inputText('Раздел', i.group, `v=>setItem('${i.id}','group',v)`)}<div class="field"><label>Помещение</label><select onchange="setItem('${i.id}','roomId',this.value)"><option value="">— Общее —</option>${(o.rooms || []).map(r => `<option value="${r.id}" ${i.roomId === r.id ? 'selected' : ''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div><div class="field"><label>Этап</label><select onchange="setItem('${i.id}','stage',this.value)">${STAGES_ALL.map(x => `<option value="${x}" ${i.stage === x ? 'selected' : ''}>${stageLabel(x)}</option>`).join('')}</select></div></div><div class="actions"><button class="btn" onclick="goBack()">✅ Готово</button><button class="btn secondary" onclick="document.getElementById('editCard').scrollIntoView({behavior:'smooth',block:'start'})">↑ К форме</button></div>`)}</div>`;}
           html = selectorCard + headCard + segment + bodyHtml + editHtml;
         }
       }
 
       if (tab === 'stages') {
         if (!o) html = card('📅 Этапы', empty('Выберите объект'));
-        else { const t = totals(o); html = card('📅 Этапы и ход работ', `<p class="hint">Ориентировочная длительность. Средний ремонт новостройки — 2–4 мес.</p>${o.stages.map(s => `<div class="gantt-row"><div class="gantt-label">${stageLabel(s.name)}</div><div class="gantt-bar"><div class="gantt-fill" style="width:${Math.min(100, s.duration * 5)}%">${s.duration} дн.</div></div></div>`).join('')}<div class="hr"></div><div class="hint">💰 Сумма по смете: <b>${fmt(t.total)}</b></div>`); }
+        else {const t = totals(o); html = card('📅 Этапы и ход работ', `<p class="hint">Ориентировочная длительность. Средний ремонт новостройки — 2–4 мес.</p>${o.stages.map(s => `<div class="gantt-row"><div class="gantt-label">${stageLabel(s.name)}</div><div class="gantt-bar"><div class="gantt-fill" style="width:${Math.min(100, s.duration * 5)}%">${s.duration} дн.</div></div></div>`).join('')}<div class="hr"></div><div class="hint">💰 Сумма по смете: <b>${fmt(t.total)}</b></div>`);}
       }
 
       if (tab === 'procurement') {
         if (!o) html = card('🛒 Закупки', empty('Выберите объект'));
-        else { const total = o.procurement.reduce((s, p) => s + num(p.qty) * num(p.price), 0); html = card('🛒 Закупки материалов', `<div class="stats"><div class="stat"><div class="n">📦 ${o.procurement.length}</div><div class="l">Позиций</div></div><div class="stat"><div class="n">💵 ${fmt(total)}</div><div class="l">Сумма</div></div></div><div class="actions"><button class="btn" onclick="addProcurement()">➕ Закупка</button></div>`) + card('📋 Список', o.procurement.map(p => `<div class="listitem"><div class="itemhead"><div class="grow"><strong>📦 ${esc(p.name)}</strong><div class="itemmeta">${p.date} · ${p.qty} ${esc(p.unit)} × ${fmt(p.price)}</div></div><div style="text-align:right"><b>${fmt(num(p.qty) * num(p.price))}</b><button class="btn small danger" onclick="delProcurement('${p.id}')">×</button></div></div></div>`).join('') || empty('🛒 Закупок пока нет')); }
+        else {const total = o.procurement.reduce((s, p) => s + num(p.qty) * num(p.price), 0); html = card('🛒 Закупки материалов', `<div class="stats"><div class="stat"><div class="n">📦 ${o.procurement.length}</div><div class="l">Позиций</div></div><div class="stat"><div class="n">💵 ${fmt(total)}</div><div class="l">Сумма</div></div></div><div class="actions"><button class="btn" onclick="addProcurement()">➕ Закупка</button></div>`) + card('📋 Список', o.procurement.map(p => `<div class="listitem"><div class="itemhead"><div class="grow"><strong>📦 ${esc(p.name)}</strong><div class="itemmeta">${p.date} · ${p.qty} ${esc(p.unit)} × ${fmt(p.price)}</div></div><div style="text-align:right"><b>${fmt(num(p.qty) * num(p.price))}</b><button class="btn small danger" onclick="delProcurement('${p.id}')">×</button></div></div></div>`).join('') || empty('🛒 Закупок пока нет'));}
       }
 
       if (tab === 'catalog') {
@@ -3006,7 +2992,7 @@
 
       if (tab === 'money') {
         if (!o) html = card('💵 Финансы', empty('Выберите объект'));
-        else { const t = totals(o); const paid = o.payments.reduce((s, p) => s + num(p.amount), 0); const exp = o.expenses.reduce((s, p) => s + num(p.amount), 0); const budgetUsed = t.total > 0 ? Math.min(100, (exp / t.total) * 100) : 0; html = card('💵 Финансы', `<div class="stats"><div class="stat"><div class="n">💰 ${fmt(t.total)}</div><div class="l">Смета</div></div><div class="stat"><div class="n">💳 ${fmt(paid)}</div><div class="l">Получено</div></div><div class="stat"><div class="n">💸 ${fmt(exp)}</div><div class="l">Расходы</div></div><div class="stat"><div class="n">💼 ${fmt(paid - exp)}</div><div class="l">Остаток</div></div><div class="stat"><div class="n">📊 ${budgetUsed.toFixed(0)}%</div><div class="l">Бюджет</div></div><div class="stat"><div class="n">📈 ${fmt(t.profit)}</div><div class="l">Прибыль</div></div></div><div class="totalrow"><span>⏳ Остаток к оплате</span><b>${fmt(t.total - paid)}</b></div>`) + card('➕ Добавить операцию', `<div class="grid"><div class="field"><label>Тип</label><select id="moneyType"><option value="payment">💰 Оплата</option><option value="expense">💸 Расход</option></select></div>${input('💵 Сумма', '', 'type="number" id="moneyAmount"', 'noop')}${input('📅 Дата', today(), 'type="date" id="moneyDate"', 'noop')}${input('💬 Комментарий', '', 'id="moneyNote"', 'noop')}</div><div class="actions"><button class="btn" onclick="addMoney()">💾 Сохранить</button></div>`) + card('💳 Оплаты', o.payments.map(p => moneyRow(p, 'payment')).join('') || empty('💳 Оплат пока нет')) + card('💸 Расходы', o.expenses.map(p => moneyRow(p, 'expense')).join('') || empty('💸 Расходов пока нет')); }
+        else {const t = totals(o); const paid = o.payments.reduce((s, p) => s + num(p.amount), 0); const exp = o.expenses.reduce((s, p) => s + num(p.amount), 0); const budgetUsed = t.total > 0 ? Math.min(100, (exp / t.total) * 100) : 0; html = card('💵 Финансы', `<div class="stats"><div class="stat"><div class="n">💰 ${fmt(t.total)}</div><div class="l">Смета</div></div><div class="stat"><div class="n">💳 ${fmt(paid)}</div><div class="l">Получено</div></div><div class="stat"><div class="n">💸 ${fmt(exp)}</div><div class="l">Расходы</div></div><div class="stat"><div class="n">💼 ${fmt(paid - exp)}</div><div class="l">Остаток</div></div><div class="stat"><div class="n">📊 ${budgetUsed.toFixed(0)}%</div><div class="l">Бюджет</div></div><div class="stat"><div class="n">📈 ${fmt(t.profit)}</div><div class="l">Прибыль</div></div></div><div class="totalrow"><span>⏳ Остаток к оплате</span><b>${fmt(t.total - paid)}</b></div>`) + card('➕ Добавить операцию', `<div class="grid"><div class="field"><label>Тип</label><select id="moneyType"><option value="payment">💰 Оплата</option><option value="expense">💸 Расход</option></select></div>${input('💵 Сумма', '', 'type="number" id="moneyAmount"', 'noop')}${input('📅 Дата', today(), 'type="date" id="moneyDate"', 'noop')}${input('💬 Комментарий', '', 'id="moneyNote"', 'noop')}</div><div class="actions"><button class="btn" onclick="addMoney()">💾 Сохранить</button></div>`) + card('💳 Оплаты', o.payments.map(p => moneyRow(p, 'payment')).join('') || empty('💳 Оплат пока нет')) + card('💸 Расходы', o.expenses.map(p => moneyRow(p, 'expense')).join('') || empty('💸 Расходов пока нет'));}
       }
 
       if (tab === 'docs') {
@@ -3018,12 +3004,34 @@
         const d = initSettingsDraft(); const dirty = settingsDirty();
         html = '';
         if (dirty) html += `<div class="unsaved">⚠️ Есть несохранённые изменения. Нажмите «Сохранить настройки».</div>`;
-        html += card('🏢 Реквизиты компании', `<p class="hint">Эти данные подставляются в договоры, счета и акты. Название компании не заполняется по умолчанию — укажите его для своих документов.</p><div class="grid">${inputText('🏷️ Название компании', d.company, 'v=>setDraft("company",v)', 'placeholder="Например: ООО «РемонтПро»"')}${inputText('🔢 ИНН', d.inn, 'v=>setDraft("inn",v)', 'inputmode="numeric"')}${inputText('🔢 ОГРН / ОГРНИП', d.ogrn, 'v=>setDraft("ogrn",v)', 'inputmode="numeric"')}${inputText('👤 Руководитель', d.director, 'v=>setDraft("director",v)')}</div><div class="field" style="margin-top:12px"><label>📍 Юридический адрес</label><input value="${esc(d.legalAddress)}" oninput="setDraft('legalAddress',this.value)" autocomplete="off" spellcheck="false"></div><div class="grid" style="margin-top:12px">${inputText('📱 Телефон', d.phone, 'v=>setDraft("phone",v)', 'type="tel"')}${inputText('📧 Email', d.email, 'v=>setDraft("email",v)', 'type="email"')}${inputText('🌐 Сайт', d.website, 'v=>setDraft("website",v)')}</div>`);
+        html += card('🏢 Реквизиты компании', `<p class="hint">Эти данные подставляются в договоры, счета и акты.</p><div class="grid">${inputText('🏷️ Название компании', d.company, 'v=>setDraft("company",v)', 'placeholder="Например: ООО «РемонтПро»"')}${inputText('🔢 ИНН', d.inn, 'v=>setDraft("inn",v)', 'inputmode="numeric"')}${inputText('🔢 ОГРН / ОГРНИП', d.ogrn, 'v=>setDraft("ogrn",v)', 'inputmode="numeric"')}${inputText('👤 Руководитель', d.director, 'v=>setDraft("director",v)')}</div><div class="field" style="margin-top:12px"><label>📍 Юридический адрес</label><input value="${esc(d.legalAddress)}" oninput="setDraft('legalAddress',this.value)" autocomplete="off" spellcheck="false"></div><div class="grid" style="margin-top:12px">${inputText('📱 Телефон', d.phone, 'v=>setDraft("phone",v)', 'type="tel"')}${inputText('📧 Email', d.email, 'v=>setDraft("email",v)', 'type="email"')}${inputText('🌐 Сайт', d.website, 'v=>setDraft("website",v)')}</div>`);
         html += card('📐 Расчёты и договоры', `<p class="hint">Наценка и запас применяются ко всем сметам.</p><div class="grid">${inputText('🏙️ Город / регион цен', d.region, 'v=>setDraft("region",v)')}${inputText('🔢 Префикс № договора', d.contractPrefix, 'v=>setDraft("contractPrefix",v)')}${input('📈 Наценка на смету, %', d.markup, 'type="number" min="0" max="100"', 'v=>setDraft("markup",v)')}${input('📦 Запас материалов, %', d.waste, 'type="number" min="0" max="100"', 'v=>setDraft("waste",v)')}</div>`);
 
         if (admin) {
-          const currentSrc = (db.donatePhone || db.donateCard) ? 'локальные настройки' : 'значения из кода (HARDCODED_DONATE)';
-          html += card('❤️ Реквизиты для донатов <span class="badge gold">Только автор</span>', `<p class="hint">Эти поля видны только вам (@${ADMIN_USERNAME}). Пользователи увидят реквизиты из блока «HARDCODED_DONATE» в исходнике index.html.</p><div class="grid">${inputText('👤 Имя получателя', d.donateName, 'v=>setDraft("donateName",v)', 'placeholder="Иван И."')}${inputText('🏦 Банк', d.donateBank, 'v=>setDraft("donateBank",v)', 'placeholder="Сбербанк / Тинькофф"')}</div><div style="margin-top:12px">${inputText('📱 Телефон для СБП', d.donatePhone, 'v=>setDraft("donatePhone",v)', 'type="tel" placeholder="+7 999 123-45-67"')}</div><div style="margin-top:12px">${inputText('💳 Номер карты', d.donateCard, 'v=>setDraft("donateCard",v)', 'inputmode="numeric" placeholder="1234 5678 9012 3456"')}</div><div style="margin-top:12px">${inputText('💬 Telegram автора', d.donateTelegram, 'v=>setDraft("donateTelegram",v)', 'placeholder="@username"')}</div><div class="field" style="margin-top:12px"><label>📝 Текст благодарности</label><textarea oninput="setDraft('donateMessage',this.value)" placeholder="Спасибо за поддержку!">${esc(d.donateMessage)}</textarea></div><div class="actions"><button class="btn pink" onclick="commitSettingsDraft(); render(); openDonate();">👀 Посмотреть форму</button></div><div class="admin-hint">Сейчас используется: <b>${currentSrc}</b>.<br>Чтобы изменения увидели ВСЕ пользователи — обновите блок <code>HARDCODED_DONATE</code> в файле <code>index.html</code> на GitHub Pages и закоммитьте.</div>`);
+          html += card('❤️ Поддержка автора (QR) <span class="badge gold">Только автор</span>', `
+        <p class="hint">
+          Пользователи видят только QR-код — без номера телефона и номера карты.<br>
+          Получите ссылку для QR в приложении своего банка: «Поделиться реквизитами» / «QR-код для перевода» / СБП-ссылка.
+        </p>
+        <div style="margin-top:12px">
+          ${inputText('🔗 Ссылка для QR-кода (СБП / банк)', d.donateQrLink, 'v=>setDraft("donateQrLink",v)', 'placeholder="https://qr.nspk.ru/... или https://yoomoney.ru/to/..."')}
+        </div>
+        <div class="grid" style="margin-top:12px">
+          ${inputText('👤 Имя получателя', d.donateName, 'v=>setDraft("donateName",v)', 'placeholder="Александр Д."')}
+          ${inputText('💬 Telegram для связи', d.donateTelegram, 'v=>setDraft("donateTelegram",v)', 'placeholder="@username"')}
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label>📝 Текст благодарности</label>
+          <textarea oninput="setDraft('donateMessage',this.value)" placeholder="Спасибо за поддержку!">${esc(d.donateMessage)}</textarea>
+        </div>
+        <div class="actions">
+          <button class="btn pink" onclick="commitSettingsDraft(); render(); openDonate();">👀 Посмотреть форму</button>
+        </div>
+        <div class="admin-hint">
+          Сейчас в форме донатов: <b>${db.donateQrLink ? 'ваша ссылка из локальных настроек' : (HARDCODED_DONATE.qrLink ? 'значения из кода (HARDCODED_DONATE)' : 'QR-код ещё не настроен')}</b>.<br>
+          Чтобы изменения увидели ВСЕ пользователи — обновите <code>HARDCODED_DONATE.qrLink</code> в файле <code>index.html</code> на GitHub Pages.
+        </div>
+      `);
         }
 
         html += card('💾 Сохранение', `<div class="actions" style="margin-top:0"><button class="btn ${dirty ? 'success' : ''}" onclick="saveSettings()">💾 Сохранить настройки</button><button class="btn secondary" onclick="resetSettingsDraft()" ${dirty ? '' : 'disabled'}>↩ Отменить</button></div><p class="hint" style="margin-top:10px">Изменения применяются после «Сохранить». При переходе на другую вкладку — автосохранение.</p>`);
@@ -3031,26 +3039,32 @@
         html += card('✅ Что сохранено', `<div class="listitem"><span class="muted">🏷️ Компания:</span> <b>${db.company && db.company.trim() ? esc(db.company) : '— не заполнена —'}</b></div><div class="listitem"><span class="muted">🔢 ИНН:</span> <b>${esc(db.inn || '—')}</b></div><div class="listitem"><span class="muted">🏙️ Город:</span> <b>${esc(db.region || '—')}</b></div><div class="listitem"><span class="muted">📈 Наценка:</span> <b>${num(db.markup)}%</b> · <span class="muted">📦 Запас:</span> <b>${num(db.waste)}%</b></div><div class="listitem"><span class="muted">🔢 Префикс договора:</span> <b>${esc(db.contractPrefix || '—')}</b></div><div class="listitem"><span class="muted">📚 Расценок в каталоге:</span> <b>${CATALOG.length}</b> (стандартных — ${DEFAULT_CATALOG.length})</div>`);
       }
 
+      // Компактный футер поддержки — на всех вкладках кроме «Настройки»
+      if (tab !== 'settings') {
+        const footer = renderSupportFooter();
+        if (footer) html += footer;
+      }
+
       a.innerHTML = html;
       const primary = document.getElementById('primary');
       primary.textContent = tab === 'estimate' ? '➕ Добавить позицию' : tab === 'catalog' ? '➕ Добавить расценку' : tab === 'procurement' ? '➕ Добавить закупку' : tab === 'wizard' ? '✅ Создать объект' : tab === 'settings' ? '💾 Сохранить настройки' : '➕ Добавить объект';
-      primary.onclick = () => { if (tab === 'estimate') openAddEstimateItem(); else if (tab === 'catalog') openCatalogEdit(); else if (tab === 'procurement') addProcurement(); else if (tab === 'wizard') confirmWizard(); else if (tab === 'settings') saveSettings(); else makeObj(); };
+      primary.onclick = () => {if (tab === 'estimate') openAddEstimateItem(); else if (tab === 'catalog') openCatalogEdit(); else if (tab === 'procurement') addProcurement(); else if (tab === 'wizard') confirmWizard(); else if (tab === 'settings') saveSettings(); else makeObj();};
       renderDrawer();
       updateBackButton();
     }
 
     // ============ СТАРТ ============
-    document.getElementById('tabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if (b) navigate({ tab: b.dataset.tab, editingItem: null }); });
+    document.getElementById('tabs').addEventListener('click', e => {const b = e.target.closest('button[data-tab]'); if (b) navigate({tab: b.dataset.tab, editingItem: null});});
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        if (donateOpen) { closeDonate(); return; }
-        if (menuOpen) { closeMenu(); return; }
-        if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) { closeCatalogModals(); return; }
-        if (document.getElementById('voiceModalHost') && document.getElementById('voiceModalHost').innerHTML) { stopVoice(); return; }
+        if (donateOpen) {closeDonate(); return;}
+        if (menuOpen) {closeMenu(); return;}
+        if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) {closeCatalogModals(); return;}
+        if (document.getElementById('voiceModalHost') && document.getElementById('voiceModalHost').innerHTML) {stopVoice(); return;}
       }
     });
-    if (window.Telegram?.WebApp) { Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
-    applyState({ tab: 'home', editingItem: null });
+    if (window.Telegram?.WebApp) {Telegram.WebApp.ready(); Telegram.WebApp.expand();}
+    applyState({tab: 'home', editingItem: null});
   </script>
 </body>
 
