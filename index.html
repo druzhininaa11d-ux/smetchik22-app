@@ -1,87 +1,3057 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#172033">
-<title>Сметчик_22 — автономная смета</title>
-<style>
-:root{--bg:#f3f5f9;--card:#fff;--ink:#172033;--muted:#667085;--line:#e1e6ef;--blue:#2857d5;--soft:#eaf0ff;--red:#b42318;--green:#067647}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{background:#172033;color:white;padding:16px max(14px,env(safe-area-inset-left));position:sticky;top:0;z-index:4}header h1{margin:0;font-size:21px}header small{color:#c5cede}main{max-width:960px;margin:auto;padding:12px}.tabs{display:flex;gap:7px;overflow:auto;margin:12px 0}.tabs button{white-space:nowrap}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #17203308}.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.muted{font-size:13px;color:var(--muted)}.title{font-size:17px;font-weight:750;margin:2px 0 12px}label{display:block;font-size:12px;color:var(--muted);margin:0 0 4px}input,select,textarea{width:100%;padding:10px;border:1px solid #d6dce7;border-radius:9px;background:white;color:var(--ink);font:inherit;min-width:0}textarea{min-height:90px;resize:vertical}button{border:0;border-radius:10px;padding:10px 13px;background:var(--blue);color:white;font:600 14px system-ui;cursor:pointer}button.secondary{background:var(--soft);color:#2346a8}button.ghost{background:#f0f2f6;color:#344054}button.danger{background:#fff0ee;color:var(--red)}button:disabled{opacity:.5}.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.hidden{display:none!important}.pill{background:#e7f6ed;color:var(--green);border-radius:20px;padding:4px 8px;font-size:11px}.big{font-size:22px;font-weight:800}.item{border-top:1px solid var(--line);padding:12px 0}.item:first-child{border-top:0}.empty{text-align:center;color:var(--muted);padding:26px 12px}.notice{background:#fff8df;color:#765b00;border-radius:10px;padding:10px;font-size:12px}.field{margin-bottom:9px}.full{grid-column:1/-1}.smallbtn{padding:7px 9px;font-size:12px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:15px}.section-actions{display:flex;gap:6px;flex-wrap:wrap}@media(max-width:460px){main{padding:9px}.card{padding:12px}.grid{gap:8px}.tabs button{padding:9px 11px}.big{font-size:19px}}@media print{header,.tabs,.no-print,.footer{display:none!important}body{background:white}main{max-width:none;padding:0}.card{box-shadow:none;border:0;page-break-inside:avoid}.print-only{display:block!important}}
-</style>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="BuildMate Pro — ваш помощник в составлении смет на ремонт">
+  <title>BuildMate Pro — ваш помощник в составлении смет</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #fff;
+      --text: #0f172a;
+      --muted: #5b6779;
+      --line: #e2e8f0;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --green: #15803d;
+      --green-soft: #f0fdf4;
+      --red: #dc2626;
+      --red-soft: #fef2f2;
+      --pink: #e11d48;
+      --pink-soft: #fff1f5;
+      --gold: #b45309;
+      --gold-soft: #fef3c7;
+      --radius: 16px;
+      --shadow: 0 1px 3px 0 rgb(0 0 0/.05), 0 1px 2px -1px rgb(0 0 0/.05);
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Text', 'Roboto', 'Helvetica Neue', 'Noto Sans', Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f1f5f9;
+        --muted: #a1aec1;
+        --line: #334155;
+        --accent-soft: #1e3a8a33;
+        --green-soft: #052e1633;
+        --red-soft: #450a0a33;
+        --pink-soft: #4c051933;
+        --gold-soft: #78350f33;
+      }
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      letter-spacing: 0;
+      overflow-wrap: break-word;
+      word-break: normal;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      text-wrap: pretty;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: 'kern' 1, 'liga' 1;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      font-family: inherit;
+      overflow-wrap: break-word
+    }
+
+    input,
+    textarea {
+      hyphens: none;
+      -webkit-hyphens: none
+    }
+
+    button {
+      cursor: pointer;
+      transition: all .15s ease
+    }
+
+    button:active {
+      transform: scale(.98)
+    }
+
+    .top {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      padding: 18px 16px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .1)
+    }
+
+    .toprow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: clamp(18px, 4.6vw, 22px);
+      letter-spacing: -.4px;
+      line-height: 1.2;
+      text-wrap: balance
+    }
+
+    .brand .pro {
+      font-weight: 500;
+      font-size: 0.6em;
+      color: #94a3b8;
+      letter-spacing: .4px;
+      text-transform: uppercase
+    }
+
+    .sub {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-top: 3px;
+      line-height: 1.4
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, .1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 99px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      white-space: nowrap;
+      flex-shrink: 0
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 10px;
+      width: 40px;
+      height: 40px;
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      flex-shrink: 0
+    }
+
+    .icon-btn.hidden {
+      display: none
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: auto;
+      padding: 16px 14px 110px
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 0 16px;
+      scrollbar-width: none;
+      -ms-overflow-style: none
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none
+    }
+
+    .tabs button {
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--muted);
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0
+    }
+
+    .tabs button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, .3)
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden
+    }
+
+    .card h2,
+    .card h3 {
+      margin: 0 0 14px;
+      line-height: 1.3;
+      text-wrap: balance;
+      letter-spacing: -.2px
+    }
+
+    .card h2 {
+      font-size: 19px;
+      font-weight: 700
+    }
+
+    .card h3 {
+      font-size: 16px;
+      font-weight: 600
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px
+    }
+
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr))
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0
+    }
+
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.4
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: var(--card);
+      color: var(--text);
+      min-width: 0;
+      font-size: 15px;
+      line-height: 1.4;
+      transition: border-color .15s, box-shadow .15s
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft)
+    }
+
+    .field textarea {
+      min-height: 88px;
+      resize: vertical
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 18px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, .25);
+      line-height: 1.3
+    }
+
+    .btn:hover {
+      filter: brightness(1.05)
+    }
+
+    .btn.secondary {
+      background: var(--accent-soft);
+      color: var(--accent);
+      box-shadow: none;
+      border: 1px solid transparent
+    }
+
+    .btn.outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      box-shadow: none
+    }
+
+    .btn.danger {
+      background: var(--red-soft);
+      color: var(--red);
+      box-shadow: none
+    }
+
+    .btn.success {
+      background: var(--green);
+      color: #fff
+    }
+
+    .btn.pink {
+      background: var(--pink);
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(225, 29, 72, .25)
+    }
+
+    .btn.small {
+      padding: 8px 12px;
+      font-size: 13px;
+      border-radius: 8px;
+      box-shadow: none;
+      font-weight: 600
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px
+    }
+
+    .stat {
+      background: var(--accent-soft);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid transparent;
+      min-width: 0
+    }
+
+    .stat .n {
+      font-size: clamp(18px, 4.5vw, 22px);
+      font-weight: 800;
+      letter-spacing: -.4px;
+      line-height: 1.2;
+      overflow-wrap: break-word
+    }
+
+    .stat .l {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 5px;
+      line-height: 1.4
+    }
+
+    .object {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap
+    }
+
+    .object .grow {
+      flex: 1 1 180px;
+      min-width: 0
+    }
+
+    .object h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      overflow-wrap: break-word;
+      line-height: 1.35
+    }
+
+    .object .money {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: -.3px;
+      white-space: nowrap
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap
+    }
+
+    .badge.gold {
+      background: var(--gold-soft);
+      color: var(--gold)
+    }
+
+    .listitem {
+      border-top: 1px solid var(--line);
+      padding: 16px 0
+    }
+
+    .listitem:first-of-type {
+      border-top: 0;
+      padding-top: 0
+    }
+
+    .itemhead {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap
+    }
+
+    .itemhead .grow {
+      flex: 1 1 180px;
+      min-width: 0
+    }
+
+    .itemhead strong {
+      font-size: 15px;
+      font-weight: 600;
+      overflow-wrap: break-word;
+      line-height: 1.35
+    }
+
+    .itemmeta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+      overflow-wrap: break-word;
+      line-height: 1.45
+    }
+
+    .price {
+      font-weight: 800;
+      white-space: nowrap;
+      font-size: 16px
+    }
+
+    .segment {
+      display: flex;
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+      margin-bottom: 16px
+    }
+
+    .segment button {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 9px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      min-width: 0;
+      overflow-wrap: break-word;
+      line-height: 1.3
+    }
+
+    .segment button.active {
+      background: var(--card);
+      color: var(--text);
+      box-shadow: var(--shadow)
+    }
+
+    .gantt-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap
+    }
+
+    .gantt-row:last-child {
+      border-bottom: 0
+    }
+
+    .gantt-label {
+      flex: 0 0 155px;
+      font-size: 14px;
+      font-weight: 600;
+      overflow-wrap: break-word
+    }
+
+    .gantt-bar {
+      flex: 1 1 120px;
+      height: 26px;
+      background: var(--accent-soft);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      min-width: 0
+    }
+
+    .gantt-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #3b82f6);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      font-size: 11px;
+      color: #fff;
+      font-weight: 700;
+      white-space: nowrap
+    }
+
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      display: flex;
+      justify-content: center;
+      z-index: 20
+    }
+
+    .bottom button {
+      max-width: 900px;
+      width: 100%
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px 16px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      text-wrap: pretty
+    }
+
+    .hint {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+      text-wrap: pretty
+    }
+
+    .hr {
+      height: 1px;
+      background: var(--line);
+      margin: 18px 0
+    }
+
+    .totalrow {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 15px;
+      flex-wrap: wrap
+    }
+
+    .totalrow:last-child {
+      border: 0
+    }
+
+    .totalrow b {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700
+    }
+
+    .sectionlabel {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      color: var(--muted);
+      font-weight: 800;
+      margin: 16px 0 8px
+    }
+
+    .room-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      background: var(--card);
+      font-size: 15px;
+      flex-wrap: wrap
+    }
+
+    .room-check input {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0
+    }
+
+    .room-check strong {
+      min-width: 0;
+      overflow-wrap: break-word
+    }
+
+    .room-check .count {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0
+    }
+
+    .room-check .count select {
+      padding: 5px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px
+    }
+
+    .room-fields {
+      padding: 13px;
+      background: var(--bg);
+      border-radius: 12px;
+      margin: -4px 0 10px
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+      font-size: 15px;
+      max-width: 90vw;
+      text-align: center;
+      transition: opacity .3s;
+      line-height: 1.4
+    }
+
+    .unsaved {
+      background: #fef9c3;
+      border: 1px solid #fde047;
+      color: #713f12;
+      padding: 11px 13px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.45;
+      flex-wrap: wrap
+    }
+
+    .admin-hint {
+      background: var(--gold-soft);
+      color: #713f12;
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 13px;
+      line-height: 1.55;
+      margin-top: 12px;
+      text-wrap: pretty
+    }
+
+    @media (prefers-color-scheme:dark) {
+      .admin-hint {
+        color: #fde68a
+      }
+    }
+
+    .highlight {
+      animation: hl 1.4s ease-out
+    }
+
+    @keyframes hl {
+      0% {
+        box-shadow: 0 0 0 3px var(--accent), 0 0 0 6px var(--accent-soft)
+      }
+
+      100% {
+        box-shadow: var(--shadow)
+      }
+    }
+
+    .room-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all .15s ease;
+      min-width: 0;
+      overflow-wrap: break-word;
+      line-height: 1.35
+    }
+
+    .room-chip.on {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent)
+    }
+
+    .room-chip input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      flex-shrink: 0
+    }
+
+    .room-chips {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 6px;
+      margin-top: 8px
+    }
+
+    .obj-context {
+      background: var(--accent-soft);
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      line-height: 1.4
+    }
+
+    .obj-context b {
+      color: var(--accent);
+      overflow-wrap: break-word
+    }
+
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 50;
+      backdrop-filter: blur(2px);
+      animation: fadeIn .2s ease
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 300px;
+      max-width: 85vw;
+      background: var(--card);
+      z-index: 51;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, .25);
+      animation: slideIn .25s cubic-bezier(0.2, 0.9, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%)
+      }
+
+      to {
+        transform: translateX(0)
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    .drawer-header {
+      padding: 18px 16px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1
+    }
+
+    .drawer-title {
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -.2px;
+      line-height: 1.25;
+      overflow-wrap: break-word
+    }
+
+    .drawer-sub {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 3px;
+      line-height: 1.4
+    }
+
+    .drawer-close {
+      background: rgba(255, 255, 255, .15);
+      border: 0;
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      flex-shrink: 0
+    }
+
+    .drawer-nav {
+      padding: 8px;
+      flex: 1
+    }
+
+    .drawer-section {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+      padding: 14px 12px 6px;
+      letter-spacing: .6px
+    }
+
+    .drawer-nav button {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      overflow-wrap: break-word;
+      line-height: 1.3
+    }
+
+    .drawer-nav button:hover {
+      background: var(--bg)
+    }
+
+    .drawer-nav button.active {
+      background: var(--accent-soft);
+      color: var(--accent)
+    }
+
+    .drawer-nav .donate {
+      color: var(--pink);
+      margin-top: 6px
+    }
+
+    .drawer-nav .donate:hover {
+      background: var(--pink-soft)
+    }
+
+    .drawer-footer {
+      padding: 14px 16px;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .65);
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeIn .2s ease;
+      overflow-y: auto
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: 20px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      padding: 24px 20px 20px;
+      animation: popIn .25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      margin: auto
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(.92);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--bg);
+      border: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 20px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0
+    }
+
+    .modal h2 {
+      font-size: 21px;
+      margin: 0 0 6px;
+      font-weight: 800;
+      letter-spacing: -.3px;
+      text-wrap: balance;
+      padding-right: 36px
+    }
+
+    .modal .lead {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0 0 16px;
+      line-height: 1.55;
+      text-wrap: pretty
+    }
+
+    .catalog-pick {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 4px
+    }
+
+    .catalog-pick-item {
+      padding: 10px 8px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background .12s
+    }
+
+    .catalog-pick-item:hover {
+      background: var(--bg)
+    }
+
+    .catalog-pick-item .itemhead {
+      margin: 0
+    }
+
+    .donate-amounts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 14px
+    }
+
+    .donate-amounts button {
+      padding: 11px 6px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px
+    }
+
+    .donate-amounts button.active {
+      background: var(--pink);
+      color: #fff;
+      border-color: var(--pink);
+      box-shadow: 0 2px 8px rgba(225, 29, 72, .25)
+    }
+
+    .donate-block {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px
+    }
+
+    .donate-block label {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+      letter-spacing: .5px;
+      display: block;
+      margin-bottom: 8px;
+      line-height: 1.4
+    }
+
+    .copy-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap
+    }
+
+    .copy-row input {
+      flex: 1 1 160px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .3px;
+      min-width: 0
+    }
+
+    .copy-row button {
+      padding: 12px 14px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 0;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      min-width: 100px;
+      flex-shrink: 0
+    }
+
+    .copy-row button:disabled {
+      background: var(--green-soft);
+      color: var(--green)
+    }
+
+    .qr-wrap {
+      text-align: center;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 12px;
+      margin-bottom: 12px
+    }
+
+    .qr-wrap img {
+      width: 190px;
+      height: 190px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 6px;
+      border: 1px solid var(--line);
+      max-width: 100%
+    }
+
+    .qr-wrap .hint {
+      margin-top: 8px
+    }
+
+    .thanks-block {
+      background: var(--pink-soft);
+      border-radius: 12px;
+      padding: 13px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.55;
+      text-wrap: pretty
+    }
+
+    .voice-pulse {
+      display: inline-block;
+      font-size: 56px;
+      line-height: 1;
+      animation: pulse 1.2s ease-in-out infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .65;
+        transform: scale(1.15)
+      }
+    }
+
+    @media (min-width:680px) {
+      .stats {
+        grid-template-columns: repeat(4, minmax(0, 1fr))
+      }
+
+      .wrap {
+        padding-top: 24px
+      }
+    }
+
+    @media (max-width:420px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+
+      .grid.cols3 {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .card {
+        padding: 15px
+      }
+
+      .donate-amounts {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .segment {
+        flex-wrap: wrap
+      }
+
+      .segment button {
+        flex: 1 1 calc(50% - 4px)
+      }
+    }
+
+    @media (max-width:360px) {
+      body {
+        font-size: 15px
+      }
+
+      .tabs button {
+        padding: 9px 12px;
+        font-size: 13px
+      }
+
+      .card {
+        padding: 13px
+      }
+
+      .btn {
+        padding: 12px 14px;
+        font-size: 14px
+      }
+
+      .stat .n {
+        font-size: 18px
+      }
+
+      .gantt-label {
+        flex-basis: 100%
+      }
+
+      .gantt-bar {
+        flex-basis: 100%
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header><div class="row between"><div><h1>Сметчик_22</h1><small>Автономная версия · Барнаул · рубли</small></div><span class="pill" id="saveStatus">Локально</span></div></header>
-<main>
-<div class="notice">Данные сохраняются в браузере этого устройства. Регулярно делайте резервную копию через «Экспорт данных». Для открытия внутри Telegram опубликуйте этот статический файл по HTTPS. ИИ в этой версии отключён.</div>
-<nav class="tabs no-print">
-<button id="navProjects" onclick="view('projects')">Объекты</button>
-<button id="navEstimate" class="secondary" onclick="view('estimate')">Смета</button>
-<button id="navContract" class="ghost" onclick="view('contract')">Договор</button>
-<button id="navBackup" class="ghost" onclick="view('backup')">Резервная копия</button>
-</nav>
-<section id="projectsView">
-<div class="row between"><div class="title">Мои объекты</div><button onclick="newProject()">+ Новая квартира</button></div>
-<div id="projectList"></div>
-</section>
-<section id="estimateView" class="hidden"><div id="estimateContent"></div></section>
-<section id="contractView" class="hidden">
-<div class="card"><div class="title">Договор оказания услуг по ремонту</div><div class="muted">Шаблон автоматически подставляет сведения текущего объекта и итог сметы. Перед подписанием проверьте условия, реквизиты и применимость договора.</div><div class="actions no-print"><button onclick="makeContract()">Сформировать / обновить</button><button class="secondary" onclick="printContract()">Печать / сохранить PDF</button></div><textarea id="contractText" style="min-height:560px;margin-top:12px" placeholder="Выберите объект и нажмите «Сформировать / обновить»"></textarea></div>
-</section>
-<section id="backupView" class="hidden">
-<div class="card"><div class="title">Резервное копирование</div><p class="muted">Сохраняйте все объекты, помещения, позиции смет и настройки в JSON-файл. Его можно перенести на другое устройство или восстановить после очистки браузера.</p><div class="actions"><button onclick="backup()">Экспорт данных JSON</button><button class="secondary" onclick="document.getElementById('restoreFile').click()">Восстановить из JSON</button><input id="restoreFile" class="hidden" type="file" accept=".json,application/json" onchange="restore(event)"></div><hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><div class="title">Экспорт сметы</div><p class="muted">Выберите объект во вкладке «Объекты», затем скачайте Excel или сохраните смету в PDF.</p><div class="actions"><button onclick="exportExcel()">Excel (.xlsx)</button><button class="secondary" onclick="exportCSV()">CSV для Excel</button><button class="secondary" onclick="printEstimate()">Печать / PDF</button></div><div class="actions"><button class="danger" onclick="clearAll()">Удалить все локальные данные</button></div></div>
-</section>
-<div class="footer">Сметчик_22 · Локальное хранение · Барнаул · ₽</div>
-</main>
-<script>
-const tg=window.Telegram?.WebApp;if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#172033');tg.setBackgroundColor('#f3f5f9')}catch(e){}}
-const KEY='smetchik22_offline_v1';
-let state=loadState(), currentId=null;
-function loadState(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.projects))return x}catch(e){}return {projects:[],version:1}}
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));document.getElementById('saveStatus').textContent='Сохранено';setTimeout(()=>document.getElementById('saveStatus').textContent='Локально',1500)}catch(e){alert('Не удалось сохранить данные. Сделайте резервную копию и освободите место в браузере.')}} 
-function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function num(v){return Number(v)||0}
-function money(v){return num(v).toLocaleString('ru-RU',{maximumFractionDigits:2})+' ₽'}
-function current(){return state.projects.find(p=>p.id===currentId)}
-function total(p,kind){return p.items.filter(i=>kind==='all'||i.kind===kind).reduce((s,i)=>s+num(i.qty)*num(i.price),0)}
-function view(v){['projects','estimate','contract','backup'].forEach(k=>document.getElementById(k+'View').classList.toggle('hidden',k!==v));['Projects','Estimate','Contract','Backup'].forEach(k=>{let el=document.getElementById('nav'+k);if(el)el.className=k.toLowerCase()===v?'':'ghost'});if(v==='projects')renderProjects();if(v==='estimate')renderEstimate();if(v==='contract'&&!document.getElementById('contractText').value)makeContract()}
-function newProject(){const name=prompt('Название объекта','Квартира — ремонт');if(name===null)return;let p={id:id(),name:name||'Новый объект',client:'',phone:'',address:'',status:'Расчёт',notes:'',rooms:[],items:[],created:new Date().toISOString()};state.projects.unshift(p);currentId=p.id;persist();renderProjects();view('estimate')}
-function renderProjects(){const el=document.getElementById('projectList');if(!state.projects.length){el.innerHTML='<div class="card empty">Объектов пока нет.<br>Нажми «Новая квартира», чтобы создать первую смету.</div>';return}el.innerHTML=state.projects.map(p=>`<div class="card"><div class="row between"><b>${esc(p.name)}</b><span class="pill">${esc(p.status||'Расчёт')}</span></div><div class="muted">${esc(p.client||'Заказчик не указан')} · ${esc(p.address||'Адрес не указан')}</div><div class="row between" style="margin-top:12px"><div><div class="muted">Итого по смете</div><div class="big">${money(total(p,'all'))}</div><div class="muted">${p.items.length} позиций · ${p.rooms.length} помещений</div></div><button onclick="openProject('${p.id}')">Открыть</button></div></div>`).join('')}
-function openProject(pid){currentId=pid;view('estimate')}
-function renderEstimate(){let p=current();let root=document.getElementById('estimateContent');if(!p){root.innerHTML='<div class="card empty">Выбери объект во вкладке «Объекты» или создай новый.</div>';return}
-root.innerHTML=`<div class="card"><div class="row between"><div class="title">Карточка объекта</div><button class="secondary" onclick="saveProjectFields()">Сохранить</button></div><div class="grid"><div class="field"><label>Название</label><input id="p_name" value="${esc(p.name)}"></div><div class="field"><label>Статус</label><select id="p_status">${['Расчёт','Согласование','В работе','Приёмка','Завершён'].map(s=>`<option ${p.status===s?'selected':''}>${s}</option>`).join('')}</select></div><div class="field"><label>Заказчик</label><input id="p_client" value="${esc(p.client)}"></div><div class="field"><label>Телефон</label><input id="p_phone" value="${esc(p.phone)}"></div><div class="field full"><label>Адрес объекта</label><input id="p_address" value="${esc(p.address)}"></div><div class="field full"><label>Примечания</label><textarea id="p_notes">${esc(p.notes)}</textarea></div></div><div class="actions no-print"><button class="secondary" onclick="view('contract')">Договор</button><button class="ghost" onclick="exportExcel()">Excel</button><button class="ghost" onclick="printEstimate()">PDF / печать</button><button class="danger" onclick="deleteProject('${p.id}')">Удалить объект</button></div></div>
-<div class="card"><div class="row between"><div class="title">Помещения и обмеры</div><button class="secondary" onclick="addRoom()">+ Помещение</button></div>${p.rooms.length?p.rooms.map(r=>`<div class="item"><div class="row between"><b>${esc(r.name)}</b><button class="ghost smallbtn" onclick="editRoom('${r.id}')">Изменить</button></div><div class="muted">${r.length} × ${r.width} м · высота ${r.height} м</div><div class="muted">Стены ориентировочно: ${wallArea(r).toFixed(2)} м² · пол: ${(r.length*r.width).toFixed(2)} м²</div><button class="danger smallbtn no-print" onclick="deleteRoom('${r.id}')">Удалить</button></div>`).join(''):'<div class="muted">Добавь помещения для хранения размеров и расчёта площадей.</div>'}</div>
-<div class="card"><div class="row between"><div class="title">Смета: работы и материалы</div><button onclick="addItem()">+ Позиция</button></div><div class="grid"><div><div class="muted">Работы</div><b>${money(total(p,'Работа'))}</b></div><div><div class="muted">Материалы</div><b>${money(total(p,'Материал'))}</b></div></div>${p.items.length?p.items.map(i=>`<div class="item"><div class="row between"><b>${esc(i.name)}</b><button class="ghost smallbtn no-print" onclick="editItem('${i.id}')">Изменить</button></div><div class="muted">${esc(i.kind)} · ${esc(i.category||'Без категории')}</div><div class="muted">${num(i.qty)} ${esc(i.unit)} × ${money(i.price)}</div><div class="row between"><b>${money(num(i.qty)*num(i.price))}</b><button class="danger smallbtn no-print" onclick="deleteItem('${i.id}')">Удалить</button></div></div>`).join(''):'<div class="empty">Добавь позиции вручную или используй быстрый каталог.</div>'}<div class="row between" style="border-top:1px solid var(--line);padding-top:12px"><b>ИТОГО</b><span class="big">${money(total(p,'all'))}</span></div><div class="actions no-print"><button class="secondary" onclick="quickCatalog()">Каталог типовых работ</button><button onclick="exportExcel()">Excel</button><button class="secondary" onclick="printEstimate()">Печать / PDF</button></div></div>`;
-}
-function saveProjectFields(){let p=current();if(!p)return;p.name=val('p_name')||p.name;p.status=val('p_status');p.client=val('p_client');p.phone=val('p_phone');p.address=val('p_address');p.notes=val('p_notes');persist();renderEstimate()}
-function val(id){return document.getElementById(id)?.value||''}
-function wallArea(r){return Math.max(0,2*(num(r.length)+num(r.width))*num(r.height)-num(r.doors)-num(r.windows))}
-function addRoom(){let name=prompt('Название помещения','Комната');if(name===null)return;let length=Number(prompt('Длина, м','3.8')),width=Number(prompt('Ширина, м','2.8')),height=Number(prompt('Высота стен, м','2.5'));if(![length,width,height].every(Number.isFinite)||length<=0||width<=0||height<=0){alert('Проверь размеры');return}let doors=Number(prompt('Суммарная площадь дверных проёмов, м²','1.6')),windows=Number(prompt('Суммарная площадь оконных проёмов, м²','0'));current().rooms.push({id:id(),name,length,width,height,doors:Math.max(0,doors||0),windows:Math.max(0,windows||0)});persist();renderEstimate()}
-function editRoom(rid){let r=current().rooms.find(x=>x.id===rid);if(!r)return;let name=prompt('Название помещения',r.name);if(name===null)return;let length=Number(prompt('Длина, м',r.length)),width=Number(prompt('Ширина, м',r.width)),height=Number(prompt('Высота стен, м',r.height)),doors=Number(prompt('Дверные проёмы, м²',r.doors)),windows=Number(prompt('Оконные проёмы, м²',r.windows));if([length,width,height,doors,windows].some(x=>!Number.isFinite(x)||x<0)||length===0||width===0||height===0){alert('Проверь размеры');return}Object.assign(r,{name,length,width,height,doors,windows});persist();renderEstimate()}
-function deleteRoom(rid){if(!confirm('Удалить помещение?'))return;current().rooms=current().rooms.filter(r=>r.id!==rid);persist();renderEstimate()}
-function addItem(prefill={}){let kind=prefill.kind||prompt('Тип позиции: Работа или Материал','Работа');if(!kind)return;kind=kind.toLowerCase().startsWith('мат')?'Материал':'Работа';let name=prefill.name||prompt('Наименование',kind==='Работа'?'Штукатурка стен':'Штукатурная смесь');if(!name)return;let category=prefill.category||prompt('Категория','Отделка')||'';let unit=prefill.unit||prompt('Единица измерения','м²')||'шт.';let qty=Number(prefill.qty??prompt('Количество', '1')),price=Number(prefill.price??prompt('Цена за единицу, ₽','0'));if(!Number.isFinite(qty)||qty<0||!Number.isFinite(price)||price<0){alert('Количество и цена должны быть неотрицательными числами');return}current().items.push({id:id(),kind,name,category,unit,qty,price,notes:''});persist();renderEstimate()}
-function editItem(iid){let i=current().items.find(x=>x.id===iid);if(!i)return;let kind=prompt('Тип: Работа или Материал',i.kind);if(kind===null)return;kind=kind.toLowerCase().startsWith('мат')?'Материал':'Работа';let name=prompt('Наименование',i.name);if(name===null)return;let category=prompt('Категория',i.category)||'',unit=prompt('Единица измерения',i.unit)||'шт.',qty=Number(prompt('Количество',i.qty)),price=Number(prompt('Цена за единицу, ₽',i.price));if(!Number.isFinite(qty)||qty<0||!Number.isFinite(price)||price<0){alert('Проверь количество и цену');return}Object.assign(i,{kind,name,category,unit,qty,price});persist();renderEstimate()}
-function deleteItem(iid){if(!confirm('Удалить позицию из сметы?'))return;current().items=current().items.filter(i=>i.id!==iid);persist();renderEstimate()}
-const catalog=[
-['Работа','Демонтаж','Демонтаж старой штукатурки','м²',1,350],['Работа','Штукатурные работы','Грунтование стен','м²',1,80],['Работа','Штукатурные работы','Штукатурка стен по маякам','м²',1,650],['Работа','Шпаклёвка','Шпаклёвка стен под обои','м²',1,300],['Работа','Плиточные работы','Укладка плитки на стены','м²',1,1800],['Работа','Плиточные работы','Укладка плитки на пол','м²',1,2000],['Работа','Сантехника','Монтаж смесителя','шт.',1,1500],['Работа','Электрика','Монтаж розетки','шт.',1,700],
-['Материал','Грунтовки','Грунтовка глубокого проникновения','л',1,180],['Материал','Штукатурные смеси','Штукатурная смесь гипсовая','мешок 30 кг',1,520],['Материал','Шпаклёвки','Шпаклёвка финишная','мешок 20 кг',1,750],['Материал','Плиточные материалы','Клей плиточный','мешок 25 кг',1,650],['Материал','Плиточные материалы','Затирка для швов','кг',1,250],['Материал','Гидроизоляция','Гидроизоляция обмазочная','кг',1,350]
-];
-function quickCatalog(){let p=current();let text='Каталог типовых позиций (ориентировочные стартовые цены, ₽ за единицу):\\n'+catalog.map((x,i)=>`${i+1}. ${x[2]} — ${x[5]} ₽/${x[3]}`).join('\\n')+'\\n\\nВведи номер позиции для добавления. Цены обязательно проверь по актуальному рынку Барнаула.';let n=Number(prompt(text,'1'));if(!Number.isInteger(n)||n<1||n>catalog.length)return;let x=catalog[n-1];addItem({kind:x[0],category:x[1],name:x[2],unit:x[3],qty:x[4],price:x[5]})}
-function makeContract(){let p=current();if(!p){alert('Сначала выбери объект');return}let lines=p.items.map((i,n)=>`${n+1}. ${i.name} — ${i.qty} ${i.unit} × ${money(i.price)} = ${money(i.qty*i.price)} (${i.kind.toLowerCase()})`).join('\\n');document.getElementById('contractText').value=`ДОГОВОР ОКАЗАНИЯ УСЛУГ ПО РЕМОНТУ № _____\\n\\nг. Барнаул                                      «___» __________ 20___ г.\\n\\nИсполнитель: ______________________________, с одной стороны, и Заказчик: ${p.client||'______________________________'}, с другой стороны, совместно именуемые «Стороны», заключили настоящий договор.\\n\\n1. ПРЕДМЕТ ДОГОВОРА\\nИсполнитель обязуется выполнить ремонтные работы на объекте по адресу: ${p.address||'________________________________'}, а Заказчик обязуется принять и оплатить результат в соответствии с условиями договора.\\nОбъект: ${p.name}. Телефон заказчика: ${p.phone||'не указан'}.\\n\\n2. СОСТАВ И СТОИМОСТЬ\\nРаботы: ${money(total(p,'Работа'))}\\nМатериалы: ${money(total(p,'Материал'))}\\nОбщая стоимость сметы: ${money(total(p,'all'))}\\n\\nПеречень позиций:\\n${lines||'Перечень работ и материалов не заполнен.'}\\n\\nСтоимость является предварительной до подписания сторонами согласованной сметы. Дополнительные работы, изменения объёма и стоимости оформляются отдельным письменным согласованием.\\n\\n3. СРОКИ ВЫПОЛНЕНИЯ\\nДата начала: «___» __________ 20___ г.\\nДата окончания: «___» __________ 20___ г.\\nЭтапы и сроки: ________________________________________________\\n\\n4. ПОРЯДОК ОПЛАТЫ\\nАванс: ____________________. Промежуточные платежи: ____________________. Окончательный расчёт производится после приёмки работ, если стороны письменно не согласовали иное.\\n\\n5. ПРИЁМКА РАБОТ\\nВыполненные работы передаются по акту. Замечания и согласованный срок их устранения фиксируются сторонами письменно.\\n\\n6. ПРОЧИЕ УСЛОВИЯ\\nДоговор вступает в силу после подписания сторонами. Применимые условия, гарантийные обязательства, реквизиты и ответственность сторон следует проверить и заполнить до подписания в соответствии с законодательством РФ.\\n\\nИСПОЛНИТЕЛЬ                         ЗАКАЗЧИК\\nФИО: ____________________          ФИО: ____________________\\nПаспорт/реквизиты: _________          Паспорт/реквизиты: _________\\nПодпись: ________________          Подпись: ________________\\n\\nПриложение: согласованная смета ремонта.`}
-function printContract(){if(!document.getElementById('contractText').value.trim())makeContract();const text=document.getElementById('contractText').value;printText('Договор оказания услуг',text)}
-function printText(title,text){let w=window.open('','_blank');if(!w){alert('Браузер заблокировал окно печати. Разреши всплывающие окна и повтори.');return}w.document.write('<!doctype html><html lang="ru"><meta charset="utf-8"><title>'+esc(title)+'</title><style>body{font:12pt Arial,sans-serif;white-space:pre-wrap;line-height:1.45;margin:20mm;color:#111}@media print{body{margin:15mm}}</style><body>'+esc(text)+'</body></html>');w.document.close();w.focus();setTimeout(()=>w.print(),250)}
-function printEstimate(){let p=current();if(!p)return alert('Сначала открой объект');let lines=p.items.map((i,n)=>`${n+1}. [${i.kind}] ${i.name} — ${i.qty} ${i.unit} × ${money(i.price)} = ${money(i.qty*i.price)}`).join('\\n');let rooms=p.rooms.map(r=>`${r.name}: ${r.length} × ${r.width} м, высота ${r.height} м; стены ориентировочно ${wallArea(r).toFixed(2)} м²; пол ${(r.length*r.width).toFixed(2)} м²`).join('\\n');let text=`СМЕТА РЕМОНТА — Сметчик_22\\nРегион: Барнаул · Валюта: RUB\\nОбъект: ${p.name}\\nЗаказчик: ${p.client||'не указан'}\\nАдрес: ${p.address||'не указан'}\\nТелефон: ${p.phone||'не указан'}\\nСтатус: ${p.status}\\n\\nОБМЕРЫ\\n${rooms||'Не заполнены'}\\n\\nПОЗИЦИИ СМЕТЫ\\n${lines||'Позиции не добавлены'}\\n\\nРаботы: ${money(total(p,'Работа'))}\\nМатериалы: ${money(total(p,'Материал'))}\\nИТОГО: ${money(total(p,'all'))}\\n\\nЦены в каталоге ориентировочные; проверьте их перед согласованием.\\nПримечания: ${p.notes||'—'}`;printText('Смета ремонта',text)}
-function exportExcel(){let p=current();if(!p)return alert('Сначала выбери объект');if(!window.XLSX){exportCSV();alert('Библиотека Excel недоступна без интернета. Выгружен CSV, который открывается в Excel.');return}let rows=[['Сметчик_22 — смета ремонта'],['Объект',p.name],['Заказчик',p.client],['Адрес',p.address],['Регион','Барнаул'],[],['Тип','Категория','Наименование','Ед.','Количество','Цена, ₽','Сумма, ₽','Примечания']];p.items.forEach(i=>rows.push([i.kind,i.category,i.name,i.unit,i.qty,i.price,i.qty*i.price,i.notes||'']));rows.push([],['','','','','','Работы, ₽',total(p,'Работа')],['','','','','','Материалы, ₽',total(p,'Материал')],['','','','','','ИТОГО, ₽',total(p,'all')]);let ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:15},{wch:20},{wch:42},{wch:12},{wch:13},{wch:14},{wch:15},{wch:30}];let wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Смета');let rooms=[['Помещение','Длина, м','Ширина, м','Высота, м','Проёмы дверей, м²','Окна, м²','Стены, м²','Пол, м²']];p.rooms.forEach(r=>rooms.push([r.name,r.length,r.width,r.height,r.doors,r.windows,wallArea(r),r.length*r.width]));XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rooms),'Обмеры');XLSX.writeFile(wb,'Smetchik22_'+safeName(p.name)+'.xlsx')}
-function safeName(s){return String(s||'object').replace(/[^a-zа-яё0-9_-]+/gi,'_').slice(0,50)}
-function exportCSV(){let p=current();if(!p)return alert('Сначала выбери объект');let rows=[['Тип','Категория','Наименование','Ед.','Количество','Цена, ₽','Сумма, ₽','Примечания'],...p.items.map(i=>[i.kind,i.category,i.name,i.unit,i.qty,i.price,i.qty*i.price,i.notes||'']),[],['Работы, ₽',total(p,'Работа')],['Материалы, ₽',total(p,'Материал')],['ИТОГО, ₽',total(p,'all')]];let csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\\r\\n');downloadBlob('\\ufeff'+csv,'Smetchik22_'+safeName(p.name)+'.csv','text/csv;charset=utf-8')}
-function downloadBlob(data,name,type){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([data],{type}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function backup(){downloadBlob(JSON.stringify({app:'Сметчик_22',version:1,exported_at:new Date().toISOString(),state},null,2),'Smetchik22_backup_'+new Date().toISOString().slice(0,10)+'.json','application/json')}
-function restore(event){let f=event.target.files?.[0];if(!f)return;let reader=new FileReader();reader.onload=()=>{try{let obj=JSON.parse(reader.result),s=obj.state||obj;if(!Array.isArray(s.projects))throw Error('Неверный формат');if(!confirm('Заменить текущие данные содержимым резервной копии?'))return;state=s;currentId=state.projects[0]?.id||null;persist();renderProjects();alert('Резервная копия восстановлена')}catch(e){alert('Не удалось восстановить файл: '+e.message)}event.target.value=''};reader.readAsText(f)}
-function deleteProject(pid){if(!confirm('Удалить объект, все его позиции и помещения?'))return;state.projects=state.projects.filter(p=>p.id!==pid);if(currentId===pid)currentId=null;persist();renderProjects();view('projects')}
-function clearAll(){if(!confirm('Удалить ВСЕ объекты и сметы с этого устройства? Сначала скачай резервную копию.'))return;state={projects:[],version:1};currentId=null;persist();renderProjects();view('projects')}
-renderProjects();if(tg?.initDataUnsafe?.user){/* No server receives Telegram identity in offline mode. */}
-</script>
-</body></html>
+  <header class="top">
+    <div class="toprow">
+      <div class="brand-wrap">
+        <button class="icon-btn" onclick="openMenu()" aria-label="Меню">☰</button>
+        <button class="icon-btn hidden" id="backBtn" onclick="goBack()" aria-label="Назад">←</button>
+        <div>
+          <div class="brand">BuildMate <span class="pro">Pro</span></div>
+          <div class="sub">Ваш помощник в составлении смет</div>
+        </div>
+      </div>
+      <span class="pill">MINI APP</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav class="tabs" id="tabs">
+      <button class="active" data-tab="home">Обзор</button>
+      <button data-tab="objects">Объекты</button>
+      <button data-tab="estimate">Смета</button>
+      <button data-tab="stages">Этапы</button>
+      <button data-tab="procurement">Закупки</button>
+      <button data-tab="catalog">Расценки</button>
+      <button data-tab="money">Финансы</button>
+      <button data-tab="docs">Документы</button>
+      <button data-tab="settings">Настройки</button>
+    </nav>
+    <div id="app"></div>
+  </main>
+
+  <div class="bottom"><button class="btn" id="primary">Добавить объект</button></div>
+
+  <div id="drawerHost"></div>
+  <div id="donateHost"></div>
+  <div id="catalogModalHost"></div>
+  <div id="voiceModalHost"></div>
+  <input type="file" id="xlsxFileInput" accept=".xlsx,.xls,.csv"
+    style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0"
+    onchange="handleXlsxUpload(this.files[0]); this.value='';">
+
+  <script>
+    // ============ ADMIN CHECK ============
+    const ADMIN_USERNAME = 'aleksandr_druzh';
+    function getTgUser() { try { return window.Telegram?.WebApp?.initDataUnsafe?.user || null; } catch (e) { return null; } }
+    function isAdmin() { const u = getTgUser(); if (!u) return false; return String(u.username || '').toLowerCase() === ADMIN_USERNAME.toLowerCase(); }
+
+    // ============ HARDCODED DONATE ============
+    const HARDCODED_DONATE = {
+      name: 'Александр Д.',
+      phone: '+79132599269',
+      card: '4817760216471478',
+      bank: 'Сбербанк',
+      telegram: 'aleksandr_druzh',
+      message: 'Спасибо, что пользуетесь BuildMate Pro! Если приложение помогает — вы можете поддержать автора небольшим переводом. Это помогает развивать проект.'
+    };
+
+    // ============ УТИЛИТЫ ============
+    const fmt = n => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(Number(n) || 0) + ' ₽';
+    const num = n => Math.max(0, Number(n) || 0);
+    const uid = () => Math.random().toString(36).slice(2, 10);
+    const today = () => new Date().toISOString().slice(0, 10);
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const OBJECT_KINDS = ['Новостройка', 'Квартира вторичный фонд', 'Дом', 'Другое'];
+    const STAGES_ALL = ['Демонтаж', 'Инженерия', 'Черновые', 'Чистовые', 'Сдача'];
+    const ROOM_EMOJI_MAP = { bedroom: '🛏️', living: '🛋️', kids: '🧸', kitchen: '🍳', bathroom: '🛁', toilet: '🚽', combined: '🚿', hallway: '🚪', balcony: '🌇' };
+
+    function kindLabel(k) { return (k || 'Другое'); }
+    function statusLabel(s) { return s || ''; }
+    function stageLabel(s) { return s || 'Черновые'; }
+    function roomEmoji(room) { return room ? (ROOM_EMOJI_MAP[room.type] || '🚪') : '🚪'; }
+
+    function toast(msg, color) {
+      const existing = document.getElementById('toast');
+      if (existing) existing.remove();
+      const t = document.createElement('div');
+      t.id = 'toast'; t.className = 'toast'; t.textContent = msg;
+      if (color) t.style.background = color;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; }, 1900);
+      setTimeout(() => { t.remove(); }, 2300);
+    }
+
+    function copyText(text, btn) {
+      const success = () => {
+        if (btn) { const orig = btn.textContent; btn.textContent = 'Скопировано'; btn.disabled = true; setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1600); }
+        toast('📋 Скопировано в буфер');
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(success).catch(() => fallbackCopy(text, success));
+      } else { fallbackCopy(text, success); }
+    }
+    function fallbackCopy(text, cb) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); cb(); } catch (e) { alert('Скопируйте вручную:\n' + text); }
+      ta.remove();
+    }
+
+    // ============ ПОЛНЫЙ КАТАЛОГ (70 ПОЗИЦИЙ) ============
+    const DEFAULT_CATALOG = [
+      { id: 'd1', group: 'Демонтаж', name: 'Демонтаж старой штукатурки', unit: 'м²', price: 220, type: 'work', stage: 'Демонтаж', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
+      { id: 'd2', group: 'Демонтаж', name: 'Демонтаж керамической плитки', unit: 'м²', price: 340, type: 'work', stage: 'Демонтаж', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'd3', group: 'Демонтаж', name: 'Демонтаж стяжки пола', unit: 'м²', price: 350, type: 'work', stage: 'Демонтаж', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'e1', group: 'Электрика', name: 'Штробление стен под кабель', unit: 'пог. м', price: 400, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'e2', group: 'Электрика', name: 'Прокладка кабеля ВВГнг', unit: 'пог. м', price: 120, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'e3', group: 'Электрика', name: 'Установка подрозетника и розетки', unit: 'точка', price: 900, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'e4', group: 'Электрика', name: 'Установка выключателя', unit: 'точка', price: 700, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'e5', group: 'Электрика', name: 'Монтаж светильника', unit: 'шт.', price: 650, type: 'work', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
+      { id: 'p1', group: 'Сантехника', name: 'Разводка водоснабжения (точка)', unit: 'точка', price: 1800, type: 'work', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'combined'] },
+      { id: 'p2', group: 'Сантехника', name: 'Монтаж канализации (точка)', unit: 'точка', price: 1400, type: 'work', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'toilet', 'combined'] },
+      { id: 'p3', group: 'Сантехника', name: 'Установка полотенцесушителя', unit: 'шт.', price: 3500, type: 'work', stage: 'Инженерия', rooms: ['bathroom', 'combined'] },
+      { id: 'p4', group: 'Сантехника', name: 'Монтаж защиты от протечек', unit: 'комплект', price: 4500, type: 'work', stage: 'Инженерия', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'c1', group: 'Штукатурка', name: 'Штукатурка стен по маякам', unit: 'м²', price: 650, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'c2', group: 'Штукатурка', name: 'Штукатурка потолка', unit: 'м²', price: 700, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'c3', group: 'Стяжка', name: 'Стяжка пола (ЦПС до 5 см)', unit: 'м²', price: 550, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
+      { id: 'c4', group: 'Стяжка', name: 'Самовыравнивающийся пол', unit: 'м²', price: 350, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'c5', group: 'Гидроизоляция', name: 'Гидроизоляция мокрых зон', unit: 'м²', price: 350, type: 'work', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'c6', group: 'Шпаклёвка', name: 'Шпаклёвка стен под обои (2 слоя)', unit: 'м²', price: 280, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'c7', group: 'Шпаклёвка', name: 'Шпаклёвка стен под покраску', unit: 'м²', price: 380, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'c8', group: 'Шпаклёвка', name: 'Шпаклёвка потолка под покраску', unit: 'м²', price: 420, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'c9', group: 'Грунтовка', name: 'Грунтование стен (2 слоя)', unit: 'м²', price: 80, type: 'work', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
+      { id: 'c10', group: 'ГКЛ', name: 'Монтаж короба из ГКЛ', unit: 'пог. м', price: 1200, type: 'work', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
+      { id: 'f1', group: 'Стены', name: 'Поклейка обоев', unit: 'м²', price: 260, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
+      { id: 'f2', group: 'Стены', name: 'Покраска стен (2 слоя)', unit: 'м²', price: 220, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'f3', group: 'Стены', name: 'Укладка плитки на стены', unit: 'м²', price: 1500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'f4', group: 'Стены', name: 'Затирка швов плитки', unit: 'м²', price: 220, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'f5', group: 'Пол', name: 'Укладка ламината', unit: 'м²', price: 350, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
+      { id: 'f6', group: 'Пол', name: 'Укладка плитки на пол', unit: 'м²', price: 1350, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
+      { id: 'f7', group: 'Потолок', name: 'Натяжной потолок', unit: 'м²', price: 700, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'f8', group: 'Потолок', name: 'Монтаж потолочного плинтуса', unit: 'пог. м', price: 150, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'f9', group: 'Пол', name: 'Монтаж напольного плинтуса', unit: 'пог. м', price: 180, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
+      { id: 'f10', group: 'Окна', name: 'Отделка оконных откосов', unit: 'пог. м', price: 450, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen'] },
+      { id: 'f11', group: 'Двери', name: 'Установка межкомнатной двери', unit: 'шт.', price: 3500, type: 'work', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
+      { id: 's1', group: 'Сантехника', name: 'Установка ванны', unit: 'шт.', price: 3500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
+      { id: 's2', group: 'Сантехника', name: 'Установка душевой кабины', unit: 'шт.', price: 6000, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
+      { id: 's3', group: 'Сантехника', name: 'Установка унитаза', unit: 'шт.', price: 2500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined'] },
+      { id: 's4', group: 'Сантехника', name: 'Монтаж инсталляции', unit: 'шт.', price: 5500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined'] },
+      { id: 's5', group: 'Сантехника', name: 'Установка раковины с тумбой', unit: 'шт.', price: 2800, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 's6', group: 'Сантехника', name: 'Установка смесителя', unit: 'шт.', price: 1500, type: 'work', stage: 'Чистовые', rooms: ['bathroom', 'combined', 'kitchen'] },
+      { id: 'b1', group: 'Балкон', name: 'Утепление балкона', unit: 'м²', price: 500, type: 'work', stage: 'Черновые', rooms: ['balcony'] },
+      { id: 'b2', group: 'Балкон', name: 'Обшивка балкона (сайдинг/панели)', unit: 'м²', price: 450, type: 'work', stage: 'Чистовые', rooms: ['balcony'] },
+      { id: 'b3', group: 'Окна', name: 'Монтаж пластиковых окон', unit: 'м²', price: 3500, type: 'work', stage: 'Инженерия', rooms: ['balcony'] },
+      { id: 'm1', group: 'Смеси', name: 'Штукатурная смесь (30 кг)', unit: 'мешок', price: 520, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'm2', group: 'Смеси', name: 'Шпаклёвка (20 кг)', unit: 'мешок', price: 780, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'm3', group: 'Смеси', name: 'Стяжка / пескобетон (40 кг)', unit: 'мешок', price: 420, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'm4', group: 'Грунтовка', name: 'Грунтовка глубокого проникновения (10 л)', unit: 'канистра', price: 650, type: 'material', stage: 'Черновые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway', 'balcony'] },
+      { id: 'm5', group: 'Гидроизоляция', name: 'Обмазочная гидроизоляция (5 кг)', unit: 'ведро', price: 1100, type: 'material', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'm6', group: 'Электрика', name: 'Кабель ВВГнг 3×2,5', unit: 'м', price: 75, type: 'material', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'm7', group: 'Электрика', name: 'Подрозетник + механизм', unit: 'шт.', price: 450, type: 'material', stage: 'Инженерия', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'm8', group: 'Сантехника', name: 'Трубы и фитинги (комплект)', unit: 'комплект', price: 1200, type: 'material', stage: 'Инженерия', rooms: ['kitchen', 'bathroom', 'toilet', 'combined'] },
+      { id: 'm9', group: 'ГКЛ', name: 'Влагостойкий ГКЛ 12,5 мм', unit: 'лист', price: 650, type: 'material', stage: 'Черновые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen', 'hallway'] },
+      { id: 'm10', group: 'Стены', name: 'Обои (рулон 10 м²)', unit: 'рулон', price: 2500, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
+      { id: 'm11', group: 'Стены', name: 'Краска водоэмульсионная (10 л)', unit: 'ведро', price: 900, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'm12', group: 'Плитка', name: 'Плитка керамическая (стены)', unit: 'м²', price: 1700, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'm13', group: 'Плитка', name: 'Плитка / керамогранит (пол)', unit: 'м²', price: 1700, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'm14', group: 'Плитка', name: 'Плиточный клей (25 кг)', unit: 'мешок', price: 650, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'm15', group: 'Плитка', name: 'Затирка для швов (2 кг)', unit: 'пакет', price: 350, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'm16', group: 'Пол', name: 'Ламинат 33 класс', unit: 'м²', price: 1300, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
+      { id: 'm17', group: 'Пол', name: 'Подложка под ламинат', unit: 'м²', price: 150, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
+      { id: 'm18', group: 'Потолок', name: 'Натяжной потолок (ПВХ)', unit: 'м²', price: 600, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'm19', group: 'Двери', name: 'Дверь межкомнатная (комплект)', unit: 'комплект', price: 14000, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'bathroom', 'toilet', 'combined', 'hallway'] },
+      { id: 'm20', group: 'Плинтус', name: 'Плинтус напольный', unit: 'пог. м', price: 250, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'hallway'] },
+      { id: 'm21', group: 'Сантехника', name: 'Ванна акриловая', unit: 'шт.', price: 25000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
+      { id: 'm22', group: 'Сантехника', name: 'Душевая кабина', unit: 'шт.', price: 35000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined'] },
+      { id: 'm23', group: 'Сантехника', name: 'Унитаз с инсталляцией', unit: 'комплект', price: 20000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined'] },
+      { id: 'm24', group: 'Сантехника', name: 'Раковина с тумбой', unit: 'комплект', price: 14000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'toilet', 'combined', 'kitchen'] },
+      { id: 'm25', group: 'Сантехника', name: 'Смеситель', unit: 'шт.', price: 4000, type: 'material', stage: 'Чистовые', rooms: ['bathroom', 'combined', 'kitchen'] },
+      { id: 'm26', group: 'Расходники', name: 'Малярные расходники (комплект)', unit: 'комплект', price: 800, type: 'material', stage: 'Чистовые', rooms: ['bedroom', 'living', 'kids', 'kitchen', 'hallway'] },
+      { id: 'm27', group: 'Балкон', name: 'Утеплитель (минвата)', unit: 'м²', price: 450, type: 'material', stage: 'Черновые', rooms: ['balcony'] },
+      { id: 'm28', group: 'Балкон', name: 'Панели для обшивки', unit: 'м²', price: 600, type: 'material', stage: 'Чистовые', rooms: ['balcony'] }
+    ];
+
+    const ROOM_TYPES = [
+      { key: 'bedroom', label: 'Спальня', emoji: '🛏️', max: 4, wet: false },
+      { key: 'living', label: 'Гостиная', emoji: '🛋️', max: 1, wet: false },
+      { key: 'kids', label: 'Детская', emoji: '🧸', max: 3, wet: false },
+      { key: 'kitchen', label: 'Кухня', emoji: '🍳', max: 1, wet: false },
+      { key: 'bathroom', label: 'Ванная', emoji: '🛁', max: 1, wet: true },
+      { key: 'toilet', label: 'Санузел (туалет)', emoji: '🚽', max: 1, wet: true },
+      { key: 'combined', label: 'Совмещённый санузел', emoji: '🚿', max: 1, wet: true },
+      { key: 'hallway', label: 'Прихожая / Коридор', emoji: '🚪', max: 1, wet: false },
+      { key: 'balcony', label: 'Балкон / Лоджия', emoji: '🌇', max: 2, wet: false }
+    ];
+
+    const RESIDENTIAL_PRESET = ['c1', 'c6', 'f1', 'f5', 'f9', 'e3', 'f11', 'm1', 'm2', 'm4', 'm6', 'm10', 'm16', 'm17', 'm20', 'm19'];
+    const WET_PRESET_FULL = ['c5', 'f3', 'f4', 'f6', 'p1', 'p2', 'p3', 's1', 's3', 's5', 'f11', 'm5', 'm8', 'm12', 'm13', 'm14', 'm15', 'm21', 'm23', 'm24', 'm19'];
+    const TOILET_PRESET = ['c5', 'f3', 'f4', 'f6', 'p2', 's3', 'f11', 'm5', 'm12', 'm13', 'm14', 'm15', 'm23', 'm19'];
+
+    const ROOM_PRESETS = {
+      bedroom: RESIDENTIAL_PRESET, living: RESIDENTIAL_PRESET, kids: RESIDENTIAL_PRESET, residential: RESIDENTIAL_PRESET,
+      kitchen: ['c1', 'c5', 'f3', 'f4', 'f6', 'p1', 'p2', 'e3', 'm1', 'm4', 'm5', 'm8', 'm12', 'm13', 'm14', 'm15'],
+      bathroom: WET_PRESET_FULL, combined: WET_PRESET_FULL, wet: WET_PRESET_FULL,
+      toilet: TOILET_PRESET,
+      hallway: ['c1', 'c6', 'f2', 'f6', 'f11', 'e3', 'm1', 'm2', 'm4', 'm6', 'm11', 'm19'],
+      balcony: ['c3', 'c9', 'f5', 'e5', 'b1', 'b2', 'm3', 'm4', 'm16', 'm17', 'm27', 'm28']
+    };
+
+    // ============ ХРАНИЛИЩЕ ============
+    const STORAGE_KEY = 'smetchik22_pro';
+    let db;
+    try { db = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch (e) { db = null; }
+    if (!db) {
+      db = {
+        company: '', region: 'Новосибирск', markup: 10, waste: 10,
+        inn: '', ogrn: '', legalAddress: '', director: '', phone: '', email: '', website: '',
+        contractPrefix: 'BM', objects: [], versions: {}, catalog: [],
+        donateName: '', donatePhone: '', donateCard: '', donateBank: '', donateTelegram: '', donateMessage: ''
+      };
+    }
+    ['inn', 'ogrn', 'legalAddress', 'director', 'phone', 'email', 'website', 'donateName', 'donatePhone', 'donateCard', 'donateBank', 'donateTelegram', 'donateMessage'].forEach(k => { if (db[k] === undefined) db[k] = ''; });
+    if (!db.contractPrefix) db.contractPrefix = 'BM';
+    // Убираем предзаполненное название компании, если пользователь его не менял
+    if (db.company === 'Сметчик_22' || db.company === 'BuildMate Pro') { db.company = ''; }
+    if (typeof db.company !== 'string') db.company = '';
+
+    if (!Array.isArray(db.catalog)) db.catalog = [];
+    (function ensureFullCatalog() {
+      const existingIds = new Set(db.catalog.map(x => x.id));
+      let restored = 0;
+      DEFAULT_CATALOG.forEach(defItem => {
+        if (!existingIds.has(defItem.id)) {
+          db.catalog.push(JSON.parse(JSON.stringify(defItem)));
+          restored++;
+        }
+      });
+      if (restored > 0) {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); } catch (e) { }
+        console.log('BuildMate Pro: восстановлено стандартных расценок — ' + restored);
+      }
+    })();
+    let CATALOG = db.catalog;
+
+    function migrateDB() {
+      if (!db || !db.objects) return;
+      let changed = false;
+      db.objects.forEach(o => {
+        (o.items || []).forEach(i => {
+          if (i.roomName && i.name && i.name.endsWith(' (' + i.roomName + ')')) {
+            i.name = i.name.slice(0, -(' (' + i.roomName + ')').length);
+            changed = true;
+          }
+        });
+        if (o.kind === 'Ванная комната' || o.kind === 'Санузел' || o.kind === 'Совмещённый санузел') {
+          o.kind = 'Другое'; changed = true;
+        }
+        if (o.kind && !OBJECT_KINDS.includes(o.kind)) {
+          const found = OBJECT_KINDS.find(k => o.kind.includes(k));
+          if (found) { o.kind = found; changed = true; }
+        }
+      });
+      if (changed) save();
+    }
+    migrateDB();
+
+    let tab = 'home', selected = db.objects[0]?.id || null, editingItem = null, estimateView = 'sections', wizard = null;
+    let estimateRoomFilter = [];
+    let settingsDraft = null;
+    let menuOpen = false;
+    let donateOpen = false;
+    let estimateItemVoiceState = null;
+    let estimateAddState = null;
+
+    let saveTimeout = null;
+    function save() {
+      db.catalog = CATALOG;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+    }
+    function saveDebounced() {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => { save(); saveTimeout = null; }, 250);
+    }
+    function obj() { return db.objects.find(o => o.id === selected); }
+
+    function restoreFullCatalog() {
+      if (!confirm('Добавить все стандартные расценки (70 позиций), которых сейчас нет в базе? Ваши собственные позиции и правки существующих сохранятся.')) return;
+      const existingIds = new Set(CATALOG.map(x => x.id));
+      let restored = 0;
+      DEFAULT_CATALOG.forEach(defItem => {
+        if (!existingIds.has(defItem.id)) {
+          CATALOG.push(JSON.parse(JSON.stringify(defItem)));
+          restored++;
+        }
+      });
+      db.catalog = CATALOG;
+      save();
+      toast(restored > 0 ? `🔄 Восстановлено ${restored} позиций` : 'Все стандартные позиции уже в каталоге', '#64748b');
+      render();
+    }
+
+    // ============ НАСТРОЙКИ ============
+    function initSettingsDraft() {
+      if (!settingsDraft) {
+        settingsDraft = {
+          company: db.company || '', inn: db.inn || '', ogrn: db.ogrn || '',
+          legalAddress: db.legalAddress || '', director: db.director || '',
+          phone: db.phone || '', email: db.email || '', website: db.website || '',
+          region: db.region || 'Новосибирск',
+          markup: db.markup ?? 10, waste: db.waste ?? 10,
+          contractPrefix: db.contractPrefix || 'BM',
+          donateName: db.donateName || '', donatePhone: db.donatePhone || '',
+          donateCard: db.donateCard || '', donateBank: db.donateBank || '',
+          donateTelegram: db.donateTelegram || '', donateMessage: db.donateMessage || ''
+        };
+      }
+      return settingsDraft;
+    }
+    function setDraft(k, v) {
+      if (!settingsDraft) initSettingsDraft();
+      if (['markup', 'waste'].includes(k)) {
+        settingsDraft[k] = (v === '' || v === null || isNaN(Number(v))) ? '' : num(v);
+      } else settingsDraft[k] = v;
+    }
+    function commitSettingsDraft() {
+      if (!settingsDraft) return;
+      if (settingsDraft.markup === '' || settingsDraft.markup === null) settingsDraft.markup = 0;
+      if (settingsDraft.waste === '' || settingsDraft.waste === null) settingsDraft.waste = 0;
+      Object.assign(db, settingsDraft);
+      save(); settingsDraft = null;
+    }
+    function saveSettings() {
+      if (!settingsDraft) { toast('Нет изменений', '#64748b'); return; }
+      commitSettingsDraft();
+      toast('💾 Настройки сохранены');
+      render();
+    }
+    function resetSettingsDraft() { settingsDraft = null; initSettingsDraft(); render(); toast('↩ Изменения отменены', '#64748b'); }
+    function settingsDirty() {
+      if (!settingsDraft) return false;
+      for (const k of Object.keys(settingsDraft)) {
+        if (String(settingsDraft[k] ?? '') !== String(db[k] ?? '')) return true;
+      }
+      return false;
+    }
+
+    // ============ НАВИГАЦИЯ ============
+    function applyState(st) {
+      st = st || { tab: 'home', editingItem: null };
+      tab = st.tab || 'home';
+      editingItem = st.editingItem || null;
+      render();
+      updateBackButton();
+    }
+    function navigate(newState) {
+      if (tab === 'settings' && newState.tab !== 'settings' && settingsDraft) {
+        const wasDirty = settingsDirty();
+        commitSettingsDraft();
+        if (wasDirty) toast('💾 Настройки сохранены автоматически');
+      }
+      if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
+      closeCatalogModals();
+      stopVoice();
+      const st = { tab: newState.tab || tab, editingItem: newState.editingItem || null };
+      if (st.tab !== tab || st.editingItem !== editingItem) {
+        try { history.pushState(st, '', location.href); } catch (e) { }
+      }
+      applyState(st);
+    }
+    function goBack() {
+      if (menuOpen) { closeMenu(); return; }
+      if (donateOpen) { closeDonate(); return; }
+      if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) { closeCatalogModals(); return; }
+      if (!history.state) {
+        try { window.Telegram?.WebApp?.close?.(); } catch (e) { }
+        return;
+      }
+      history.back();
+    }
+    function updateBackButton() {
+      const atRoot = !history.state;
+      const bb = window.Telegram?.WebApp?.BackButton;
+      if (bb) { try { bb.show(); } catch (e) { } }
+      const bEl = document.getElementById('backBtn');
+      if (bEl) bEl.classList.toggle('hidden', atRoot);
+    }
+    window.addEventListener('popstate', e => {
+      if (tab === 'settings' && (!e.state || e.state.tab !== 'settings') && settingsDraft) {
+        commitSettingsDraft();
+      }
+      if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
+      applyState(e.state);
+    });
+    if (window.Telegram?.WebApp?.BackButton) {
+      window.Telegram.WebApp.BackButton.onClick(() => {
+        if (menuOpen) { closeMenu(); return; }
+        if (donateOpen) { closeDonate(); return; }
+        if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) { closeCatalogModals(); return; }
+        if (!history.state) {
+          try { window.Telegram.WebApp.close(); } catch (e) { }
+        } else {
+          history.back();
+        }
+      });
+      try { window.Telegram.WebApp.BackButton.show(); } catch (e) { }
+    }
+
+    // ============ БОКОВОЕ МЕНЮ ============
+    function openMenu() { menuOpen = true; renderDrawer(); try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred?.('light'); } catch (e) { } }
+    function closeMenu() { menuOpen = false; renderDrawer(); }
+    function renderDrawer() {
+      const host = document.getElementById('drawerHost');
+      if (!menuOpen) { host.innerHTML = ''; return; }
+      const admin = isAdmin();
+      const items = [
+        { key: 'home', label: '📊 Обзор', section: 'Основное' },
+        { key: 'objects', label: '🏢 Объекты', section: 'Основное' },
+        { key: 'estimate', label: '📋 Смета', section: 'Основное' },
+        { key: 'stages', label: '📅 Этапы', section: 'Работа' },
+        { key: 'procurement', label: '🛒 Закупки', section: 'Работа' },
+        { key: 'money', label: '💵 Финансы', section: 'Работа' },
+        { key: 'catalog', label: '💰 Расценки', section: 'Настройки' },
+        { key: 'docs', label: '📄 Документы', section: 'Настройки' },
+        { key: 'settings', label: '⚙️ Настройки', section: 'Настройки' }
+      ];
+      let nav = ''; let lastSection = '';
+      items.forEach(it => {
+        if (it.section !== lastSection) { nav += `<div class="drawer-section">${it.section}</div>`; lastSection = it.section; }
+        nav += `<button class="${tab === it.key ? 'active' : ''}" onclick="navigateFromMenu('${it.key}')">${it.label}</button>`;
+      });
+      host.innerHTML = `
+    <div class="drawer-overlay" onclick="closeMenu()"></div>
+    <aside class="drawer" role="dialog">
+      <div class="drawer-header">
+        <div>
+          <div class="drawer-title">BuildMate Pro${admin ? ' <span class="badge gold" style="margin-left:4px">Автор</span>' : ''}</div>
+          <div class="drawer-sub">Ваш помощник в составлении смет</div>
+        </div>
+        <button class="drawer-close" onclick="closeMenu()" aria-label="Закрыть">×</button>
+      </div>
+      <nav class="drawer-nav">
+        ${nav}
+        <div class="drawer-section">Поддержка</div>
+        <button class="donate" onclick="closeMenu(); openDonate()">❤️ Поддержать автора</button>
+      </nav>
+      <div class="drawer-footer">BuildMate Pro · v1.4<br>Сделано для прорабов и мастеров</div>
+    </aside>`;
+    }
+    function navigateFromMenu(key) { closeMenu(); navigate({ tab: key, editingItem: null }); }
+
+    // ============ ДОНАТ ============
+    const DONATE_PRESETS = [100, 300, 500, 1000];
+    let donateAmount = 300;
+
+    function getDonateReqs() {
+      const admin = isAdmin();
+      const hasLocal = admin && (db.donatePhone || db.donateCard);
+      const src = hasLocal ? {
+        name: db.donateName, phone: db.donatePhone, card: db.donateCard, bank: db.donateBank,
+        telegram: db.donateTelegram, message: db.donateMessage
+      } : HARDCODED_DONATE;
+      return {
+        name: src.name || HARDCODED_DONATE.name || 'Автор приложения',
+        phone: src.phone || HARDCODED_DONATE.phone || '',
+        card: src.card || HARDCODED_DONATE.card || '',
+        bank: src.bank || HARDCODED_DONATE.bank || '',
+        telegram: String(src.telegram || HARDCODED_DONATE.telegram || '').replace(/^@/, ''),
+        message: src.message || HARDCODED_DONATE.message || 'Спасибо за поддержку!'
+      };
+    }
+    function openDonate() { donateOpen = true; renderDonate(); try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred?.('light'); } catch (e) { } }
+    function closeDonate() { donateOpen = false; renderDonate(); }
+    function setDonateAmount(v) { donateAmount = v; renderDonate(); }
+
+    function renderDonate() {
+      const host = document.getElementById('donateHost');
+      if (!donateOpen) { host.innerHTML = ''; return; }
+      const r = getDonateReqs();
+      const hasPhone = !!r.phone, hasCard = !!r.card;
+      const qrData = [hasPhone ? 'СБП: ' + r.phone : '', hasCard ? 'Карта: ' + r.card : '', r.name ? 'Получатель: ' + r.name : ''].filter(Boolean).join('\n');
+      const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=' + encodeURIComponent(qrData || 'BuildMate Pro');
+      let body = `
+    <div class="modal-overlay" onclick="closeDonate()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeDonate()" aria-label="Закрыть">×</button>
+        <h2>❤️ Поддержать автора</h2>
+        <p class="lead">${esc(r.message)}</p>
+        <div class="donate-amounts">${DONATE_PRESETS.map(a => `<button class="${donateAmount === a ? 'active' : ''}" onclick="setDonateAmount(${a})">${a} ₽</button>`).join('')}</div>`;
+      if (hasPhone) body += `<div class="donate-block"><label>📱 СБП — перевод по номеру телефона</label><div class="copy-row"><input readonly value="${esc(r.phone)}" onclick="this.select()"><button onclick="copyText('${esc(r.phone).replace(/'/g, "\\'")}', this)">📋 Копировать</button></div></div>`;
+      if (hasCard) body += `<div class="donate-block"><label>💳 Номер карты${r.bank ? ' · ' + esc(r.bank) : ''}</label><div class="copy-row"><input readonly value="${esc(r.card)}" onclick="this.select()"><button onclick="copyText('${esc(r.card).replace(/'/g, "\\'")}', this)">📋 Копировать</button></div></div>`;
+      if (hasPhone || hasCard) body += `<div class="qr-wrap"><img src="${qrUrl}" alt="QR-код реквизитов"><p class="hint">Отсканируйте QR для быстрого доступа к реквизитам</p></div>`;
+      if (!hasPhone && !hasCard) {
+        body += `<div class="donate-block" style="text-align:center"><p class="hint" style="margin:0">Автор пока не указал реквизиты для донатов${isAdmin() ? '<br>Настройки → «Реквизиты для донатов»' : ''}.</p></div>`;
+      }
+      body += `<div class="thanks-block">🙏 Спасибо за поддержку! Каждый перевод помогает делать приложение лучше.${r.name && r.name !== 'Автор приложения' ? '<br><b>Получатель: ' + esc(r.name) + '</b>' : ''}</div>`;
+      if (r.telegram) body += `<button class="btn secondary" style="width:100%;margin-bottom:8px" onclick="openAuthorChat()">💬 Написать автору в Telegram</button>`;
+      body += `<button class="btn pink" style="width:100%" onclick="closeDonate()">Закрыть</button></div></div>`;
+      host.innerHTML = body;
+    }
+    function openAuthorChat() {
+      const r = getDonateReqs();
+      if (!r.telegram) { toast('Telegram автора не указан', '#64748b'); return; }
+      const url = 'https://t.me/' + r.telegram;
+      if (window.Telegram?.WebApp?.openTelegramLink) { try { window.Telegram.WebApp.openTelegramLink(url); return; } catch (e) { } }
+      window.open(url, '_blank');
+    }
+
+    // ============ МОДАЛКИ ============
+    let catalogEditState = null;
+
+    function closeCatalogModals() {
+      catalogEditState = null;
+      estimateItemVoiceState = null;
+      estimateAddState = null;
+      window._pendingImport = null;
+      const host = document.getElementById('catalogModalHost');
+      if (host) host.innerHTML = '';
+    }
+    function closeCatalogEdit() { closeCatalogModals(); }
+    function closeImportPreview() { closeCatalogModals(); }
+    function closeEstimateItemVoicePreview() { closeCatalogModals(); }
+    function closeEstimateAddModal() { closeCatalogModals(); }
+
+    // ============ ДОБАВЛЕНИЕ ПОЗИЦИИ В СМЕТУ ============
+    function openAddEstimateItem() {
+      const o = obj();
+      if (!o) { alert('Сначала добавьте объект'); return; }
+      estimateAddState = { mode: 'select', search: '' };
+      renderAddEstimateItemModal();
+    }
+
+    function setAddEstimateSearch(v) {
+      if (!estimateAddState) return;
+      estimateAddState.search = v;
+      const listEl = document.getElementById('eaList');
+      if (!listEl) return;
+      const search = v.toLowerCase().trim();
+      const filtered = CATALOG.filter(p => !search || p.name.toLowerCase().includes(search) || (p.group || '').toLowerCase().includes(search));
+      listEl.innerHTML = filtered.length ? filtered.map(p => `
+    <div class="catalog-pick-item" onclick="openAddEstimateItemForm('${p.id}')">
+      <div class="itemhead">
+        <div class="grow">
+          <strong>${esc(p.name)}</strong>
+          <div class="itemmeta">${p.type === 'material' ? '📦 Материал' : '🔧 Работа'} · ${esc(p.group)} · ${esc(p.unit)}</div>
+        </div>
+        <b style="white-space:nowrap">${fmt(p.price)}</b>
+      </div>
+    </div>
+  `).join('') : '<p class="hint" style="padding:12px;text-align:center">Ничего не найдено</p>';
+    }
+
+    function openAddEstimateItemForm(catalogId) {
+      if (!estimateAddState) return;
+      let draft;
+      if (catalogId) {
+        const p = CATALOG.find(x => x.id === catalogId);
+        if (!p) return;
+        draft = {
+          name: p.name, type: p.type, unit: p.unit, price: p.price,
+          cost: +(p.price * 0.75).toFixed(2),
+          qty: 1, group: p.group, stage: p.stage || 'Черновые',
+          roomId: '', roomName: ''
+        };
+      } else {
+        draft = {
+          name: '', type: 'work', unit: 'м²', price: 0, cost: 0, qty: 1,
+          group: 'Прочее', stage: 'Черновые', roomId: '', roomName: ''
+        };
+      }
+      estimateAddState = { mode: 'form', draft, search: estimateAddState.search || '' };
+      renderAddEstimateItemModal();
+    }
+
+    function backToAddEstimateSelect() {
+      if (!estimateAddState) return;
+      estimateAddState = { mode: 'select', search: estimateAddState.search || '' };
+      renderAddEstimateItemModal();
+    }
+
+    function renderAddEstimateItemModal() {
+      if (!estimateAddState) return;
+      const o = obj();
+      if (!o) { closeCatalogModals(); return; }
+      const host = document.getElementById('catalogModalHost');
+
+      if (estimateAddState.mode === 'select') {
+        const search = (estimateAddState.search || '').toLowerCase().trim();
+        const filtered = CATALOG.filter(p => !search || p.name.toLowerCase().includes(search) || (p.group || '').toLowerCase().includes(search));
+        host.innerHTML = `
+      <div class="modal-overlay" onclick="closeEstimateAddModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+          <button class="modal-close" onclick="closeEstimateAddModal()" aria-label="Закрыть">×</button>
+          <h2>➕ Добавить позицию в смету</h2>
+          <p class="hint">Выберите из каталога или создайте вручную</p>
+          <div class="field" style="margin:12px 0 10px">
+            <input type="text" id="eaSearch" placeholder="🔍 Поиск по названию или разделу..." value="${esc(estimateAddState.search || '')}" oninput="setAddEstimateSearch(this.value)">
+          </div>
+          <button class="btn secondary" style="width:100%;margin-bottom:12px" onclick="openAddEstimateItemForm(null)">📝 Создать вручную</button>
+          <div class="catalog-pick" id="eaList">
+            ${filtered.length ? filtered.map(p => `
+              <div class="catalog-pick-item" onclick="openAddEstimateItemForm('${p.id}')">
+                <div class="itemhead">
+                  <div class="grow">
+                    <strong>${esc(p.name)}</strong>
+                    <div class="itemmeta">${p.type === 'material' ? '📦 Материал' : '🔧 Работа'} · ${esc(p.group)} · ${esc(p.unit)}</div>
+                  </div>
+                  <b style="white-space:nowrap">${fmt(p.price)}</b>
+                </div>
+              </div>
+            `).join('') : '<p class="hint" style="padding:12px;text-align:center">Ничего не найдено</p>'}
+          </div>
+        </div>
+      </div>`;
+      } else {
+        const d = estimateAddState.draft;
+        host.innerHTML = `
+      <div class="modal-overlay" onclick="closeEstimateAddModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+          <button class="modal-close" onclick="closeEstimateAddModal()" aria-label="Закрыть">×</button>
+          <h2>📝 Позиция в смету</h2>
+          <div class="grid">
+            <div class="field" style="grid-column:1/-1">
+              <label>Наименование</label>
+              <input type="text" id="eaName" value="${esc(d.name)}" placeholder="Например: Штукатурка стен по маякам">
+            </div>
+            <div class="field">
+              <label>Тип</label>
+              <select id="eaType">
+                <option value="work" ${d.type === 'work' ? 'selected' : ''}>🔧 Работа</option>
+                <option value="material" ${d.type === 'material' ? 'selected' : ''}>📦 Материал</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Единица</label>
+              <input type="text" id="eaUnit" value="${esc(d.unit)}" placeholder="м², пог. м, шт.">
+            </div>
+            <div class="field">
+              <label>Количество</label>
+              <input type="number" id="eaQty" value="${d.qty || 1}" step="any" min="0">
+            </div>
+            <div class="field">
+              <label>Цена за ед., ₽</label>
+              <input type="number" id="eaPrice" value="${d.price || 0}" step="any" min="0">
+            </div>
+            <div class="field">
+              <label>Себестоимость за ед., ₽</label>
+              <input type="number" id="eaCost" value="${d.cost || 0}" step="any" min="0">
+            </div>
+            <div class="field">
+              <label>Раздел</label>
+              <input type="text" id="eaGroup" value="${esc(d.group)}">
+            </div>
+            <div class="field">
+              <label>Помещение</label>
+              <select id="eaRoom">
+                <option value="">— Общее —</option>
+                ${(o.rooms || []).map(r => `<option value="${r.id}" ${d.roomId === r.id ? 'selected' : ''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label>Этап</label>
+              <select id="eaStage">
+                ${STAGES_ALL.map(s => `<option value="${s}" ${d.stage === s ? 'selected' : ''}>${s}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" onclick="commitAddEstimateItem()">✅ Добавить в смету</button>
+            <button class="btn secondary" onclick="backToAddEstimateSelect()">← К выбору</button>
+          </div>
+        </div>
+      </div>`;
+      }
+    }
+
+    function commitAddEstimateItem() {
+      const o = obj(); if (!o) return;
+      const roomId = document.getElementById('eaRoom').value;
+      const room = roomId ? o.rooms.find(r => r.id === roomId) : null;
+      const price = num(document.getElementById('eaPrice').value);
+      const item = {
+        id: 'i_' + uid(),
+        name: document.getElementById('eaName').value.trim() || 'Новая позиция',
+        type: document.getElementById('eaType').value,
+        unit: document.getElementById('eaUnit').value.trim() || 'м²',
+        qty: num(document.getElementById('eaQty').value),
+        price: price,
+        cost: num(document.getElementById('eaCost').value),
+        group: document.getElementById('eaGroup').value.trim() || 'Прочее',
+        stage: document.getElementById('eaStage').value,
+        roomId: roomId || '',
+        roomName: room ? room.name : ''
+      };
+      o.items.push(item);
+      save();
+      closeCatalogModals();
+      toast('✅ Позиция добавлена в смету');
+      render();
+    }
+
+    // ============ РЕДАКТИРОВАНИЕ РАСЦЕНКИ ============
+    function openCatalogEdit(id) {
+      if (id) {
+        const item = CATALOG.find(x => x.id === id);
+        if (!item) { alert('Расценка не найдена'); return; }
+        catalogEditState = { mode: 'edit', draft: JSON.parse(JSON.stringify(item)) };
+      } else {
+        catalogEditState = {
+          mode: 'new',
+          draft: {
+            id: 'c_' + uid(), name: '', type: 'work', unit: 'м²', price: 0,
+            group: 'Свои', stage: 'Черновые', rooms: ROOM_TYPES.map(t => t.key)
+          }
+        };
+      }
+      renderCatalogEditModal();
+    }
+    function openCatalogEditWithDraft(draft, originalText) {
+      catalogEditState = { mode: 'new', draft, originalText };
+      renderCatalogEditModal();
+    }
+
+    function renderCatalogEditModal() {
+      if (!catalogEditState) return;
+      const d = catalogEditState.draft;
+      const isEdit = catalogEditState.mode === 'edit';
+      const host = document.getElementById('catalogModalHost');
+      host.innerHTML = `
+    <div class="modal-overlay" onclick="closeCatalogEdit()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeCatalogEdit()" aria-label="Закрыть">×</button>
+        <h2>${isEdit ? '✏️ Редактирование расценки' : '➕ Новая расценка'}</h2>
+        ${catalogEditState.originalText ? `<p class="hint" style="margin-bottom:12px">Распознано: «${esc(catalogEditState.originalText)}»</p>` : ''}
+        <div class="grid">
+          <div class="field" style="grid-column:1/-1">
+            <label>Наименование</label>
+            <input type="text" id="ceName" value="${esc(d.name)}" placeholder="Например: Штукатурка стен по маякам">
+          </div>
+          <div class="field">
+            <label>Тип</label>
+            <select id="ceType">
+              <option value="work" ${d.type === 'work' ? 'selected' : ''}>🔧 Работа</option>
+              <option value="material" ${d.type === 'material' ? 'selected' : ''}>📦 Материал</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Единица</label>
+            <input type="text" id="ceUnit" value="${esc(d.unit)}" placeholder="м², пог. м, шт.">
+          </div>
+          <div class="field">
+            <label>Цена, ₽</label>
+            <input type="number" id="cePrice" value="${d.price}" min="0" step="any">
+          </div>
+          <div class="field">
+            <label>Раздел</label>
+            <input type="text" id="ceGroup" value="${esc(d.group)}" placeholder="Отделка, Плитка, Сантехника...">
+          </div>
+          <div class="field">
+            <label>Этап</label>
+            <select id="ceStage">
+              ${STAGES_ALL.map(s => `<option value="${s}" ${d.stage === s ? 'selected' : ''}>${s}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label>Применимо к помещениям</label>
+          <div class="room-chips" id="ceRooms">
+            ${ROOM_TYPES.map(rt => `<label class="room-chip ${(d.rooms || []).includes(rt.key) ? 'on' : ''}">
+              <input type="checkbox" value="${rt.key}" ${(d.rooms || []).includes(rt.key) ? 'checked' : ''}>${rt.emoji} ${rt.label}
+            </label>`).join('')}
+          </div>
+          <p class="hint" style="margin-top:8px">Отметьте, в каких комнатах применяется эта расценка. Если ничего не выбрано — применяется ко всем.</p>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="saveCatalogEdit()">${isEdit ? '💾 Сохранить' : '➕ Добавить'}</button>
+          <button class="btn secondary" onclick="closeCatalogEdit()">Отмена</button>
+          ${isEdit ? `<button class="btn danger" onclick="deleteCatalogFromModal()">🗑 Удалить</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+    }
+
+    function saveCatalogEdit() {
+      if (!catalogEditState) return;
+      const name = document.getElementById('ceName').value.trim();
+      if (!name) { alert('Укажите наименование'); return; }
+      const rooms = [...document.querySelectorAll('#ceRooms input:checked')].map(el => el.value);
+      const draft = {
+        id: catalogEditState.draft.id,
+        name,
+        type: document.getElementById('ceType').value,
+        unit: document.getElementById('ceUnit').value.trim() || 'м²',
+        price: num(document.getElementById('cePrice').value),
+        group: document.getElementById('ceGroup').value.trim() || 'Свои',
+        stage: document.getElementById('ceStage').value,
+        rooms: rooms.length ? rooms : ROOM_TYPES.map(t => t.key)
+      };
+      const wasEdit = catalogEditState.mode === 'edit';
+      if (wasEdit) {
+        const idx = CATALOG.findIndex(x => x.id === draft.id);
+        if (idx >= 0) CATALOG[idx] = draft;
+      } else {
+        CATALOG.push(draft);
+      }
+      save();
+      closeCatalogModals();
+      toast(wasEdit ? '✏️ Расценка обновлена' : '✅ Расценка добавлена');
+      render();
+    }
+
+    function deleteCatalogFromModal() {
+      if (!catalogEditState || catalogEditState.mode !== 'edit') return;
+      if (!confirm('Удалить эту расценку из базы?')) return;
+      const id = catalogEditState.draft.id;
+      CATALOG = CATALOG.filter(x => x.id !== id);
+      db.catalog = CATALOG;
+      save();
+      closeCatalogModals();
+      toast('🗑 Расценка удалена', '#dc2626');
+      render();
+    }
+
+    // ============ ИМПОРТ EXCEL ============
+    let xlsxLoadingPromise = null;
+    function ensureXlsx() {
+      if (window.XLSX) return Promise.resolve();
+      if (xlsxLoadingPromise) return xlsxLoadingPromise;
+      xlsxLoadingPromise = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+        s.onload = () => resolve();
+        s.onerror = () => { xlsxLoadingPromise = null; reject(new Error('Не удалось загрузить библиотеку для работы с Excel. Проверьте интернет.')); };
+        document.head.appendChild(s);
+      });
+      return xlsxLoadingPromise;
+    }
+    function openExcelImport() { document.getElementById('xlsxFileInput').click(); }
+
+    function handleXlsxUpload(file) {
+      if (!file) return;
+      ensureXlsx().then(() => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const wb = XLSX.read(data, { type: 'array' });
+            const sheet = wb.Sheets[wb.SheetNames[0]];
+            if (!sheet) { alert('В файле нет ни одного листа'); return; }
+            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+            const parsed = parseCatalogRows(rows);
+            if (!parsed.items.length) {
+              alert('Не удалось найти позиции для импорта.\n\nУбедитесь, что в файле есть колонки:\nНаименование | Тип | Раздел | Единица | Цена');
+              return;
+            }
+            showImportPreview(parsed);
+          } catch (err) { alert('Ошибка чтения файла: ' + err.message); }
+        };
+        reader.readAsArrayBuffer(file);
+      }).catch(err => alert(err.message));
+    }
+
+    function parseCatalogRows(rows) {
+      let colMap = null;
+      let start = 0;
+      if (rows.length > 0) {
+        const header = rows[0].map(c => String(c).toLowerCase().trim());
+        const keys = ['наименование', 'название', 'name', 'тип', 'type', 'единица', 'ед', 'unit', 'цена', 'price', 'стоимость', 'раздел', 'категория', 'group', 'этап', 'stage', 'помещения', 'rooms', 'комнаты'];
+        if (header.some(h => keys.includes(h))) {
+          colMap = {};
+          header.forEach((h, idx) => {
+            if (['наименование', 'название', 'name'].includes(h)) colMap.name = idx;
+            else if (['тип', 'type'].includes(h)) colMap.type = idx;
+            else if (['единица', 'ед', 'unit'].includes(h)) colMap.unit = idx;
+            else if (['цена', 'price', 'стоимость'].includes(h)) colMap.price = idx;
+            else if (['раздел', 'категория', 'group'].includes(h)) colMap.group = idx;
+            else if (['этап', 'stage'].includes(h)) colMap.stage = idx;
+            else if (['помещения', 'rooms', 'комнаты'].includes(h)) colMap.rooms = idx;
+          });
+          start = 1;
+        }
+      }
+      if (!colMap) { colMap = { name: 0, type: 1, unit: 2, price: 3, group: 4, stage: 5, rooms: 6 }; }
+
+      const items = [];
+      for (let i = start; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || row[colMap.name] === undefined || row[colMap.name] === '') continue;
+        const name = String(row[colMap.name] || '').trim();
+        if (!name) continue;
+        const typeRaw = String(row[colMap.type] || '').toLowerCase();
+        const type = (typeRaw.includes('мат') || typeRaw.includes('material')) ? 'material' : 'work';
+        let unit = String(row[colMap.unit] || 'м²').trim() || 'м²';
+        let priceStr = String(row[colMap.price] || '0').replace(/\s/g, '').replace(/[^\d.,]/g, '').replace(',', '.');
+        const price = parseFloat(priceStr) || 0;
+        let group = String(row[colMap.group] || 'Импорт').trim() || 'Импорт';
+        let stage = String(row[colMap.stage] || 'Черновые').trim() || 'Черновые';
+        if (!STAGES_ALL.includes(stage)) {
+          const found = STAGES_ALL.find(s => s.toLowerCase().includes(stage.toLowerCase()) || stage.toLowerCase().includes(s.toLowerCase()));
+          stage = found || 'Черновые';
+        }
+        let rooms = ROOM_TYPES.map(t => t.key);
+        if (colMap.rooms !== undefined && row[colMap.rooms]) {
+          const parsedRooms = parseRoomsField(String(row[colMap.rooms]));
+          if (parsedRooms.length) rooms = parsedRooms;
+        }
+        items.push({ id: 'c_' + uid(), name, type, unit, price, group, stage, rooms });
+      }
+      return { items };
+    }
+
+    function parseRoomsField(str) {
+      const map = { 'спальня': 'bedroom', 'спальни': 'bedroom', 'гостиная': 'living', 'гостиной': 'living', 'детская': 'kids', 'детской': 'kids', 'кухня': 'kitchen', 'кухни': 'kitchen', 'ванная': 'bathroom', 'ванной': 'bathroom', 'санузел': 'toilet', 'туалет': 'toilet', 'совмещенный': 'combined', 'совмещённый': 'combined', 'прихожая': 'hallway', 'прихожей': 'hallway', 'коридор': 'hallway', 'балкон': 'balcony', 'лоджия': 'balcony' };
+      const result = new Set();
+      str.toLowerCase().split(/[,;]+/).forEach(part => {
+        part = part.trim();
+        if (!part) return;
+        if (ROOM_TYPES.some(t => t.key === part)) result.add(part);
+        else if (map[part]) result.add(map[part]);
+      });
+      return [...result];
+    }
+
+    function showImportPreview(parsed) {
+      const host = document.getElementById('catalogModalHost');
+      const preview = parsed.items.slice(0, 25);
+      const more = parsed.items.length > preview.length;
+      host.innerHTML = `
+    <div class="modal-overlay" onclick="closeImportPreview()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeImportPreview()" aria-label="Закрыть">×</button>
+        <h2>📊 Импорт из Excel</h2>
+        <p class="hint">Найдено позиций: <b>${parsed.items.length}</b>. Дубликаты по наименованию будут пропущены.</p>
+        <div style="max-height:340px;overflow-y:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px;padding:10px">
+          ${preview.map(it => `<div class="listitem" style="padding:8px 0"><div class="itemhead"><div class="grow"><strong>${esc(it.name)}</strong><div class="itemmeta">${it.type === 'material' ? '📦 Материал' : '🔧 Работа'} · ${esc(it.group)} · ${esc(it.unit)}</div></div><b style="white-space:nowrap">${fmt(it.price)}</b></div></div>`).join('')}
+          ${more ? `<p class="hint" style="text-align:center;margin-top:8px">... и ещё ${parsed.items.length - preview.length}</p>` : ''}
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="commitImport()">📥 Импортировать ${parsed.items.length}</button>
+          <button class="btn secondary" onclick="closeImportPreview()">Отмена</button>
+        </div>
+      </div>
+    </div>`;
+      window._pendingImport = parsed.items;
+    }
+
+    function commitImport() {
+      if (!window._pendingImport || !window._pendingImport.length) return;
+      const items = window._pendingImport;
+      let added = 0, skipped = 0;
+      const existingNames = new Set(CATALOG.map(x => x.name.toLowerCase().trim()));
+      items.forEach(it => {
+        const key = it.name.toLowerCase().trim();
+        if (existingNames.has(key)) { skipped++; return; }
+        CATALOG.push(it);
+        existingNames.add(key);
+        added++;
+      });
+      db.catalog = CATALOG;
+      save();
+      window._pendingImport = null;
+      closeCatalogModals();
+      toast(`✅ Добавлено: ${added}${skipped ? ', пропущено дубликатов: ' + skipped : ''}`);
+      render();
+    }
+
+    function downloadExcelTemplate() {
+      ensureXlsx().then(() => {
+        const data = [
+          ['Наименование', 'Тип', 'Раздел', 'Единица', 'Цена', 'Этап', 'Помещения'],
+          ['Штукатурка стен по маякам', 'Работа', 'Штукатурка', 'м²', 650, 'Черновые', 'Спальня,Гостиная,Кухня'],
+          ['Шпаклёвка стен под обои', 'Работа', 'Шпаклёвка', 'м²', 280, 'Черновые', 'Спальня,Гостиная'],
+          ['Плитка керамическая', 'Материал', 'Плитка', 'м²', 1700, 'Чистовые', 'Ванная,Санузел'],
+          ['Унитаз с инсталляцией', 'Материал', 'Сантехника', 'комплект', 20000, 'Чистовые', 'Санузел'],
+          ['', '', '', '', '', '', '']
+        ];
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        ws['!cols'] = [{ wch: 38 }, { wch: 10 }, { wch: 16 }, { wch: 10 }, { wch: 10 }, { wch: 12 }, { wch: 30 }];
+        XLSX.utils.book_append_sheet(wb, ws, 'Расценки');
+        XLSX.writeFile(wb, 'buildmate-pro-template.xlsx');
+        toast('📥 Шаблон скачан');
+      }).catch(err => alert(err.message));
+    }
+
+    // ============ ГОЛОСОВОЙ ВВОД ============
+    let recognition = null;
+    let voiceCallback = null;
+
+    function startVoiceRecognition(callback, hint) {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        alert('Голосовой ввод не поддерживается в этом браузере.\n\nПопробуйте Chrome на Android или настольный Chrome.');
+        return;
+      }
+      if (recognition) { try { recognition.abort(); } catch (e) { } }
+      voiceCallback = callback;
+      recognition = new SR();
+      recognition.lang = 'ru-RU';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      showVoiceModal(true, hint);
+      recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript || '';
+        showVoiceModal(false);
+        const cb = voiceCallback;
+        voiceCallback = null;
+        if (text && cb) cb(text);
+      };
+      recognition.onerror = (e) => {
+        showVoiceModal(false);
+        voiceCallback = null;
+        if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+          alert('Разрешите доступ к микрофону в настройках устройства.');
+        } else if (e.error === 'no-speech') {
+          toast('Речь не распознана, попробуйте ещё раз', '#64748b');
+        } else if (e.error === 'aborted') {
+          // отмена
+        } else {
+          alert('Ошибка распознавания: ' + e.error);
+        }
+      };
+      recognition.onend = () => { showVoiceModal(false); };
+      try { recognition.start(); }
+      catch (e) { showVoiceModal(false); voiceCallback = null; alert('Не удалось начать запись: ' + e.message); }
+    }
+
+    function showVoiceModal(active, hint) {
+      const host = document.getElementById('voiceModalHost');
+      if (!active) { host.innerHTML = ''; return; }
+      host.innerHTML = `
+    <div class="modal-overlay" style="background:rgba(0,0,0,.7)">
+      <div class="modal" style="text-align:center;max-width:420px">
+        <div class="voice-pulse">🎤</div>
+        <h2 style="margin-top:12px">Говорите...</h2>
+        <p class="lead">${esc(hint || 'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»')}</p>
+        <button class="btn secondary" onclick="stopVoice()" style="margin-top:16px">Отменить</button>
+      </div>
+    </div>`;
+    }
+
+    function stopVoice() {
+      if (recognition) { try { recognition.abort(); } catch (e) { } }
+      voiceCallback = null;
+      showVoiceModal(false);
+    }
+
+    function openVoiceAdd() {
+      startVoiceRecognition(text => {
+        const draft = parseVoiceText(text);
+        openCatalogEditWithDraft(draft, text);
+      }, 'Например: «Штукатурка стен по маякам 650 рублей за квадратный метр»');
+    }
+
+    // ============ ПАРСЕРЫ ============
+    const NUM_WORDS = { один: 1, одна: 1, одно: 1, два: 2, две: 2, три: 3, четыре: 4, пять: 5, шесть: 6, семь: 7, восемь: 8, девять: 9, десять: 10 };
+    function parseNumOrWord(s) {
+      s = String(s).toLowerCase().trim().replace(/[.,]/, '.');
+      if (NUM_WORDS[s] !== undefined) return NUM_WORDS[s];
+      return parseFloat(s) || 0;
+    }
+
+    function getRoomKeywords(type) {
+      const map = {
+        bedroom: ['спальн'], living: ['гостин'], kids: ['детск'], kitchen: ['кухн'],
+        bathroom: ['ванн'], toilet: ['санузел', 'туалет'], combined: ['совмещ', 'комбинир'],
+        hallway: ['прихож', 'коридор'], balcony: ['балкон', 'лоджи']
+      };
+      return map[type] || [];
+    }
+
+    function detectRoomInText(text, o) {
+      if (!o || !o.rooms) return null;
+      const lower = text.toLowerCase();
+      for (const room of o.rooms) {
+        if (lower.includes(room.name.toLowerCase())) return room;
+      }
+      for (const room of o.rooms) {
+        const kws = getRoomKeywords(room.type);
+        for (const kw of kws) {
+          if (lower.includes(kw)) return room;
+        }
+      }
+      return null;
+    }
+
+    function extractDimensions(text) {
+      const result = { length: 0, width: 0, height: 0 };
+      const dimPattern = /(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять)\s*(?:на|[xх\*×])\s*(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять)/i;
+      const m = text.match(dimPattern);
+      if (m) {
+        result.length = parseNumOrWord(m[1]);
+        result.width = parseNumOrWord(m[2]);
+      }
+      const heightMatch = text.match(/(?:высот[а-яё]*|потол[а-яё]*|потолк[а-яё]*)\s*(\d+(?:[.,]\d+)?)/i);
+      if (heightMatch) result.height = parseFloat(heightMatch[1].replace(',', '.'));
+      return result;
+    }
+
+    function parseVoiceObject(text) {
+      const lower = text.toLowerCase();
+      let kind = 'Новостройка';
+      if (/\bдом\b|коттедж|частн|таунхаус/i.test(lower)) kind = 'Дом';
+      else if (/вторичн/i.test(lower)) kind = 'Квартира вторичный фонд';
+      else if (/квартир|новострой/i.test(lower)) kind = 'Новостройка';
+
+      let name = '';
+      const nameMatch = text.match(/(?:квартир[аыуе]?|дом[а-яё]*|объект[а-яё]*)(?:\s+(?:номер|№))?\s*[а-яёa-z0-9][а-яёa-z0-9\s-]*?(?=,|\s+спальн|\s+гостин|\s+кухн|\s+ванн|\s+санузел|\s+детск|\s+прихож|\s+балкон|\s+туалет|$)/i);
+      if (nameMatch) {
+        name = nameMatch[0].trim();
+        name = name.replace(/^квартиру/i, 'Квартира').replace(/^квартиры/i, 'Квартира').replace(/^квартира/i, 'Квартира');
+        name = name.replace(/^дом[а-яё]*/i, 'Дом');
+        name = name.replace(/^объект[а-яё]*/i, 'Объект');
+      }
+      if (!name || /^(квартира|дом|объект)$/i.test(name)) {
+        name = kind === 'Дом' ? 'Новый дом' : (kind === 'Квартира вторичный фонд' ? 'Квартира (вторичка)' : 'Новая квартира');
+      }
+
+      const roomPatterns = [
+        { re: /спальн[а-яё]*/gi, type: 'bedroom', baseName: 'Спальня' },
+        { re: /гостин[а-яё]*/gi, type: 'living', baseName: 'Гостиная' },
+        { re: /детск[а-яё]*/gi, type: 'kids', baseName: 'Детская' },
+        { re: /кухн[а-яё]*/gi, type: 'kitchen', baseName: 'Кухня' },
+        { re: /совмещ[её]нн[а-яё]*/gi, type: 'combined', baseName: 'Совмещённый санузел' },
+        { re: /ванн[а-яё]*/gi, type: 'bathroom', baseName: 'Ванная' },
+        { re: /санузел[а-яё]*|туалет[а-яё]*/gi, type: 'toilet', baseName: 'Санузел' },
+        { re: /прихож[а-яё]*|коридор[а-яё]*/gi, type: 'hallway', baseName: 'Прихожая' },
+        { re: /балкон[а-яё]*|лоджи[а-яё]*/gi, type: 'balcony', baseName: 'Балкон' }
+      ];
+
+      const matches = [];
+      roomPatterns.forEach(p => {
+        const re = new RegExp(p.re.source, 'gi');
+        let m;
+        while ((m = re.exec(text)) !== null) {
+          const overlapping = matches.some(existing => existing.type === 'combined' && m.index >= existing.index && m.index < existing.index + existing.length);
+          if (overlapping) continue;
+          matches.push({ index: m.index, length: m[0].length, type: p.type, baseName: p.baseName });
+        }
+      });
+      matches.sort((a, b) => a.index - b.index);
+
+      const rooms = [];
+      const typeCount = {};
+      matches.forEach((m, i) => {
+        const nextMatch = matches[i + 1];
+        const segmentEnd = nextMatch ? nextMatch.index : text.length;
+        const segment = text.slice(m.index + m.length, segmentEnd);
+        const dims = extractDimensions(segment);
+        typeCount[m.type] = (typeCount[m.type] || 0) + 1;
+        let roomName = m.baseName;
+        if (typeCount[m.type] > 1) roomName += ' ' + typeCount[m.type];
+        const isWet = m.type === 'bathroom' || m.type === 'toilet' || m.type === 'combined';
+        rooms.push({
+          id: uid(), type: m.type, name: roomName,
+          length: dims.length || 4, width: dims.width || 3, height: dims.height || 2.7,
+          doors: 1, doorW: 0.8, doorH: 2.0,
+          windows: isWet ? 0 : 1, windowArea: 1.8
+        });
+      });
+      return { name, kind, rooms };
+    }
+
+    function parseVoiceEstimateItem(text, o) {
+      const room = detectRoomInText(text, o);
+      const roomId = room ? room.id : '';
+      const roomName = room ? room.name : '';
+
+      let qty = 1, unit = 'м²';
+      const qtyPattern = /(\d+(?:[.,]\d+)?|один|одна|одно|два|две|три|четыре|пять|шесть|семь|восемь|девять|десять|двадцать|тридцать|сорок|пятьдесят|сто)\s*(квадратн[а-яё]*\s*метр[а-яё]*|кв\.?\s*м|м2|м²|погонн[а-яё]*\s*метр[а-яё]*|пог\.?\s*м|м\.?п\.?|штук[а-яё]*|шт\.?|точек|точк[а-яё]*|комплект[а-яё]*|мешк[а-яё]*|ведр[а-яё]*|канистр[а-яё]*|пакет[а-яё]*|лист[а-яё]*|рулон[а-яё]*)/i;
+      const qtyMatch = text.match(qtyPattern);
+      if (qtyMatch) {
+        qty = parseNumOrWord(qtyMatch[1]) || 1;
+        const unitWord = qtyMatch[2].toLowerCase();
+        if (/квадратн|кв|м2|м²/.test(unitWord)) unit = 'м²';
+        else if (/погонн|пог|м\.?п/.test(unitWord)) unit = 'пог. м';
+        else if (/штук|шт/.test(unitWord)) unit = 'шт.';
+        else if (/точек|точк/.test(unitWord)) unit = 'точка';
+        else if (/комплект/.test(unitWord)) unit = 'комплект';
+        else if (/мешк/.test(unitWord)) unit = 'мешок';
+        else if (/ведр/.test(unitWord)) unit = 'ведро';
+        else if (/канистр/.test(unitWord)) unit = 'канистра';
+        else if (/пакет/.test(unitWord)) unit = 'пакет';
+        else if (/лист/.test(unitWord)) unit = 'лист';
+        else if (/рулон/.test(unitWord)) unit = 'рулон';
+      }
+
+      let price = 0;
+      const pricePattern = /(?:по|за|цена\s+)\s*(\d+(?:[.,]\d+)?)|(\d+(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/i;
+      const priceMatch = text.match(pricePattern);
+      if (priceMatch) {
+        const numStr = priceMatch[1] || priceMatch[2];
+        price = parseFloat(String(numStr).replace(',', '.')) || 0;
+      }
+
+      const workVerbs = /(?:укладк|монтаж|демонтаж|установк|разводк|покраск|поклейк|стяжк|затирк|замен[аы]|заливк|шлифовк|штроблени|утеплени|обшивк|отделк|настилк|облицовк|ремонт|подключени|перенос)/i;
+      const materialNouns = /(?:смесь|клей|плитк[а-яё]*|кабель|труб[а-яё]+|обои|краск[а-яё]*|ламинат|подложк|гидроизоляц|утеплител|профил|плинтус|подрозетник|розетк|выключател|унитаз|смеситель|раковин|дверь)/i;
+      const materialUnits = /^(?:мешок|ведро|канистра|пакет|лист|рулон)$/;
+
+      let type = 'work';
+      if (workVerbs.test(text)) type = 'work';
+      else if (materialNouns.test(text)) type = 'material';
+      else if (materialUnits.test(unit)) type = 'material';
+
+      let name = text;
+      name = name.replace(/(?:добавь|включи|добавить|запиши|внеси|положи)\s+/i, '');
+      name = name.replace(/\bв\s+[а-яё]+\s+/i, '');
+      name = name.replace(/\bво\s+[а-яё]+\s+/i, '');
+      const allRoomKws = ['спальн', 'гостин', 'детск', 'кухн', 'ванн', 'санузел', 'туалет', 'прихож', 'коридор', 'балкон', 'лоджи', 'совмещ'];
+      allRoomKws.forEach(kw => {
+        name = name.replace(new RegExp('\\b(?:в|во)\\s+' + kw + '[а-яё]*\\b', 'gi'), '');
+        name = name.replace(new RegExp('\\b' + kw + '[а-яё]*\\b', 'gi'), '');
+      });
+      name = name.replace(/(?:по|за|цена\s+)\s*\d+(?:[.,]\d+)?\s*(?:₽|руб(?:лей|ля|ль)?)?/gi, '');
+      name = name.replace(/\d+(?:[.,]\d+)?\s*(?:₽|руб(?:лей|ля|ль)?)/gi, '');
+      name = name.replace(/\d+(?:[.,]\d+)?\s*(?:квадратн[а-яё]*\s*метр[а-яё]*|кв\.?\s*м|м2|м²|погонн[а-яё]*\s*метр[а-яё]*|пог\.?\s*м|штук[а-яё]*|шт\.?|точек|точк[а-яё]*|комплект[а-яё]*|мешк[а-яё]*|ведр[а-яё]*|канистр[а-яё]*|пакет[а-яё]*|лист[а-яё]*|рулон[а-яё]*)/gi, '');
+      name = name.replace(/\s+/g, ' ').trim();
+      name = name.replace(/^[,.\s]+|[,.\s]+$/g, '');
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+
+      return {
+        id: 'i_' + uid(), name: name || text, type, unit, price, qty,
+        roomId, roomName, group: 'Голосовой ввод', stage: 'Черновые', cost: price * 0.75
+      };
+    }
+
+    function voiceObjectToWizard() {
+      startVoiceRecognition(text => {
+        const parsed = parseVoiceObject(text);
+        if (!parsed.rooms.length && !parsed.name) { toast('Не удалось распознать объект', '#dc2626'); return; }
+        if (!wizard) wizard = emptyWizard();
+        if (parsed.name && !wizard.name) wizard.name = parsed.name;
+        if (parsed.kind) wizard.kind = parsed.kind;
+        let added = 0;
+        parsed.rooms.forEach(pr => {
+          const sameType = wizard.rooms.filter(r => r.type === pr.type).length;
+          if (sameType > 0) pr.name = pr.name.replace(/\s+\d+$/, '') + ' ' + (sameType + 1);
+          if (!wizard.rooms.find(r => r.name === pr.name)) {
+            wizard.rooms.push(pr); added++;
+          }
+        });
+        navigate({ tab: 'wizard' });
+        if (added > 0) toast('🎤 Распознано помещений: ' + added);
+      }, 'Например: «Квартира 45, спальня 4 на 3, гостиная 5 на 4, кухня 3 на 3, санузел 2 на 1.5»');
+    }
+
+    function startVoiceRoomForCurrent() {
+      const o = obj();
+      if (!o) { alert('Сначала выберите объект'); return; }
+      startVoiceRecognition(text => {
+        const parsed = parseVoiceObject(text);
+        if (!parsed.rooms.length) { toast('Не удалось распознать помещения', '#dc2626'); return; }
+        let added = 0;
+        parsed.rooms.forEach(pr => {
+          const sameType = o.rooms.filter(r => r.type === pr.type).length;
+          if (sameType > 0) pr.name = pr.name.replace(/\s+\d+$/, '') + ' ' + (sameType + 1);
+          if (!o.rooms.find(r => r.name === pr.name)) { o.rooms.push(pr); added++; }
+        });
+        save(); render();
+        toast('✅ Добавлено помещений: ' + added);
+      }, 'Например: «Спальня 4 на 3, гостиная 5 на 4, кухня 3 на 3»');
+    }
+
+    function startVoiceEstimateItem() {
+      const o = obj();
+      if (!o) { alert('Сначала выберите объект'); return; }
+      if (!o.rooms || !o.rooms.length) {
+        alert('В объекте нет помещений. Сначала добавьте помещения на вкладке «Объекты».');
+        return;
+      }
+      const roomNames = o.rooms.map(r => r.name).join(', ');
+      startVoiceRecognition(text => {
+        const parsed = parseVoiceEstimateItem(text, o);
+        openEstimateItemVoicePreview(parsed, text);
+      }, 'Помещения: ' + roomNames + '. Например: «Добавь в спальню штукатурку стен 30 квадратных метров по 650 рублей»');
+    }
+
+    function openEstimateItemVoicePreview(draft, originalText) {
+      estimateItemVoiceState = { draft, originalText };
+      renderEstimateItemVoicePreview();
+    }
+
+    function renderEstimateItemVoicePreview() {
+      if (!estimateItemVoiceState) return;
+      const d = estimateItemVoiceState.draft;
+      const o = obj();
+      if (!o) { closeEstimateItemVoicePreview(); return; }
+      const host = document.getElementById('catalogModalHost');
+      host.innerHTML = `
+    <div class="modal-overlay" onclick="closeEstimateItemVoicePreview()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeEstimateItemVoicePreview()" aria-label="Закрыть">×</button>
+        <h2>🎤 Позиция в смету (голос)</h2>
+        <p class="hint" style="margin-bottom:12px">Распознано: «${esc(estimateItemVoiceState.originalText)}»</p>
+        <div class="grid">
+          <div class="field" style="grid-column:1/-1">
+            <label>Наименование</label>
+            <input type="text" id="iveName" value="${esc(d.name)}">
+          </div>
+          <div class="field">
+            <label>Помещение</label>
+            <select id="iveRoom">
+              <option value="">— Общее —</option>
+              ${(o.rooms || []).map(r => `<option value="${r.id}" ${d.roomId === r.id ? 'selected' : ''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="field">
+            <label>Тип</label>
+            <select id="iveType">
+              <option value="work" ${d.type === 'work' ? 'selected' : ''}>🔧 Работа</option>
+              <option value="material" ${d.type === 'material' ? 'selected' : ''}>📦 Материал</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Количество</label>
+            <input type="number" id="iveQty" value="${d.qty}" step="any" min="0">
+          </div>
+          <div class="field">
+            <label>Единица</label>
+            <input type="text" id="iveUnit" value="${esc(d.unit)}">
+          </div>
+          <div class="field">
+            <label>Цена за ед., ₽</label>
+            <input type="number" id="ivePrice" value="${d.price}" step="any" min="0">
+          </div>
+          <div class="field">
+            <label>Раздел</label>
+            <input type="text" id="iveGroup" value="${esc(d.group)}">
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="commitEstimateItemVoice()">✅ Добавить в смету</button>
+          <button class="btn secondary" onclick="closeEstimateItemVoicePreview()">Отмена</button>
+        </div>
+      </div>
+    </div>`;
+    }
+
+    function commitEstimateItemVoice() {
+      if (!estimateItemVoiceState) return;
+      const o = obj(); if (!o) { closeCatalogModals(); return; }
+      const roomId = document.getElementById('iveRoom').value;
+      const room = roomId ? o.rooms.find(r => r.id === roomId) : null;
+      const price = num(document.getElementById('ivePrice').value);
+      const item = {
+        id: 'i_' + uid(),
+        name: document.getElementById('iveName').value.trim() || 'Новая позиция',
+        roomId: roomId || '', roomName: room ? room.name : '',
+        group: document.getElementById('iveGroup').value.trim() || 'Голосовой ввод',
+        stage: 'Черновые',
+        type: document.getElementById('iveType').value,
+        unit: document.getElementById('iveUnit').value.trim() || 'м²',
+        qty: num(document.getElementById('iveQty').value),
+        price: price, cost: price * 0.75
+      };
+      o.items.push(item);
+      save();
+      closeCatalogModals();
+      toast('✅ Позиция добавлена в смету');
+      render();
+    }
+
+    function parseVoiceText(text) {
+      let name = text, price = 0, unit = 'м²', type = 'work';
+      const priceMatch = text.match(/(\d[\d\s]*(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/i) || text.match(/за\s+(\d[\d\s]*(?:[.,]\d+)?)/i);
+      if (priceMatch) price = parseFloat(priceMatch[1].replace(/\s/g, '').replace(',', '.')) || 0;
+      if (/квадратн|м2|м²|кв\s*метр/i.test(text)) unit = 'м²';
+      else if (/погонн|пог\.?\s*метр|м\.п\./i.test(text)) unit = 'пог. м';
+      else if (/штук|шт\b|штук[аи]/i.test(text)) unit = 'шт.';
+      else if (/точек|точк[аи]/i.test(text)) unit = 'точка';
+      else if (/комплект/i.test(text)) unit = 'комплект';
+      else if (/мешок|мешк[аи]/i.test(text)) unit = 'мешок';
+      else if (/ведро|ведр[ао]/i.test(text)) unit = 'ведро';
+      else if (/канистр/i.test(text)) unit = 'канистра';
+      else if (/пакет/i.test(text)) unit = 'пакет';
+      else if (/лист/i.test(text)) unit = 'лист';
+      else if (/рулон/i.test(text)) unit = 'рулон';
+      name = name
+        .replace(/(\d[\d\s]*(?:[.,]\d+)?)\s*(?:₽|руб(?:лей|ля|ль)?)/gi, '')
+        .replace(/за\s+\d[\d\s]*(?:[.,]\d+)?/gi, '')
+        .replace(/(?:за\s+)?(?:квадратн\w*|погонн\w*)\s+метр\w*/gi, '')
+        .replace(/\bм\.?п\.?\b|\bм²\b|\bм2\b|\bшт\.?\b|\bточек\b|\bточк[аи]\b|\bкомплект\w*|\bмешок\b|\bмешк[аи]\b|\bведро\b|\bведр[ао]\b|\bканистр\w*|\bпакет\w*|\bлист\w*|\bрулон\w*/gi, '')
+        .replace(/\s+/g, ' ').trim();
+      const workVerbs = /^(укладка|монтаж|демонтаж|установка|разводка|штукатурка|шпаклёвка|шпаклевка|покраска|поклейка|стяжка|грунтовка|утепление|обшивка|отделка|затирка|сборка|замена|ремонт|подключение|перенос|шлифовка|штробление|заливка)/i;
+      const materialKeywords = /(?:смесь|клей|плитк[аи]\b|грунтовк|кабель|труб[аы]\b|дверь|ламинат|обои|краск|ванн[аы]\b|унитаз|плитка|смеситель|раковина|подрозетник|мешок|ведро|канистра|пакет|лист|рулон|ГКЛ|профил|саморез|уголок|плинтус)/i;
+      if (workVerbs.test(name)) type = 'work';
+      else if (materialKeywords.test(text)) type = 'material';
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      return { id: 'c_' + uid(), name: name || text, type, unit, price, group: 'Голосовой ввод', stage: 'Черновые', rooms: ROOM_TYPES.map(t => t.key) };
+    }
+
+    // ============ РАСЧЁТЫ ============
+    function calcWallArea(r) {
+      return Math.max(0, 2 * (num(r.length) + num(r.width)) * num(r.height)
+        - num(r.doors) * num(r.doorW) * num(r.doorH)
+        - num(r.windows) * num(r.windowArea));
+    }
+    function totals(o, items) {
+      const list = items || o?.items || [];
+      let work = 0, mat = 0, cost = 0;
+      for (const i of list) {
+        const s = num(i.qty) * num(i.price);
+        if (i.type === 'material') mat += s; else work += s;
+        cost += num(i.qty) * num(i.cost);
+      }
+      const subtotal = work + mat;
+      return { work, mat, subtotal, markup: subtotal * num(db.markup) / 100, total: subtotal * (1 + num(db.markup) / 100), cost, profit: subtotal * (1 + num(db.markup) / 100) - cost };
+    }
+    function getBaseQty(p, room) {
+      const unit = (p.unit || '').toLowerCase(), name = (p.name || '').toLowerCase(), group = (p.group || '').toLowerCase();
+      const wallArea = calcWallArea(room), floorArea = num(room.length) * num(room.width), perimeter = 2 * (num(room.length) + num(room.width));
+      if (unit === 'м²') {
+        if (name.includes('пол') || name.includes('ламинат') || name.includes('подложк') || name.includes('наливн') || group.includes('пол') || group.includes('стяж') || group.includes('гидро') || group.includes('потолок')) return floorArea;
+        return wallArea;
+      }
+      if (unit === 'пог. м' || unit === 'м.п.' || unit === 'м') return perimeter;
+      if (unit === 'точка') return 4;
+      return 1;
+    }
+    function buildRoomItems(room) {
+      const ids = ROOM_PRESETS[room.type] || [];
+      const items = [];
+      ids.forEach(id => {
+        const p = CATALOG.find(x => x.id === id); if (!p) return;
+        const baseQty = getBaseQty(p, room); const unit = (p.unit || '').toLowerCase(); let qty = baseQty;
+        if (p.type === 'material') {
+          if (unit === 'мешок') qty = Math.max(1, Math.ceil(baseQty / 3));
+          else if (unit === 'рулон') qty = Math.max(1, Math.ceil(baseQty / 10));
+          else if (unit === 'ведро' || unit === 'канистра') qty = Math.max(1, Math.ceil(baseQty / 20));
+          else if (unit === 'пакет') qty = Math.max(1, Math.ceil(baseQty / 15));
+          else if (unit === 'лист') qty = Math.max(1, Math.ceil(baseQty / 3));
+          else if (unit === 'м') qty = Math.max(1, Math.ceil(baseQty * 0.5));
+          else qty = Math.max(1, Math.ceil(baseQty));
+        }
+        items.push({ id: uid(), name: p.name, roomName: room.name, roomId: room.id, group: p.group, stage: p.stage || 'Черновые', type: p.type, unit: p.unit, qty: +(+qty.toFixed(2)), price: p.price, cost: +(p.price * 0.75).toFixed(2) });
+      });
+      return items;
+    }
+
+    // ============ МАСТЕР ============
+    function emptyWizard() { return { name: '', address: '', client: '', phone: '', kind: 'Новостройка', rooms: [] }; }
+    function makeObj() { wizard = emptyWizard(); navigate({ tab: 'wizard', editingItem: null }); }
+    function quickStart(typeKey) {
+      const rt = ROOM_TYPES.find(t => t.key === typeKey); if (!rt) return;
+      wizard = { name: rt.label + ' — новый объект', address: '', client: '', phone: '', kind: 'Новостройка', rooms: [{ id: uid(), type: typeKey, name: rt.label, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8 }] };
+      navigate({ tab: 'wizard', editingItem: null });
+    }
+    function getWizardRoomsOfType(typeKey) { return wizard.rooms.filter(r => r.type === typeKey); }
+    function addRoomInstance(typeKey) {
+      const rt = ROOM_TYPES.find(t => t.key === typeKey); const existing = getWizardRoomsOfType(typeKey); const n = existing.length + 1;
+      const name = rt.max > 1 ? `${rt.label} ${n}` : rt.label;
+      wizard.rooms.push({ id: uid(), type: typeKey, name, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8 });
+    }
+    function toggleWizardRoom(typeKey) { const existing = getWizardRoomsOfType(typeKey); if (existing.length) wizard.rooms = wizard.rooms.filter(r => r.type !== typeKey); else addRoomInstance(typeKey); render(); }
+    function setWizardCount(typeKey, count) {
+      const rt = ROOM_TYPES.find(t => t.key === typeKey); count = Math.max(0, Math.min(num(count), rt.max || 4));
+      const existing = getWizardRoomsOfType(typeKey); const current = existing.length;
+      if (count === 0) wizard.rooms = wizard.rooms.filter(r => r.type !== typeKey);
+      else if (count < current) { const toRemove = existing.slice(count).map(r => r.id); wizard.rooms = wizard.rooms.filter(r => !toRemove.includes(r.id)); }
+      else if (count > current) { for (let i = current; i < count; i++) addRoomInstance(typeKey); }
+      const rooms = getWizardRoomsOfType(typeKey);
+      if (rt.max > 1 && rooms.length > 1) rooms.forEach((r, i) => r.name = `${rt.label} ${i + 1}`); else if (rooms.length === 1) rooms[0].name = rt.label;
+      render();
+    }
+    function setWizardField(k, v) { if (wizard) wizard[k] = v; }
+    function setWizardRoom(id, key, value) {
+      if (!wizard) return; const r = wizard.rooms.find(x => x.id === id); if (!r) return;
+      r[key] = key === 'name' ? value : num(value);
+      const areaEl = document.getElementById('area_' + id);
+      if (areaEl) { const wa = calcWallArea(r); const fa = num(r.length) * num(r.width); areaEl.textContent = `Стен: ${wa.toFixed(1)} м² · Пол: ${fa.toFixed(1)} м²`; }
+    }
+    function confirmWizard() {
+      if (!wizard) return; if (wizard.rooms.length === 0) { alert('Отметьте хотя бы одну комнату'); return; }
+      const prefix = db.contractPrefix || 'BM';
+      const o = {
+        id: uid(), name: wizard.name.trim() || 'Новый объект', address: wizard.address || '', client: wizard.client || '', phone: wizard.phone || '',
+        kind: wizard.kind || 'Новостройка', status: 'Расчёт', created: today(),
+        rooms: wizard.rooms.map(r => ({ ...r })), items: [], payments: [], expenses: [],
+        stages: [{ id: uid(), name: 'Демонтаж', start: today(), duration: 3 }, { id: uid(), name: 'Инженерия', start: today(), duration: 5 }, { id: uid(), name: 'Черновые', start: today(), duration: 10 }, { id: uid(), name: 'Чистовые', start: today(), duration: 14 }, { id: uid(), name: 'Сдача', start: today(), duration: 2 }],
+        procurement: [], photos: [], notes: '', contractNo: prefix + '-' + (db.objects.length + 1), contractDate: today(),
+        contractTerms: 'Оплата по этапам согласно согласованной смете.'
+      };
+      o.rooms.forEach(room => { buildRoomItems(room).forEach(it => o.items.push(it)); });
+      db.objects.unshift(o); selected = o.id; wizard = null; estimateRoomFilter = []; save();
+      try { history.replaceState({ tab: 'objects', editingItem: null }, '', location.href); } catch (e) { }
+      navigate({ tab: 'estimate', editingItem: null });
+      toast('🎉 Объект создан: ' + o.items.length + ' позиций');
+    }
+    function cancelWizard() { wizard = null; goBack(); }
+
+    function setObjRoom(roomId, key, value) {
+      const o = obj(); if (!o) return; const r = o.rooms.find(x => x.id === roomId); if (!r) return;
+      r[key] = key === 'name' ? value : num(value); saveDebounced();
+      const areaEl = document.getElementById('objarea_' + roomId);
+      if (areaEl) { const wa = calcWallArea(r); const fa = num(r.length) * num(r.width); areaEl.textContent = `Стен: ${wa.toFixed(1)} м² · Пол: ${fa.toFixed(1)} м²`; }
+    }
+    function delObjRoom(roomId) {
+      const o = obj(); if (!o) return; if (!confirm('Удалить помещение и связанные позиции сметы?')) return;
+      o.rooms = o.rooms.filter(r => r.id !== roomId); o.items = o.items.filter(i => i.roomId !== roomId);
+      estimateRoomFilter = estimateRoomFilter.filter(id => id !== roomId); save(); render(); toast('🗑 Помещение удалено', '#dc2626');
+    }
+    function addObjRoom() {
+      const o = obj(); if (!o) { alert('Сначала создайте объект'); return; }
+      const list = ROOM_TYPES.map((t, i) => `${i + 1}. ${t.emoji} ${t.label}`).join('\n');
+      const idx = prompt(`Добавление помещения в объект:\n«${o.name}» (${kindLabel(o.kind)})\n\nВыберите тип:\n${list}`);
+      if (!idx) return; const rt = ROOM_TYPES[Number(idx) - 1]; if (!rt) return;
+      const existing = o.rooms.filter(r => r.type === rt.key); const n = existing.length + 1;
+      const name = rt.max > 1 && existing.length ? `${rt.label} ${n}` : rt.label;
+      o.rooms.push({ id: uid(), type: rt.key, name, length: rt.wet ? 2.5 : 4, width: rt.wet ? 2 : 3, height: 2.7, doors: 1, doorW: 0.8, doorH: 2.0, windows: rt.wet ? 0 : 1, windowArea: 1.8 });
+      save(); render(); toast(`✅ Помещение «${name}» добавлено`);
+    }
+    function regenerateEstimate() {
+      const o = obj(); if (!o) return; if (!o.rooms || !o.rooms.length) { alert('Добавьте помещения'); return; }
+      if (!confirm(`Пересоздать смету по помещениям? Текущие ${o.items.length} позиций будут заменены.`)) return;
+      o.items = []; o.rooms.forEach(room => buildRoomItems(room).forEach(it => o.items.push(it)));
+      save(); render(); toast(`🔄 Смета пересоздана: ${o.items.length} позиций`);
+    }
+
+    function deleteObj(id) { if (confirm('Удалить объект и все его данные?')) { db.objects = db.objects.filter(x => x.id !== id); if (selected === id) selected = db.objects[0]?.id || null; estimateRoomFilter = []; save(); render(); toast('🗑 Объект удалён', '#dc2626'); } }
+    function selectObj(id) { selected = id; estimateRoomFilter = []; navigate({ tab: 'objects', editingItem: null }); }
+    function setObj(k, v) { const o = obj(); if (o) { o[k] = v; saveDebounced(); } }
+
+    function changeEstimateObject(id) { if (!id) return; selected = id; estimateRoomFilter = []; save(); render(); }
+    function toggleEstimateRoom(roomId) { if (estimateRoomFilter.includes(roomId)) estimateRoomFilter = estimateRoomFilter.filter(x => x !== roomId); else estimateRoomFilter.push(roomId); render(); }
+    function selectAllEstimateRooms() { const o = obj(); if (!o) return; estimateRoomFilter = (o.rooms || []).map(r => r.id); render(); }
+    function clearEstimateRooms() { estimateRoomFilter = []; render(); }
+    function getEstimateItems(o) { if (!o) return []; if (!estimateRoomFilter.length) return o.items; return o.items.filter(i => i.roomId && estimateRoomFilter.includes(i.roomId)); }
+
+    function addItem(p) {
+      const o = obj(); if (!o) { alert('Сначала добавьте объект'); return; }
+      o.items.push({ id: uid(), name: p?.name || 'Новая позиция', roomName: p?.roomName || '', roomId: p?.roomId || '', group: p?.group || 'Прочее', stage: p?.stage || 'Черновые', type: p?.type || 'work', unit: p?.unit || 'м²', qty: 1, price: p?.price || 0, cost: p?.price || 0 });
+      save(); navigate({ tab: 'estimate', editingItem: null });
+    }
+    function setItem(id, k, v) { const i = obj()?.items.find(x => x.id === id); if (i) { i[k] = ['name', 'unit', 'group', 'type', 'stage', 'roomName', 'roomId'].includes(k) ? v : num(v); saveDebounced(); } }
+    function editItem(id) {
+      navigate({ tab: 'estimate', editingItem: id });
+      setTimeout(() => { const el = document.getElementById('editCard'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.add('highlight'); setTimeout(() => el.classList.remove('highlight'), 1500); } }, 80);
+    }
+    function delItem(id) { obj().items = obj().items.filter(x => x.id !== id); save(); if (editingItem === id) { editingItem = null; history.back(); } else render(); }
+
+    function saveVersion() { const o = obj(); if (!o) return; db.versions[o.id] = db.versions[o.id] || []; db.versions[o.id].push({ ts: new Date().toISOString(), items: JSON.parse(JSON.stringify(o.items)), total: totals(o).total }); save(); toast('💾 Версия сохранена'); }
+
+    function addProcurement() { const o = obj(); if (!o) return; const name = prompt('Материал'); if (!name) return; const qty = num(prompt('Количество', '1')); const price = num(prompt('Цена', '0')); const unit = prompt('Единица', 'шт.') || 'шт.'; o.procurement.push({ id: uid(), name, qty, price, unit, date: today() }); save(); render(); }
+    function delProcurement(id) { obj().procurement = obj().procurement.filter(x => x.id !== id); save(); render(); }
+
+    function addMoney() {
+      const o = obj(); if (!o) return;
+      const type = document.getElementById('moneyType').value; const amount = num(document.getElementById('moneyAmount').value);
+      const date = document.getElementById('moneyDate').value; const note = document.getElementById('moneyNote').value;
+      if (!amount) { alert('Укажите сумму'); return; }
+      (type === 'payment' ? o.payments : o.expenses).unshift({ id: uid(), amount, date, note }); save(); render();
+      toast(type === 'payment' ? '💰 Оплата добавлена' : '💸 Расход добавлен');
+    }
+    function delMoney(id, type) { const o = obj(); const k = type === 'payment' ? 'payments' : 'expenses'; o[k] = o[k].filter(x => x.id !== id); save(); render(); }
+
+    function addCatalog() { openCatalogEdit(); }
+    function editCatalog(id) { openCatalogEdit(id); }
+    function deleteCatalog(id) {
+      if (!confirm('Удалить расценку из базы?')) return;
+      CATALOG = CATALOG.filter(x => x.id !== id);
+      db.catalog = CATALOG;
+      save(); render(); toast('🗑 Расценка удалена', '#dc2626');
+    }
+
+    function download(name, content, type = 'text/plain;charset=utf-8') {
+      const b = new Blob(['\ufeff', content], { type }); const u = URL.createObjectURL(b);
+      const a = document.createElement('a'); a.href = u; a.download = name; a.click(); URL.revokeObjectURL(u);
+    }
+    function exportCSV() {
+      const o = obj(); if (!o) return; const items = getEstimateItems(o); const t = totals(o, items);
+      const rows = [
+        ['Объект', o.name], ['Тип', o.kind || ''], ['Заказчик', o.client], [],
+        ['Тип', 'Помещение', 'Этап', 'Раздел', 'Наименование', 'Кол-во', 'Ед.', 'Цена', 'Сумма', 'Себестоимость'],
+        ...items.map(i => { const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null; return [i.type === 'material' ? 'Материал' : 'Работа', room ? room.name : (i.roomName || 'Общее'), i.stage || '', i.group, i.name, i.qty, i.unit, i.price, num(i.qty) * num(i.price), i.cost]; }), [],
+        ['Работы', t.work], ['Материалы', t.mat], ['Наценка', t.markup], ['Итого', t.total]
+      ];
+      download('buildmate-pro-' + o.id + '.csv', rows.map(r => r.map(v => '"' + String(v ?? '').replace(/"/g, '""') + '"').join(';')).join('\r\n'), 'text/csv;charset=utf-8'); toast('📊 CSV выгружен');
+    }
+    function exportCatalog() {
+      download('buildmate-pro-price-list.csv',
+        [['Тип', 'Этап', 'Раздел', 'Наименование', 'Единица', 'Цена', 'Помещения'],
+        ...CATALOG.map(p => [p.type, p.stage || '', p.group, p.name, p.unit, p.price, (p.rooms || []).join(',')])]
+          .map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(';')).join('\r\n'),
+        'text/csv;charset=utf-8'); toast('📊 Прайс выгружен');
+    }
+    function exportBackup() {
+      if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
+      db.catalog = CATALOG;
+      download('buildmate-pro-backup-' + today() + '.json', JSON.stringify(db, null, 2), 'application/json;charset=utf-8');
+      toast('💾 Резервная копия сохранена');
+    }
+    function importBackup(file) {
+      if (!file) return; const r = new FileReader();
+      r.onload = () => {
+        try {
+          const x = JSON.parse(r.result);
+          if (!x.objects) throw Error();
+          db = x;
+          ['inn', 'ogrn', 'legalAddress', 'director', 'phone', 'email', 'website', 'donateName', 'donatePhone', 'donateCard', 'donateBank', 'donateTelegram', 'donateMessage'].forEach(k => { if (db[k] === undefined) db[k] = ''; });
+          if (!db.contractPrefix) db.contractPrefix = 'BM';
+          if (db.company === 'Сметчик_22' || db.company === 'BuildMate Pro') { db.company = ''; }
+          if (!Array.isArray(db.catalog)) db.catalog = [];
+          const existingIds = new Set(db.catalog.map(x => x.id));
+          DEFAULT_CATALOG.forEach(defItem => { if (!existingIds.has(defItem.id)) { db.catalog.push(JSON.parse(JSON.stringify(defItem))); } });
+          CATALOG = db.catalog;
+          settingsDraft = null; estimateRoomFilter = []; closeCatalogModals();
+          migrateDB(); selected = db.objects[0]?.id || null;
+          save(); render(); toast('✅ Резервная копия загружена');
+        } catch (e) { alert('Ошибка чтения файла'); }
+      };
+      r.readAsText(file);
+    }
+    function resetData() { if (confirm('Удалить все данные? Сначала сделайте резервную копию.')) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+
+    function tableHtml(rows, t) { return `<table><thead><tr><th>№</th><th>Наименование</th><th>Ед.</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>${rows}</tbody></table><div class="sum"><p>Работы: <b>${fmt(t.work)}</b></p><p>Материалы: <b>${fmt(t.mat)}</b></p><p>Наценка: <b>${fmt(t.markup)}</b></p><h3>Итого: ${fmt(t.total)}</h3></div>`; }
+    function companyRequisites() { return [db.company || '', db.inn ? `ИНН ${db.inn}` : '', db.ogrn ? `ОГРН ${db.ogrn}` : '', db.legalAddress || '', db.phone ? `тел. ${db.phone}` : '', db.email || '', db.website || ''].filter(Boolean).join(' · '); }
+    function companyNameDisplay() { return db.company && db.company.trim() ? esc(db.company) : '________________________'; }
+    function printDoc(kind) {
+      const o = obj(); if (!o) return; const t = totals(o);
+      const rows = o.items.map((i, n) => { const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null; const label = room ? room.name : (i.roomName || ''); const nm = label ? `${esc(i.name)} (${esc(label)})` : esc(i.name); return `<tr><td>${n + 1}</td><td>${nm}</td><td>${esc(i.unit)}</td><td>${num(i.qty)}</td><td>${fmt(i.price)}</td><td>${fmt(num(i.qty) * num(i.price))}</td></tr>`; }).join('');
+      let title = kind === 'contract' ? 'Договор оказания услуг' : kind === 'act' ? 'Акт выполненных работ' : kind === 'invoice' ? 'Счёт на оплату' : 'Смета на ремонт';
+      const reqs = companyRequisites(); const city = db.region || 'Новосибирск';
+      const companyForDoc = companyNameDisplay();
+      let body = '';
+      if (kind === 'contract') { body = `<h1>${title} № ${esc(o.contractNo)}</h1><p>г. ${esc(city)} «${esc(o.contractDate)}»</p><p>Исполнитель: ${reqs ? esc(reqs) : '________________________'}, Заказчик: ${esc(o.client || '________________________')} заключили настоящий договор.</p><h3>1. Предмет</h3><p>Исполнитель выполняет ремонтные работы на объекте: ${esc(o.name)} (${esc(o.kind || '—')}) по адресу: ${esc(o.address || '________________________')}.</p><h3>2. Стоимость</h3><p>Стоимость по смете: <b>${fmt(t.total)}</b>. ${esc(o.contractTerms || '')}</p><h3>3. Приёмка</h3><p>Порядок и сроки согласовываются дополнительно.</p><h3>4. Подписи</h3><p>Исполнитель: ${companyForDoc} ${db.director ? `(${esc(db.director)})` : ''} ___________</p><p>Заказчик: ${esc(o.client || '________________')} ___________</p><h3>Приложение. Смета</h3>${tableHtml(rows, t)}`; }
+      else if (kind === 'act') { body = `<h1>${title}</h1><p>Объект: ${esc(o.name)} (${esc(o.kind || '—')}). Адрес: ${esc(o.address || '—')}</p><p>Исполнитель: ${reqs ? esc(reqs) : '________________________'}</p><p>Приняты работы на сумму <b>${fmt(t.total)}</b>.</p>${tableHtml(rows, t)}<p>Замечания: _______________</p><p>Исполнитель ${db.director ? `(${esc(db.director)})` : ''} __________ Заказчик __________</p>`; }
+      else if (kind === 'invoice') { body = `<h1>${title} № ${esc(o.contractNo)} от ${esc(o.contractDate)}</h1><p><b>Исполнитель:</b> ${reqs ? esc(reqs) : '________________________'}<br><b>Заказчик:</b> ${esc(o.client || '—')}</p>${tableHtml(rows, t)}<p>К оплате: <b>${fmt(t.total)}</b></p><p>Руководитель ${db.director ? `(${esc(db.director)})` : ''} ___________</p>`; }
+      else { body = `<h1>${title}</h1><p><b>Компания:</b> ${reqs ? esc(reqs) : '________________________'} · <b>Объект:</b> ${esc(o.name)} (${esc(o.kind || '—')}) · <b>Адрес:</b> ${esc(o.address || '—')}</p><p><b>Заказчик:</b> ${esc(o.client || '—')} · <b>Дата:</b> ${today()}</p>${tableHtml(rows, t)}`; }
+      const w = window.open('', '_blank'); if (!w) { alert('Разрешите открытие окна'); return; }
+      w.document.write(`<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>${title}</title><style>body{font:14px Arial,'Segoe UI',sans-serif;color:#111;margin:28px;line-height:1.5;overflow-wrap:break-word}h1{text-align:center;font-size:20px}h3{margin-top:22px}table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px}td,th{border:1px solid #aaa;padding:8px;text-align:left}th{background:#eee}.sum{margin-left:auto;width:300px}p{line-height:1.55}@media print{body{margin:15mm}}</style></head><body>${body}<p style="margin-top:35px;font-size:11px;color:#555">Сформировано в BuildMate Pro.</p><script>window.onload=()=>window.print()<\/script></body></html>`);
+      w.document.close();
+    }
+
+    // ============ ХЕЛПЕРЫ ============
+    function card(title, body, extra = '') { return `<section class="card">${title ? `<h2>${title}</h2>` : ''}${body}${extra}</section>`; }
+    function empty(s) { return `<div class="empty">${s}</div>`; }
+    function input(label, value, attr, fn, step = 'any') { const handler = String(fn || 'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input ${attr || ''} value="${esc(value ?? '')}" step="${step}" oninput="${call}"></div>`; }
+    function inputText(label, value, fn, attr = '') { const handler = String(fn || 'noop'); const call = handler.includes('=>') ? `(${handler})(this.value)` : `${handler}(this.value)`; return `<div class="field"><label>${label}</label><input type="text" ${attr} value="${esc(value ?? '')}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="${call}"></div>`; }
+    function noop() { }
+    function getRoomLabel(i) { const o = obj(); const room = i.roomId ? (o?.rooms || []).find(r => r.id === i.roomId) : null; if (room) return roomEmoji(room) + ' ' + room.name; return i.roomName || (i.roomId ? 'Удалено' : 'Общее'); }
+
+    function itemRow(i) {
+      const roomLabel = getRoomLabel(i);
+      return `<div class="listitem"><div class="itemhead"><div class="grow"><strong>${esc(i.name)} <span style="color:var(--muted);font-weight:400">(${esc(roomLabel)})</span></strong><div class="itemmeta">${i.type === 'material' ? '📦 Материал' : '🔧 Работа'} · ${esc(i.group)} · ${num(i.qty)} ${esc(i.unit)} × ${fmt(i.price)}</div></div><div style="text-align:right"><div class="price">${fmt(num(i.qty) * num(i.price))}</div><div class="actions" style="justify-content:flex-end;margin-top:5px"><button class="btn small secondary" onclick="editItem('${i.id}')">✏️ Изменить</button><button class="btn small danger" onclick="delItem('${i.id}')">×</button></div></div></div></div>`;
+    }
+    function moneyRow(p, type) { return `<div class="listitem"><div class="itemhead"><div class="grow"><strong>${esc(p.note || (type === 'payment' ? 'Оплата' : 'Расход'))}</strong><div class="itemmeta">${esc(p.date || '')}</div></div><div style="display:flex;align-items:center;gap:8px"><b>${fmt(p.amount)}</b><button class="btn small danger" onclick="delMoney('${p.id}','${type}')">×</button></div></div></div>`; }
+    function objRoomEditor(r) {
+      return `<div class="listitem" style="border-top:1px solid var(--line);padding-top:16px"><div class="itemhead"><div class="grow"><strong>${roomEmoji(r)} ${esc(r.name)}</strong><div class="itemmeta" id="objarea_${r.id}">Стен: ${calcWallArea(r).toFixed(1)} м² · Пол: ${(num(r.length) * num(r.width)).toFixed(1)} м²</div></div></div><div class="grid cols3" style="margin-top:8px">${inputText('Название', r.name, `v=>setObjRoom('${r.id}','name',v)`)}<div class="field"><label>Длина, м</label><input type="number" step="0.1" value="${r.length}" oninput="setObjRoom('${r.id}','length',this.value)"></div><div class="field"><label>Ширина, м</label><input type="number" step="0.1" value="${r.width}" oninput="setObjRoom('${r.id}','width',this.value)"></div><div class="field"><label>Высота, м</label><input type="number" step="0.1" value="${r.height}" oninput="setObjRoom('${r.id}','height',this.value)"></div><div class="field"><label>Дверей</label><input type="number" value="${r.doors}" oninput="setObjRoom('${r.id}','doors',this.value)"></div><div class="field"><label>Дверь Ш, м</label><input type="number" step="0.1" value="${r.doorW}" oninput="setObjRoom('${r.id}','doorW',this.value)"></div><div class="field"><label>Дверь В, м</label><input type="number" step="0.1" value="${r.doorH}" oninput="setObjRoom('${r.id}','doorH',this.value)"></div><div class="field"><label>Окон</label><input type="number" value="${r.windows}" oninput="setObjRoom('${r.id}','windows',this.value)"></div><div class="field"><label>Окно, м²</label><input type="number" step="0.1" value="${r.windowArea}" oninput="setObjRoom('${r.id}','windowArea',this.value)"></div></div><div class="actions"><button class="btn small danger" onclick="delObjRoom('${r.id}')">🗑 Удалить помещение</button></div></div>`;
+    }
+
+    // ============ РЕНДЕР ============
+    function render() {
+      document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      const a = document.getElementById('app'); const o = obj();
+      const admin = isAdmin();
+      let html = '';
+
+      if (tab === 'home') {
+        const sum = db.objects.reduce((s, x) => s + totals(x).total, 0);
+        const totalWorks = db.objects.reduce((s, x) => s + totals(x).work, 0);
+        const totalMats = db.objects.reduce((s, x) => s + totals(x).mat, 0);
+        const paid = db.objects.reduce((s, x) => s + x.payments.reduce((q, p) => q + num(p.amount), 0), 0);
+        const profit = db.objects.reduce((s, x) => s + totals(x).profit, 0);
+        const active = db.objects.filter(x => x.status === 'В работе').length;
+        html = card('📊 Рабочая панель' + (admin ? ' <span class="badge gold">Автор</span>' : ''), `
+      <div class="stats"><div class="stat"><div class="n">${db.objects.length}</div><div class="l">Объектов</div></div><div class="stat"><div class="n">${active}</div><div class="l">В работе</div></div><div class="stat"><div class="n">${fmt(sum)}</div><div class="l">Сумма смет</div></div><div class="stat"><div class="n">${fmt(totalWorks)}</div><div class="l">Работы (всего)</div></div><div class="stat"><div class="n">${fmt(totalMats)}</div><div class="l">Материалы (всего)</div></div><div class="stat"><div class="n">${fmt(paid)}</div><div class="l">Получено оплат</div></div><div class="stat"><div class="n">${fmt(profit)}</div><div class="l">Прибыль*</div></div><div class="stat"><div class="n">${fmt(sum - paid)}</div><div class="l">Остаток к оплате</div></div></div>
+      <p class="hint" style="margin-top:12px;">Работы и материалы без наценки. Общая сумма смет — с наценкой ${num(db.markup)}%.</p>
+    `) + card('✨ Новый объект', `
+      <button class="btn" style="width:100%" onclick="makeObj()">🏗️ Мастер создания объекта</button>
+      <div class="actions" style="margin-top:8px">
+        <button class="btn secondary" style="flex:1" onclick="voiceObjectToWizard()">🎤 Создать голосом</button>
+      </div>
+      <div class="sectionlabel" style="margin-top:14px;">🚀 Быстрый старт</div>
+      <div class="grid">
+        <button class="btn secondary" onclick="quickStart('bedroom')">🛏️ Смета спальни</button>
+        <button class="btn secondary" onclick="quickStart('living')">🛋️ Смета гостиной</button>
+        <button class="btn secondary" onclick="quickStart('kids')">🧸 Смета детской</button>
+        <button class="btn secondary" onclick="quickStart('kitchen')">🍳 Смета кухни</button>
+        <button class="btn secondary" onclick="quickStart('bathroom')">🛁 Смета ванной</button>
+        <button class="btn secondary" onclick="quickStart('toilet')">🚽 Смета санузла</button>
+        <button class="btn secondary" onclick="quickStart('combined')">🚿 Смета совм. санузла</button>
+        <button class="btn secondary" onclick="quickStart('hallway')">🚪 Смета прихожей</button>
+        <button class="btn secondary" onclick="quickStart('balcony')">🌇 Смета балкона</button>
+      </div>
+    `) + card('❤️ Поддержать автора', `
+      <p class="hint">Если приложение помогает вам в работе — можете отблагодарить автора переводом по СБП.</p>
+      <button class="btn pink" style="width:100%;margin-top:8px" onclick="openDonate()">❤️ Поддержать проект</button>
+    `) + card('📌 Последние объекты', db.objects.slice(0, 4).map(x => {
+          const xt = totals(x);
+          return `<div class="listitem"><div class="object"><div class="grow"><h3>${esc(x.name)}</h3><div class="muted">${esc(x.kind || '—')} · ${esc(x.client || '—')} · ${esc(x.status)}</div><div class="muted" style="margin-top:4px">Работы: <b>${fmt(xt.work)}</b> · Материалы: <b>${fmt(xt.mat)}</b></div></div><div style="text-align:right"><div class="money">${fmt(xt.total)}</div><button class="btn small secondary" onclick="selectObj('${x.id}')">Открыть</button></div></div></div>`;
+        }).join('') || empty('🏗️ Объектов пока нет. Создайте первый через мастер выше.'));
+      }
+
+      if (tab === 'wizard') {
+        if (!wizard) { tab = 'objects'; return render(); }
+        html = card('✨ Новый объект', `
+      <p class="hint">Введите название, выберите тип, отметьте комнаты и укажите габариты. Смета заполнится автоматически.</p>
+      <button class="btn secondary" style="width:100%;margin-bottom:14px" onclick="voiceObjectToWizard()">🎤 Заполнить голосом</button>
+      <div class="grid">
+        ${inputText('Название', wizard.name, 'v=>setWizardField("name",v)', 'placeholder="Квартира 45 / Дом на Ленина 5"')}
+        <div class="field"><label>Тип объекта</label><select onchange="setWizardField('kind',this.value)">${OBJECT_KINDS.map(x => `<option value="${x}" ${x === wizard.kind ? 'selected' : ''}>${kindLabel(x)}</option>`).join('')}</select></div>
+        ${inputText('Адрес', wizard.address, 'v=>setWizardField("address",v)', 'placeholder="ул. Ленина 5, кв. 45"')}
+        ${inputText('Заказчик', wizard.client, 'v=>setWizardField("client",v)', 'placeholder="ФИО"')}
+        ${inputText('Телефон', wizard.phone, 'v=>setWizardField("phone",v)', 'type="tel" placeholder="+7 ..."')}
+      </div>
+    `) + card('🚪 Помещения и габариты', ROOM_TYPES.map(rt => {
+          const roomsOfType = wizard.rooms.filter(r => r.type === rt.key); const checked = roomsOfType.length ? 'checked' : '';
+          let countSelector = '';
+          if (checked && rt.max > 1) { const opts = []; for (let i = 1; i <= rt.max; i++) opts.push(`<option value="${i}" ${i === roomsOfType.length ? 'selected' : ''}>${i}</option>`); countSelector = `<span class="count"><label style="font-size:13px;color:var(--muted)">Кол-во:</label><select onchange="setWizardCount('${rt.key}',this.value)">${opts.join('')}</select></span>`; }
+          let fields = '';
+          if (checked) { fields = roomsOfType.map(room => `<div class="room-fields"><div class="itemmeta" style="margin-bottom:8px;font-weight:700;color:var(--text)">${rt.emoji} ${esc(room.name)}</div><div class="grid cols3"><div class="field"><label>Длина, м</label><input type="number" step="0.1" value="${room.length}" oninput="setWizardRoom('${room.id}','length',this.value)"></div><div class="field"><label>Ширина, м</label><input type="number" step="0.1" value="${room.width}" oninput="setWizardRoom('${room.id}','width',this.value)"></div><div class="field"><label>Высота, м</label><input type="number" step="0.1" value="${room.height}" oninput="setWizardRoom('${room.id}','height',this.value)"></div><div class="field"><label>Дверей</label><input type="number" value="${room.doors}" oninput="setWizardRoom('${room.id}','doors',this.value)"></div><div class="field"><label>Дверь Ш, м</label><input type="number" step="0.1" value="${room.doorW}" oninput="setWizardRoom('${room.id}','doorW',this.value)"></div><div class="field"><label>Дверь В, м</label><input type="number" step="0.1" value="${room.doorH}" oninput="setWizardRoom('${room.id}','doorH',this.value)"></div><div class="field"><label>Окон</label><input type="number" value="${room.windows}" oninput="setWizardRoom('${room.id}','windows',this.value)"></div><div class="field"><label>Окно, м²</label><input type="number" step="0.1" value="${room.windowArea}" oninput="setWizardRoom('${room.id}','windowArea',this.value)"></div></div><div class="hint" id="area_${room.id}" style="margin-top:8px;">Стен: ${calcWallArea(room).toFixed(1)} м² · Пол: ${(num(room.length) * num(room.width)).toFixed(1)} м²</div></div>`).join(''); }
+          return `<label class="room-check"><input type="checkbox" ${checked} onchange="toggleWizardRoom('${rt.key}')"><strong>${rt.emoji} ${rt.label}</strong>${countSelector}</label>${fields}`;
+        }).join('')) + `<div class="actions"><button class="btn" onclick="confirmWizard()">✅ Создать объект (${wizard.rooms.length} пом.)</button><button class="btn secondary" onclick="cancelWizard()">Отмена</button></div>`;
+      }
+
+      if (tab === 'objects') {
+        html = card('🏢 Объекты ремонта', `<div class="actions" style="margin-top:0"><button class="btn" onclick="makeObj()">➕ Добавить объект</button><button class="btn secondary" onclick="voiceObjectToWizard()">🎤 Создать голосом</button><button class="btn secondary" onclick="exportBackup()">💾 Копия JSON</button></div>`) + (db.objects.map(x => `<div class="card"><div class="object"><div class="grow"><h3>${esc(x.name)}</h3><div class="muted">${esc(x.kind || '—')}</div><div class="muted">${esc(x.address || 'Адрес не указан')}</div><div class="muted">${esc(x.client || 'Заказчик не указан')}${x.phone ? ' · ' + esc(x.phone) : ''} · ${esc(x.status)}</div><div style="margin-top:8px"><span class="badge">🚪 ${x.rooms?.length || 0} помещений</span> <span class="badge">📝 ${x.items.length} позиций</span></div></div><div style="text-align:right"><div class="money">${fmt(totals(x).total)}</div><button class="btn small ${selected === x.id ? '' : 'secondary'}" onclick="selectObj('${x.id}')">${selected === x.id ? '✓ Выбран' : 'Выбрать'}</button><button class="btn small danger" style="margin-top:6px" onclick="deleteObj('${x.id}')">🗑 Удалить</button></div></div></div>`).join('') || empty('🏗️ Нет объектов. Нажмите «Добавить объект».'));
+        if (o) {
+          html += card('🏠 Карточка объекта', `<div class="obj-context"><span>✏️ Редактирование объекта:</span><b>${esc(o.name)} · ${esc(o.kind || '—')}</b></div><div class="grid">${inputText('Название', o.name, 'v=>setObj("name",v)', 'placeholder="Квартира 45 / Дом на Ленина 5"')}<div class="field"><label>Тип объекта</label><select onchange="setObj('kind',this.value)">${OBJECT_KINDS.map(x => `<option value="${x}" ${x === o.kind ? 'selected' : ''}>${kindLabel(x)}</option>`).join('')}</select></div>${inputText('Адрес', o.address, 'v=>setObj("address",v)', 'placeholder="ул. Ленина 5, кв. 45"')}${inputText('Заказчик', o.client, 'v=>setObj("client",v)', 'placeholder="ФИО"')}${inputText('Телефон', o.phone, 'v=>setObj("phone",v)', 'type="tel" placeholder="+7 ..."')}<div class="field"><label>Статус</label><select onchange="setObj('status',this.value)">${['Расчёт', 'Смета отправлена', 'Согласовано', 'Договор подписан', 'В работе', 'Завершён', 'Приостановлен'].map(x => `<option value="${x}" ${x === o.status ? 'selected' : ''}>${statusLabel(x)}</option>`).join('')}</select></div></div>`);
+          html += card(`🚪 Помещения объекта: ${o.name}`, `<p class="hint">После изменения габаритов нажмите «Пересчитать смету». Можно добавить помещения голосом.</p><div class="actions" style="margin-top:0"><button class="btn secondary" onclick="addObjRoom()">➕ Добавить помещение</button><button class="btn secondary" onclick="startVoiceRoomForCurrent()">🎤 Голосом</button><button class="btn" onclick="regenerateEstimate()">🔄 Пересчитать смету</button></div>${(o.rooms || []).map(objRoomEditor).join('') || empty('🚪 Помещений пока нет — добавьте первое')}`);
+          html += card('⚡ Быстрый переход', `<div class="actions" style="margin-top:0"><button class="btn secondary" onclick="navigate({tab:'estimate'})">📋 Смета</button><button class="btn secondary" onclick="navigate({tab:'docs'})">📄 Документы</button><button class="btn secondary" onclick="navigate({tab:'money'})">💵 Финансы</button></div>`);
+        }
+      }
+
+      if (tab === 'estimate') {
+        if (!o) { html = card('📋 Смета', empty('Создайте объект на вкладке «Объекты» или через «Быстрый старт» в «Обзоре».')); }
+        else {
+          estimateRoomFilter = estimateRoomFilter.filter(id => (o.rooms || []).some(r => r.id === id));
+          const items = getEstimateItems(o); const t = totals(o, items);
+          const hasRooms = (o.rooms || []).length > 0; const filterActive = estimateRoomFilter.length > 0;
+          let selectorCard = `<section class="card"><h2>🎯 Выбор сметы</h2><div class="field"><label>Квартира / объект</label><select onchange="changeEstimateObject(this.value)">${db.objects.length ? db.objects.map(x => `<option value="${x.id}" ${x.id === o.id ? 'selected' : ''}>${esc(x.name)} (${esc(x.kind || '—')})${x.address ? ' — ' + esc(x.address) : ''}</option>`).join('') : '<option value="">— нет объектов —</option>'}</select></div>`;
+          if (hasRooms) { selectorCard += `<div class="field" style="margin-top:12px"><label>Комнаты (${filterActive ? 'выбрано ' + estimateRoomFilter.length + ' из ' + o.rooms.length : 'все'})</label><div class="room-chips">${o.rooms.map(r => `<label class="room-chip ${estimateRoomFilter.includes(r.id) ? 'on' : ''}"><input type="checkbox" ${estimateRoomFilter.includes(r.id) ? 'checked' : ''} onchange="toggleEstimateRoom('${r.id}')">${roomEmoji(r)} ${esc(r.name)}</label>`).join('')}</div><div class="actions" style="margin-top:10px"><button class="btn small secondary" onclick="selectAllEstimateRooms()">✓ Все комнаты</button><button class="btn small secondary" onclick="clearEstimateRooms()" ${filterActive ? '' : 'disabled'}>↩ Сбросить</button></div></div>`; }
+          else { selectorCard += `<p class="hint" style="margin-top:10px">У объекта пока нет помещений — смета отображается целиком.</p>`; }
+          selectorCard += `</section>`;
+          const scopeLabel = !hasRooms ? 'Весь объект' : (filterActive ? 'Выбрано: ' + estimateRoomFilter.map(id => { const r = o.rooms.find(r => r.id === id); return r ? roomEmoji(r) + ' ' + r.name : ''; }).filter(Boolean).join(', ') : 'Все комнаты');
+          let headCard = card('📋 Смета', `<div class="muted">${esc(o.name)} · ${esc(o.kind || '—')} · ${esc(scopeLabel)}</div><div class="stats" style="margin-top:12px"><div class="stat"><div class="n">🔧 ${fmt(t.work)}</div><div class="l">Работы</div></div><div class="stat"><div class="n">📦 ${fmt(t.mat)}</div><div class="l">Материалы</div></div><div class="stat"><div class="n">📈 ${fmt(t.markup)}</div><div class="l">Наценка ${num(db.markup)}%</div></div><div class="stat"><div class="n">💰 ${fmt(t.total)}</div><div class="l">Итого</div></div></div><div class="actions"><button class="btn" onclick="openAddEstimateItem()">➕ Позиция</button>${hasRooms ? `<button class="btn secondary" onclick="startVoiceEstimateItem()">🎤 Голосом</button>` : ''}<button class="btn secondary" onclick="regenerateEstimate()">🔄 Пересчитать</button><button class="btn secondary" onclick="saveVersion()">💾 Версия</button><button class="btn outline" onclick="exportCSV()">📊 CSV${filterActive ? ' (фильтр)' : ''}</button><button class="btn outline" onclick="printDoc('estimate')">📄 PDF</button></div>`);
+          let segment = `<div class="segment"><button class="${estimateView === 'sections' ? 'active' : ''}" onclick="estimateView='sections';render()">📑 Разделы</button><button class="${estimateView === 'stages' ? 'active' : ''}" onclick="estimateView='stages';render()">📅 Этапы</button><button class="${estimateView === 'rooms' ? 'active' : ''}" onclick="estimateView='rooms';render()">🚪 Комнаты</button></div>`;
+          let bodyHtml = '';
+          if (estimateView === 'sections') { const works = items.filter(i => i.type === 'work'); const mats = items.filter(i => i.type === 'material'); bodyHtml += card('📝 Позиции', ''); if (works.length) { bodyHtml += `<div class="sectionlabel">🔧 Работы · ${fmt(t.work)}</div>` + works.map(itemRow).join(''); } if (mats.length) { bodyHtml += `<div class="sectionlabel">📦 Материалы · ${fmt(t.mat)}</div>` + mats.map(itemRow).join(''); } if (!works.length && !mats.length) bodyHtml += empty(filterActive ? '🔍 По выбранным комнатам позиций нет' : '📝 Добавьте позиции кнопкой «Позиция» или нажмите «Пересчитать»'); }
+          else if (estimateView === 'stages') { const stages = STAGES_ALL.slice(0, 4); bodyHtml += card('📝 Позиции', ''); stages.forEach(stage => { const list = items.filter(i => (i.stage || 'Черновые') === stage); if (!list.length) return; const st = list.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">${stageLabel(stage)} · ${fmt(st)}</div>` + list.map(itemRow).join(''); }); if (!items.length) bodyHtml += empty('📝 Пока пусто'); }
+          else { bodyHtml += card('📝 Позиции', ''); (o.rooms || []).forEach(room => { if (filterActive && !estimateRoomFilter.includes(room.id)) return; const list = items.filter(i => i.roomId === room.id); if (!list.length) return; const rt = list.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">${roomEmoji(room)} ${esc(room.name)} · ${fmt(rt)}</div>` + list.map(itemRow).join(''); }); if (!filterActive) { const other = items.filter(i => !i.roomId); if (other.length) { const ot = other.reduce((s, i) => s + num(i.qty) * num(i.price), 0); bodyHtml += `<div class="sectionlabel">📋 Прочее · ${fmt(ot)}</div>` + other.map(itemRow).join(''); } } if (!items.length) bodyHtml += empty('📝 Пока пусто'); }
+          bodyHtml += `<div class="hr"></div><div class="totalrow"><span>🔧 Работы</span><b>${fmt(t.work)}</b></div><div class="totalrow"><span>📦 Материалы</span><b>${fmt(t.mat)}</b></div><div class="totalrow"><span>📈 Наценка (${num(db.markup)}%)</span><b>${fmt(t.markup)}</b></div><div class="totalrow"><strong>💰 ИТОГО ${filterActive ? 'по выбранным комнатам' : ''}</strong><b>${fmt(t.total)}</b></div>`;
+          let editHtml = '';
+          if (editingItem) { const i = o.items.find(x => x.id === editingItem); if (i) editHtml = `<div id="editCard">${card('✏️ Редактирование позиции', `<div class="grid">${inputText('Наименование', i.name, `v=>setItem('${i.id}','name',v)`)}<div class="field"><label>Тип</label><select onchange="setItem('${i.id}','type',this.value)"><option value="work" ${i.type === 'work' ? 'selected' : ''}>🔧 Работа</option><option value="material" ${i.type === 'material' ? 'selected' : ''}>📦 Материал</option></select></div>${input('Единица', i.unit, '', `v=>setItem('${i.id}','unit',v)`)}${input('Количество', i.qty, '', `v=>setItem('${i.id}','qty',v)`)}${input('Цена', i.price, '', `v=>setItem('${i.id}','price',v)`)}${input('Себестоимость', i.cost, '', `v=>setItem('${i.id}','cost',v)`)}${inputText('Раздел', i.group, `v=>setItem('${i.id}','group',v)`)}<div class="field"><label>Помещение</label><select onchange="setItem('${i.id}','roomId',this.value)"><option value="">— Общее —</option>${(o.rooms || []).map(r => `<option value="${r.id}" ${i.roomId === r.id ? 'selected' : ''}>${roomEmoji(r)} ${esc(r.name)}</option>`).join('')}</select></div><div class="field"><label>Этап</label><select onchange="setItem('${i.id}','stage',this.value)">${STAGES_ALL.map(x => `<option value="${x}" ${i.stage === x ? 'selected' : ''}>${stageLabel(x)}</option>`).join('')}</select></div></div><div class="actions"><button class="btn" onclick="goBack()">✅ Готово</button><button class="btn secondary" onclick="document.getElementById('editCard').scrollIntoView({behavior:'smooth',block:'start'})">↑ К форме</button></div>`)}</div>`; }
+          html = selectorCard + headCard + segment + bodyHtml + editHtml;
+        }
+      }
+
+      if (tab === 'stages') {
+        if (!o) html = card('📅 Этапы', empty('Выберите объект'));
+        else { const t = totals(o); html = card('📅 Этапы и ход работ', `<p class="hint">Ориентировочная длительность. Средний ремонт новостройки — 2–4 мес.</p>${o.stages.map(s => `<div class="gantt-row"><div class="gantt-label">${stageLabel(s.name)}</div><div class="gantt-bar"><div class="gantt-fill" style="width:${Math.min(100, s.duration * 5)}%">${s.duration} дн.</div></div></div>`).join('')}<div class="hr"></div><div class="hint">💰 Сумма по смете: <b>${fmt(t.total)}</b></div>`); }
+      }
+
+      if (tab === 'procurement') {
+        if (!o) html = card('🛒 Закупки', empty('Выберите объект'));
+        else { const total = o.procurement.reduce((s, p) => s + num(p.qty) * num(p.price), 0); html = card('🛒 Закупки материалов', `<div class="stats"><div class="stat"><div class="n">📦 ${o.procurement.length}</div><div class="l">Позиций</div></div><div class="stat"><div class="n">💵 ${fmt(total)}</div><div class="l">Сумма</div></div></div><div class="actions"><button class="btn" onclick="addProcurement()">➕ Закупка</button></div>`) + card('📋 Список', o.procurement.map(p => `<div class="listitem"><div class="itemhead"><div class="grow"><strong>📦 ${esc(p.name)}</strong><div class="itemmeta">${p.date} · ${p.qty} ${esc(p.unit)} × ${fmt(p.price)}</div></div><div style="text-align:right"><b>${fmt(num(p.qty) * num(p.price))}</b><button class="btn small danger" onclick="delProcurement('${p.id}')">×</button></div></div></div>`).join('') || empty('🛒 Закупок пока нет')); }
+      }
+
+      if (tab === 'catalog') {
+        html = card('💰 База расценок', `
+      <p class="hint">В каталоге ${CATALOG.length} позиций (стандартных — ${DEFAULT_CATALOG.length}). Редактируйте, добавляйте вручную, импортируйте из Excel или надиктуйте голосом.</p>
+      <div class="actions" style="margin-top:0">
+        <button class="btn" onclick="openCatalogEdit()">➕ Добавить вручную</button>
+        <button class="btn secondary" onclick="openExcelImport()">📥 Импорт Excel</button>
+        <button class="btn secondary" onclick="openVoiceAdd()">🎤 Добавить голосом</button>
+      </div>
+      <div class="actions" style="margin-top:8px">
+        <button class="btn outline" onclick="downloadExcelTemplate()">📄 Скачать шаблон Excel</button>
+        <button class="btn outline" onclick="exportCatalog()">📊 Прайс CSV</button>
+        <button class="btn outline" onclick="restoreFullCatalog()">🔄 Восстановить стандартный каталог</button>
+      </div>
+      <p class="hint" style="margin-top:14px">
+        <b>Формат Excel:</b> колонки — Наименование, Тип (Работа / Материал), Раздел, Единица, Цена, Этап (опционально), Помещения (опционально).<br>
+        Помещения указываются через запятую: «Спальня,Гостиная» или «bedroom,living».
+      </p>
+    `) + card(`📚 Каталог (${CATALOG.length} позиций)`, CATALOG.map(p => `<div class="listitem"><div class="itemhead"><div class="grow"><strong>${p.type === 'material' ? '📦' : '🔧'} ${esc(p.name)}</strong><div class="itemmeta">${p.type === 'material' ? 'Материал' : 'Работа'} · ${esc(p.group)} · ${esc(p.unit)} · ${stageLabel(p.stage)}</div></div><div style="text-align:right"><b>${fmt(p.price)}</b><div><button class="btn small secondary" onclick="openCatalogEdit('${p.id}')">✏️ Изменить</button> <button class="btn small danger" onclick="deleteCatalog('${p.id}')">×</button></div></div></div></div>`).join(''));
+      }
+
+      if (tab === 'money') {
+        if (!o) html = card('💵 Финансы', empty('Выберите объект'));
+        else { const t = totals(o); const paid = o.payments.reduce((s, p) => s + num(p.amount), 0); const exp = o.expenses.reduce((s, p) => s + num(p.amount), 0); const budgetUsed = t.total > 0 ? Math.min(100, (exp / t.total) * 100) : 0; html = card('💵 Финансы', `<div class="stats"><div class="stat"><div class="n">💰 ${fmt(t.total)}</div><div class="l">Смета</div></div><div class="stat"><div class="n">💳 ${fmt(paid)}</div><div class="l">Получено</div></div><div class="stat"><div class="n">💸 ${fmt(exp)}</div><div class="l">Расходы</div></div><div class="stat"><div class="n">💼 ${fmt(paid - exp)}</div><div class="l">Остаток</div></div><div class="stat"><div class="n">📊 ${budgetUsed.toFixed(0)}%</div><div class="l">Бюджет</div></div><div class="stat"><div class="n">📈 ${fmt(t.profit)}</div><div class="l">Прибыль</div></div></div><div class="totalrow"><span>⏳ Остаток к оплате</span><b>${fmt(t.total - paid)}</b></div>`) + card('➕ Добавить операцию', `<div class="grid"><div class="field"><label>Тип</label><select id="moneyType"><option value="payment">💰 Оплата</option><option value="expense">💸 Расход</option></select></div>${input('💵 Сумма', '', 'type="number" id="moneyAmount"', 'noop')}${input('📅 Дата', today(), 'type="date" id="moneyDate"', 'noop')}${input('💬 Комментарий', '', 'id="moneyNote"', 'noop')}</div><div class="actions"><button class="btn" onclick="addMoney()">💾 Сохранить</button></div>`) + card('💳 Оплаты', o.payments.map(p => moneyRow(p, 'payment')).join('') || empty('💳 Оплат пока нет')) + card('💸 Расходы', o.expenses.map(p => moneyRow(p, 'expense')).join('') || empty('💸 Расходов пока нет')); }
+      }
+
+      if (tab === 'docs') {
+        if (!o) html = card('📄 Документы', empty('Выберите объект'));
+        else html = card('📄 Документы', `<p class="hint">Реквизиты компании берутся из «Настройки».</p><div class="obj-context"><span>📄 Документы для:</span><b>${esc(o.name)} · ${esc(o.kind || '—')}</b></div><div class="grid"><div class="field"><label>🔢 № договора</label><input value="${esc(o.contractNo)}" oninput="setObj('contractNo',this.value)"></div><div class="field"><label>📅 Дата</label><input type="date" value="${esc(o.contractDate)}" oninput="setObj('contractDate',this.value)"></div></div><div class="field" style="margin-top:10px"><label>💬 Условия оплаты</label><textarea oninput="setObj('contractTerms',this.value)">${esc(o.contractTerms)}</textarea></div><div class="actions"><button class="btn" onclick="printDoc('contract')">📜 Договор</button><button class="btn secondary" onclick="printDoc('estimate')">📋 Смета</button><button class="btn secondary" onclick="printDoc('act')">📝 Акт</button><button class="btn secondary" onclick="printDoc('invoice')">🧾 Счёт</button><button class="btn outline" onclick="exportCSV()">📊 CSV</button></div>`) + card('💰 Сумма', `<div class="totalrow"><span>🏢 Объект</span><b>${esc(o.name)}</b></div><div class="totalrow"><span>📍 Тип</span><b>${esc(o.kind || '—')}</b></div><div class="totalrow"><span>👤 Заказчик</span><b>${esc(o.client || '—')}</b></div><div class="totalrow"><span>💰 Итого</span><b>${fmt(totals(o).total)}</b></div>`) + card('🏢 Реквизиты исполнителя', `<div class="muted">${esc(companyRequisites()) || '— не заполнены —'}</div><div class="actions"><button class="btn secondary" onclick="navigate({tab:'settings'})">⚙️ Изменить</button></div>`);
+      }
+
+      if (tab === 'settings') {
+        const d = initSettingsDraft(); const dirty = settingsDirty();
+        html = '';
+        if (dirty) html += `<div class="unsaved">⚠️ Есть несохранённые изменения. Нажмите «Сохранить настройки».</div>`;
+        html += card('🏢 Реквизиты компании', `<p class="hint">Эти данные подставляются в договоры, счета и акты. Название компании не заполняется по умолчанию — укажите его для своих документов.</p><div class="grid">${inputText('🏷️ Название компании', d.company, 'v=>setDraft("company",v)', 'placeholder="Например: ООО «РемонтПро»"')}${inputText('🔢 ИНН', d.inn, 'v=>setDraft("inn",v)', 'inputmode="numeric"')}${inputText('🔢 ОГРН / ОГРНИП', d.ogrn, 'v=>setDraft("ogrn",v)', 'inputmode="numeric"')}${inputText('👤 Руководитель', d.director, 'v=>setDraft("director",v)')}</div><div class="field" style="margin-top:12px"><label>📍 Юридический адрес</label><input value="${esc(d.legalAddress)}" oninput="setDraft('legalAddress',this.value)" autocomplete="off" spellcheck="false"></div><div class="grid" style="margin-top:12px">${inputText('📱 Телефон', d.phone, 'v=>setDraft("phone",v)', 'type="tel"')}${inputText('📧 Email', d.email, 'v=>setDraft("email",v)', 'type="email"')}${inputText('🌐 Сайт', d.website, 'v=>setDraft("website",v)')}</div>`);
+        html += card('📐 Расчёты и договоры', `<p class="hint">Наценка и запас применяются ко всем сметам.</p><div class="grid">${inputText('🏙️ Город / регион цен', d.region, 'v=>setDraft("region",v)')}${inputText('🔢 Префикс № договора', d.contractPrefix, 'v=>setDraft("contractPrefix",v)')}${input('📈 Наценка на смету, %', d.markup, 'type="number" min="0" max="100"', 'v=>setDraft("markup",v)')}${input('📦 Запас материалов, %', d.waste, 'type="number" min="0" max="100"', 'v=>setDraft("waste",v)')}</div>`);
+
+        if (admin) {
+          const currentSrc = (db.donatePhone || db.donateCard) ? 'локальные настройки' : 'значения из кода (HARDCODED_DONATE)';
+          html += card('❤️ Реквизиты для донатов <span class="badge gold">Только автор</span>', `<p class="hint">Эти поля видны только вам (@${ADMIN_USERNAME}). Пользователи увидят реквизиты из блока «HARDCODED_DONATE» в исходнике index.html.</p><div class="grid">${inputText('👤 Имя получателя', d.donateName, 'v=>setDraft("donateName",v)', 'placeholder="Иван И."')}${inputText('🏦 Банк', d.donateBank, 'v=>setDraft("donateBank",v)', 'placeholder="Сбербанк / Тинькофф"')}</div><div style="margin-top:12px">${inputText('📱 Телефон для СБП', d.donatePhone, 'v=>setDraft("donatePhone",v)', 'type="tel" placeholder="+7 999 123-45-67"')}</div><div style="margin-top:12px">${inputText('💳 Номер карты', d.donateCard, 'v=>setDraft("donateCard",v)', 'inputmode="numeric" placeholder="1234 5678 9012 3456"')}</div><div style="margin-top:12px">${inputText('💬 Telegram автора', d.donateTelegram, 'v=>setDraft("donateTelegram",v)', 'placeholder="@username"')}</div><div class="field" style="margin-top:12px"><label>📝 Текст благодарности</label><textarea oninput="setDraft('donateMessage',this.value)" placeholder="Спасибо за поддержку!">${esc(d.donateMessage)}</textarea></div><div class="actions"><button class="btn pink" onclick="commitSettingsDraft(); render(); openDonate();">👀 Посмотреть форму</button></div><div class="admin-hint">Сейчас используется: <b>${currentSrc}</b>.<br>Чтобы изменения увидели ВСЕ пользователи — обновите блок <code>HARDCODED_DONATE</code> в файле <code>index.html</code> на GitHub Pages и закоммитьте.</div>`);
+        }
+
+        html += card('💾 Сохранение', `<div class="actions" style="margin-top:0"><button class="btn ${dirty ? 'success' : ''}" onclick="saveSettings()">💾 Сохранить настройки</button><button class="btn secondary" onclick="resetSettingsDraft()" ${dirty ? '' : 'disabled'}>↩ Отменить</button></div><p class="hint" style="margin-top:10px">Изменения применяются после «Сохранить». При переходе на другую вкладку — автосохранение.</p>`);
+        html += card('💾 Резервное копирование и данные', `<div class="actions" style="margin-top:0"><button class="btn secondary" onclick="exportBackup()">📥 Скачать резервную копию</button><label class="btn secondary" style="display:inline-block;cursor:pointer">📤 Импорт JSON<input type="file" accept="application/json" hidden onchange="importBackup(this.files[0])"></label><button class="btn danger" onclick="resetData()">🗑 Сбросить все данные</button></div><p class="hint" style="margin-top:12px">Данные хранятся в памяти браузера (localStorage) и включают каталог расценок.</p>`);
+        html += card('✅ Что сохранено', `<div class="listitem"><span class="muted">🏷️ Компания:</span> <b>${db.company && db.company.trim() ? esc(db.company) : '— не заполнена —'}</b></div><div class="listitem"><span class="muted">🔢 ИНН:</span> <b>${esc(db.inn || '—')}</b></div><div class="listitem"><span class="muted">🏙️ Город:</span> <b>${esc(db.region || '—')}</b></div><div class="listitem"><span class="muted">📈 Наценка:</span> <b>${num(db.markup)}%</b> · <span class="muted">📦 Запас:</span> <b>${num(db.waste)}%</b></div><div class="listitem"><span class="muted">🔢 Префикс договора:</span> <b>${esc(db.contractPrefix || '—')}</b></div><div class="listitem"><span class="muted">📚 Расценок в каталоге:</span> <b>${CATALOG.length}</b> (стандартных — ${DEFAULT_CATALOG.length})</div>`);
+      }
+
+      a.innerHTML = html;
+      const primary = document.getElementById('primary');
+      primary.textContent = tab === 'estimate' ? '➕ Добавить позицию' : tab === 'catalog' ? '➕ Добавить расценку' : tab === 'procurement' ? '➕ Добавить закупку' : tab === 'wizard' ? '✅ Создать объект' : tab === 'settings' ? '💾 Сохранить настройки' : '➕ Добавить объект';
+      primary.onclick = () => { if (tab === 'estimate') openAddEstimateItem(); else if (tab === 'catalog') openCatalogEdit(); else if (tab === 'procurement') addProcurement(); else if (tab === 'wizard') confirmWizard(); else if (tab === 'settings') saveSettings(); else makeObj(); };
+      renderDrawer();
+      updateBackButton();
+    }
+
+    // ============ СТАРТ ============
+    document.getElementById('tabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if (b) navigate({ tab: b.dataset.tab, editingItem: null }); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (donateOpen) { closeDonate(); return; }
+        if (menuOpen) { closeMenu(); return; }
+        if (catalogEditState || estimateItemVoiceState || estimateAddState || window._pendingImport) { closeCatalogModals(); return; }
+        if (document.getElementById('voiceModalHost') && document.getElementById('voiceModalHost').innerHTML) { stopVoice(); return; }
+      }
+    });
+    if (window.Telegram?.WebApp) { Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
+    applyState({ tab: 'home', editingItem: null });
+  </script>
+</body>
+
+</html>
