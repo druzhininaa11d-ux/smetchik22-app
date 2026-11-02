@@ -1,34 +1,35 @@
 /* ============================================================
    BuildMate Pro — патч экспорта Excel / PDF / JSON
-   Версия: 1.9 (2026-10)
+   Версия: 2.0 (2026-11)
    Подключать ПОСЛЕ основного скрипта index.html:
      <script src="patch.js"></script>
-   Переопределяет:
-     - saveBlob          (универсальное скачивание файлов)
-     - buildExcelBlob    (Excel с автофильтром и шириной колонок)
-     - buildPdfBlob      (PDF с кириллицей через Roboto)
-     - ensureXlsx        (загрузка XLSX с fallback CDN)
-     - ensurePdfMake     (загрузка pdfMake + VFS с fallback CDN)
-     - exportExcel       (смета в Excel)
-     - exportCatalogExcel(прайс каталога в Excel)
-     - exportBackup      (резервная копия JSON)
-     - downloadExcelTemplate (шаблон импорта)
-     - buildEstimateTableBody / printDoc (PDF-документы)
    ============================================================ */
 (function () {
   'use strict';
 
-  // ---------- Проверка, что основной скрипт уже загружен ----------
-  // Все функции основного скрипта объявлены в глобальной области
-  // (var/function hoisting в <script>), поэтому доступны через window.
-  if (typeof window.saveBlob !== 'function' ||
-      typeof window.buildExcelBlob !== 'function' ||
-      typeof window.printDoc !== 'function') {
-    console.warn('[patch.js] Основной скрипт не найден. Подключите patch.js ПОСЛЕ основного <script>.');
-    return;
+  // ---------- Ждём, пока основной скрипт объявит функции ----------
+  var READY_TIMEOUT = 8000;
+  var readyStart = Date.now();
+
+  function waitForMainScript() {
+    return new Promise(function (resolve) {
+      (function check() {
+        if (typeof window.saveBlob === 'function' &&
+            typeof window.buildExcelBlob === 'function' &&
+            typeof window.printDoc === 'function' &&
+            typeof window.db !== 'undefined') {
+          return resolve();
+        }
+        if (Date.now() - readyStart > READY_TIMEOUT) {
+          console.warn('[patch.js] Основной скрипт не дождались. Работаем поверх того, что есть.');
+          return resolve();
+        }
+        setTimeout(check, 50);
+      })();
+    });
   }
 
-  // ---------- Константы CDN ----------
+  // ---------- CDN ----------
   var CDN = {
     XLSX:        'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js',
     XLSX_ALT:    'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
@@ -38,9 +39,9 @@
     VFS_ALT:     'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js'
   };
 
-  // ---------- Утилита: загрузка скрипта с таймаутом ----------
+  // ---------- Загрузка скрипта с таймаутом ----------
   function loadScriptOnce(src, timeoutMs) {
-    timeoutMs = timeoutMs || 9000;
+    timeoutMs = timeoutMs || 10000;
     return new Promise(function (resolve, reject) {
       if (document.querySelector('script[src="' + src + '"]')) return resolve();
       var s = document.createElement('script');
@@ -56,7 +57,7 @@
     });
   }
 
-  // ---------- Загрузчики библиотек с fallback ----------
+  // ---------- Загрузчики с fallback ----------
   function ensureXlsx() {
     if (window.XLSX) return Promise.resolve();
     return loadScriptOnce(CDN.XLSX)
@@ -67,18 +68,6 @@
   }
 
   function ensurePdfMake() {
-    if (window.pdfMake && window.pdfMake.vfs && Object.keys(window.pdfMake.vfs).length) {
-      // Уже загружено — просто настраиваем шрифты
-      window.pdfMake.fonts = {
-        Roboto: {
-          normal: 'Roboto-Regular.ttf',
-          bold: 'Roboto-Medium.ttf',
-          italics: 'Roboto-Italic.ttf',
-          bolditalics: 'Roboto-MediumItalic.ttf'
-        }
-      };
-      return Promise.resolve();
-    }
     var p = Promise.resolve();
     if (!window.pdfMake) {
       p = p.then(function () {
@@ -90,7 +79,8 @@
     return p
       .then(function () {
         if (!window.pdfMake) throw new Error('pdfMake не загрузился');
-        if (!window.pdfMake.vfs || !Object.keys(window.pdfMake.vfs).length) {
+        var needVfs = !window.pdfMake.vfs || !Object.keys(window.pdfMake.vfs).length;
+        if (needVfs) {
           return loadScriptOnce(CDN.VFS).catch(function () {
             return loadScriptOnce(CDN.VFS_ALT);
           });
@@ -98,8 +88,9 @@
       })
       .then(function () {
         if (!window.pdfMake.vfs || !Object.keys(window.pdfMake.vfs).length) {
-          throw new Error('Шрифты PDF не загрузились');
+          throw new Error('Шрифты PDF (vfs_fonts) не загрузились');
         }
+        // Всегда настраиваем Roboto
         window.pdfMake.fonts = {
           Roboto: {
             normal: 'Roboto-Regular.ttf',
@@ -111,7 +102,7 @@
       });
   }
 
-  // ---------- Blob → Data URL ----------
+  // ---------- Blob → DataURL ----------
   function blobToDataURL(blob) {
     return new Promise(function (resolve, reject) {
       var r = new FileReader();
@@ -121,97 +112,120 @@
     });
   }
 
+  // ---------- Определение окружения ----------
+  function isTelegram() {
+    return !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData);
+  }
+  function isMobile() {
+    return /Android|iPhone|iPad|iPod|Mobile|Opera Mini|IEMobile/i.test(navigator.userAgent)
+      || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent));
+  }
+  function canNativeShareFiles() {
+    if (!navigator.share || !navigator.canShare) return false;
+    try {
+      var test = new File([new Blob(['x'])], 'test.txt', { type: 'text/plain' });
+      return navigator.canShare({ files: [test] });
+    } catch (e) { return false; }
+  }
+
   // ---------- Универсальное сохранение файла ----------
-  // Каскад: Web Share → Telegram downloadFile → a.download → открытие Data URL
   function saveBlob(blob, filename) {
-    // 1) Web Share API (iOS / Android / Telegram WebView)
-    return Promise.resolve()
-      .then(function () {
-        if (navigator.canShare && navigator.share) {
-          var file = new File([blob], filename, { type: blob.type || 'application/octet-stream' });
-          if (navigator.canShare({ files: [file] })) {
-            return navigator.share({ files: [file], title: filename })
-              .then(function () {
-                if (window.toast) window.toast('✅ Файл передан в «Поделиться»');
-                return true;
-              });
-          }
-        }
-      })
-      .catch(function (e) {
-        if (e && e.name === 'AbortError') {
-          if (window.toast) window.toast('Отменено', '#64748b');
-          return true; // не пробуем другие способы — пользователь сам отменил
-        }
-        console.warn('[patch.js] Web Share failed:', e);
-      })
-      // 2) Telegram downloadFile
-      .then(function (result) {
-        if (result === true) return true;
-        var isTelegram = !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData);
-        if (isTelegram && typeof window.Telegram.WebApp.downloadFile === 'function') {
-          return blobToDataURL(blob).then(function (dataUrl) {
-            window.Telegram.WebApp.downloadFile({ url: dataUrl, file_name: filename });
-            if (window.toast) window.toast('✅ Файл передан на скачивание');
-            return true;
-          }).catch(function (e) {
-            console.warn('[patch.js] Telegram.downloadFile failed:', e);
-            return false;
-          });
-        }
-        return false;
-      })
-      // 3) a.download
-      .then(function (result) {
-        if (result === true) return true;
-        try {
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = filename;
-          a.rel = 'noopener';
-          a.style.display = 'none';
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(function () {
-            if (a.parentNode) a.parentNode.removeChild(a);
-            try { URL.revokeObjectURL(url); } catch (e) {}
-          }, 2000);
-          if (window.toast) window.toast('✅ Файл скачан');
-          return true;
-        } catch (e) {
-          console.warn('[patch.js] a.download failed:', e);
-          return false;
-        }
-      })
-      // 4) Открытие Data URL в новом окне
-      .then(function (result) {
-        if (result === true) return true;
+    if (!blob) { alert('Пустой файл'); return Promise.resolve(false); }
+
+    var tg = isTelegram();
+    var mobile = isMobile();
+    var shareFiles = canNativeShareFiles();
+
+    function tryTelegramDownload() {
+      if (!tg) return Promise.resolve(false);
+      if (typeof window.Telegram.WebApp.downloadFile === 'function') {
         return blobToDataURL(blob).then(function (dataUrl) {
-          var isTelegram = !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData);
-          if (isTelegram && window.Telegram.WebApp.openLink) {
-            window.Telegram.WebApp.openLink(dataUrl);
-          } else {
-            var w = window.open(dataUrl, '_blank');
-            if (!w) throw new Error('popup blocked');
-          }
-          if (window.toast) window.toast('📥 Файл открыт. Сохраните через меню браузера.', '#64748b');
+          window.Telegram.WebApp.downloadFile({ url: dataUrl, file_name: filename });
+          if (window.toast) window.toast('✅ Файл передан на скачивание');
           return true;
+        }).catch(function (e) {
+          console.warn('[patch.js] Telegram.downloadFile failed:', e);
+          return false;
         });
-      })
-      .catch(function (e) {
-        console.warn('[patch.js] Open fallback failed:', e);
+      }
+      return Promise.resolve(false);
+    }
+
+    function tryWebShare() {
+      if (!mobile || !shareFiles) return Promise.resolve(false);
+      var file;
+      try {
+        file = new File([blob], filename, { type: blob.type || 'application/octet-stream' });
+      } catch (e) {
+        return Promise.resolve(false);
+      }
+      return navigator.share({ files: [file], title: filename })
+        .then(function () {
+          if (window.toast) window.toast('✅ Файл отправлен в «Поделиться»');
+          return true;
+        })
+        .catch(function (e) {
+          if (e && (e.name === 'AbortError' || e.name === 'NotAllowedError')) {
+            if (e.name === 'AbortError' && window.toast) window.toast('Отменено', '#64748b');
+            return true; // пользователь отменил — не пытаемся дальше
+          }
+          console.warn('[patch.js] Web Share failed:', e);
+          return false;
+        });
+    }
+
+    function tryAnchorDownload() {
+      try {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.rel = 'noopener';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          if (a.parentNode) a.parentNode.removeChild(a);
+          try { URL.revokeObjectURL(url); } catch (e) {}
+        }, 3000);
+        if (window.toast) window.toast('✅ Файл скачан');
+        return Promise.resolve(true);
+      } catch (e) {
+        console.warn('[patch.js] a.download failed:', e);
+        return Promise.resolve(false);
+      }
+    }
+
+    function tryDataUrlOpen() {
+      return blobToDataURL(blob).then(function (dataUrl) {
+        if (tg && window.Telegram.WebApp.openLink) {
+          window.Telegram.WebApp.openLink(dataUrl);
+        } else {
+          var w = window.open(dataUrl, '_blank');
+          if (!w) throw new Error('popup blocked');
+        }
+        if (window.toast) window.toast('📥 Файл открыт. Сохраните через меню браузера.', '#64748b');
+        return true;
+      }).catch(function (e) {
+        console.warn('[patch.js] DataURL open failed:', e);
         alert('Не удалось сохранить файл. Попробуйте открыть приложение в браузере.');
         return false;
       });
+    }
+
+    // --- Каскад: Telegram → Web Share → a.download → DataURL ---
+    return tryTelegramDownload()
+      .then(function (r) { if (r) return true; return tryWebShare(); })
+      .then(function (r) { if (r) return true; return tryAnchorDownload(); })
+      .then(function (r) { if (r) return true; return tryDataUrlOpen(); });
   }
 
-  // ---------- Excel: сборка Blob с автофильтром и шириной ----------
+  // ---------- Excel: Blob с автофильтром и шириной ----------
   function buildExcelBlob(rows, sheetName) {
     return ensureXlsx().then(function () {
       var ws = XLSX.utils.aoa_to_sheet(rows);
 
-      // Ширина колонок с учётом кириллицы
+      // Ширина колонок
       var colWidths = [];
       rows.forEach(function (row) {
         (row || []).forEach(function (cell, idx) {
@@ -240,6 +254,7 @@
       return new Promise(function (resolve, reject) {
         try {
           XLSX.write(wb, { bookType: 'xlsx', type: 'array' }, function (arr) {
+            if (!arr || arr.byteLength === 0) return reject(new Error('Пустой XLSX'));
             resolve(new Blob([arr], {
               type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             }));
@@ -249,10 +264,9 @@
     });
   }
 
-  // ---------- PDF: сборка Blob с кириллицей ----------
+  // ---------- PDF: Blob с кириллицей ----------
   function buildPdfBlob(docDefinition) {
     return ensurePdfMake().then(function () {
-      // Гарантируем Roboto и базовый стиль
       docDefinition.defaultStyle = Object.assign(
         { font: 'Roboto', fontSize: 9, lineHeight: 1.3 },
         docDefinition.defaultStyle || {}
@@ -512,23 +526,20 @@
       });
   }
 
-  // ---------- Замена импорта Excel (совместимость) ----------
-  // В основном файле функция ensureXlsx() используется при импорте.
-  // Перенаправляем её на нашу реализацию с fallback CDN.
-  window.ensureXlsxImport = ensureXlsx;
-
   // ---------- Подмена глобальных функций ----------
-  window.saveBlob            = saveBlob;
-  window.buildExcelBlob      = buildExcelBlob;
-  window.buildPdfBlob        = buildPdfBlob;
-  window.ensureXlsx          = ensureXlsx;
-  window.ensurePdfMake       = ensurePdfMake;
-  window.exportExcel         = exportExcel;
-  window.exportCatalogExcel  = exportCatalogExcel;
-  window.exportBackup        = exportBackup;
-  window.downloadExcelTemplate = downloadExcelTemplate;
-  window.buildEstimateTableBody = buildEstimateTableBody;
-  window.printDoc            = printDoc;
+  waitForMainScript().then(function () {
+    window.saveBlob            = saveBlob;
+    window.buildExcelBlob      = buildExcelBlob;
+    window.buildPdfBlob        = buildPdfBlob;
+    window.ensureXlsx          = ensureXlsx;
+    window.ensurePdfMake       = ensurePdfMake;
+    window.exportExcel         = exportExcel;
+    window.exportCatalogExcel  = exportCatalogExcel;
+    window.exportBackup        = exportBackup;
+    window.downloadExcelTemplate = downloadExcelTemplate;
+    window.buildEstimateTableBody = buildEstimateTableBody;
+    window.printDoc            = printDoc;
 
-  console.log('✅ [patch.js] Патч экспорта Excel/PDF/JSON загружен (v1.9)');
+    console.log('✅ [patch.js] Патч экспорта Excel/PDF/JSON загружен (v2.0)');
+  });
 })();
