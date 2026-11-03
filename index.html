@@ -1647,63 +1647,47 @@
       ta.remove();
     }
 
-    // ============ DOWNLOAD / EXCEL / PDF ============
-    async function loadScript(src) {
+    // ============ DOWNLOAD / EXCEL / PDF (реализация в patch.js) ============
+    // Эти функции переопределяются в patch.js после загрузки основного скрипта.
+    // Оставляем безопасные заглушки на случай, если патч не загрузился.
+    let loadScript = window.loadScript || function (src) {
       return new Promise((resolve, reject) => {
-        if (document.querySelector('script[src="' + src + '"]')) {
-          const check = setInterval(() => { if (window.XLSX || window.pdfMake) { clearInterval(check); resolve(); } }, 50);
-          setTimeout(() => { clearInterval(check); resolve(); }, 3000);
-          return;
-        }
+        if (document.querySelector('script[src="' + src + '"]')) return resolve();
         const s = document.createElement('script');
         s.src = src; s.onload = () => resolve(); s.onerror = () => reject(new Error('Не удалось загрузить ' + src));
         document.head.appendChild(s);
       });
-    }
-    function blobToDataURL(blob) {
+    };
+    let blobToDataURL = window.blobToDataURL || function (blob) {
       return new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(blob);
+        const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = reject; r.readAsDataURL(blob);
       });
-    }
-    async function saveBlob(blob, filename) {
-      const isTelegram = !!window.Telegram?.WebApp?.initData;
-      if (isTelegram && typeof window.Telegram.WebApp.downloadFile === 'function') {
-        try { const dataUrl = await blobToDataURL(blob); window.Telegram.WebApp.downloadFile({ url: dataUrl, file_name: filename }); toast('✅ Файл передан на скачивание'); return true; }
-        catch (e) { console.warn('Telegram.downloadFile failed:', e); }
+    };
+    let saveBlob = window.saveBlob || async function (blob, filename) {
+      // Минимальный fallback (патч заменит на полноценный)
+      if (window.Telegram?.WebApp?.downloadFile && window.Telegram?.WebApp?.initData) {
+        try {
+          const dataUrl = await blobToDataURL(blob);
+          window.Telegram.WebApp.downloadFile({ url: dataUrl, file_name: filename });
+          return true;
+        } catch (e) { console.warn(e); }
       }
       try {
-        const url = URL.createObjectURL(blob); const a = document.createElement('a');
-        a.href = url; a.download = filename; a.rel = 'noopener'; a.style.display = 'none';
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; a.style.display = 'none';
         document.body.appendChild(a); a.click();
-        setTimeout(() => { if (a.parentNode) a.parentNode.removeChild(a); try { URL.revokeObjectURL(url); } catch (e) { } }, 1500);
-        toast('✅ Файл скачан'); return true;
-      } catch (e) { console.warn('a.download failed:', e); }
-      try {
+        setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 1500);
+        return true;
+      } catch (e) {
         const dataUrl = await blobToDataURL(blob);
-        if (isTelegram && window.Telegram.WebApp.openLink) { window.Telegram.WebApp.openLink(dataUrl); } else { window.open(dataUrl, '_blank'); }
-        toast('📥 Файл открыт. Сохраните его через меню браузера.', '#64748b'); return true;
-      } catch (e) { console.warn('Open fallback failed:', e); }
-      alert('Не удалось сохранить файл.'); return false;
-    }
-    async function buildExcelBlob(rows, sheetName) {
-      if (!window.XLSX) { await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'); }
-      const ws = XLSX.utils.aoa_to_sheet(rows);
-      const colWidths = [];
-      rows.forEach(row => { row.forEach((cell, idx) => { const len = String(cell ?? '').length; colWidths[idx] = Math.max(colWidths[idx] || 8, Math.min(50, len + 2)); }); });
-      ws['!cols'] = colWidths.map(w => ({ wch: w }));
-      const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, sheetName || 'Смета');
-      return await new Promise((resolve, reject) => { try { XLSX.write(wb, { bookType: 'xlsx', type: 'blob' }, (b) => resolve(b)); } catch (e) { reject(e); } });
-    }
-    async function ensurePdfMake() {
-      if (window.pdfMake && window.pdfMake.vfs) return;
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js');
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js');
-      if (!window.pdfMake || !window.pdfMake.vfs) { throw new Error('Не удалось загрузить pdfmake'); }
-    }
-    async function buildPdfBlob(docDefinition) {
-      await ensurePdfMake();
-      return await new Promise((resolve, reject) => { try { pdfMake.createPdf(docDefinition).getBlob(blob => resolve(blob)); } catch (e) { reject(e); } });
-    }
+        window.open(dataUrl, '_blank');
+        return true;
+      }
+    };
+    let buildExcelBlob = window.buildExcelBlob || async function () { throw new Error('patch.js не загружен'); };
+    let ensurePdfMake = window.ensurePdfMake || async function () { throw new Error('patch.js не загружен'); };
+    let buildPdfBlob = window.buildPdfBlob || async function () { throw new Error('patch.js не загружен'); };
 
     // ============ КАТАЛОГ 70 ПОЗИЦИЙ ============
     const DEFAULT_CATALOG = [
@@ -2031,26 +2015,26 @@
     }
 
     // ============ ИМПОРТ EXCEL ============
-    function ensureXlsx() { if (window.XLSX) return Promise.resolve(); return loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'); }
+    //function ensureXlsx() { if (window.XLSX) return Promise.resolve(); return loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'); }
     function openExcelImport() { document.getElementById('xlsxFileInput').click(); }
-    function handleXlsxUpload(file) {
-      if (!file) return;
-      ensureXlsx().then(() => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          try {
-            const data = new Uint8Array(e.target.result);
-            const wb = XLSX.read(data, { type: 'array' });
-            const sheet = wb.Sheets[wb.SheetNames[0]]; if (!sheet) { alert('В файле нет ни одного листа'); return; }
-            const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
-            const parsed = parseCatalogRows(rows);
-            if (!parsed.items.length) { alert('Не удалось найти позиции для импорта.'); return; }
-            showImportPreview(parsed);
-          } catch (err) { alert('Ошибка чтения файла: ' + err.message); }
-        };
-        reader.readAsArrayBuffer(file);
-      }).catch(err => alert(err.message));
-    }
+    // function handleXlsxUpload(file) {
+    //   if (!file) return;
+    //   ensureXlsx().then(() => {
+    //     const reader = new FileReader();
+    //     reader.onload = (e) => {
+    //       try {
+    //         const data = new Uint8Array(e.target.result);
+    //         const wb = XLSX.read(data, { type: 'array' });
+    //         const sheet = wb.Sheets[wb.SheetNames[0]]; if (!sheet) { alert('В файле нет ни одного листа'); return; }
+    //         const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+    //         const parsed = parseCatalogRows(rows);
+    //         if (!parsed.items.length) { alert('Не удалось найти позиции для импорта.'); return; }
+    //         showImportPreview(parsed);
+    //       } catch (err) { alert('Ошибка чтения файла: ' + err.message); }
+    //     };
+    //     reader.readAsArrayBuffer(file);
+    //   }).catch(err => alert(err.message));
+    // }
     function parseCatalogRows(rows) {
       let colMap = null, start = 0;
       if (rows.length > 0) {
@@ -2375,35 +2359,83 @@
     function deleteCatalog(id) { if (!confirm('Удалить расценку из базы?')) return; CATALOG = CATALOG.filter(x => x.id !== id); db.catalog = CATALOG; save(); render(); toast('🗑 Расценка удалена', '#dc2626'); }
 
     // ============ ЭКСПОРТ ============
+
+    // ============ ЭКСПОРТ (реализация в patch.js) ============
     async function exportExcel() {
-      const o = obj(); if (!o) { alert('Выберите объект'); return; }
-      try {
-        toast('⏳ Формирую Excel...', '#64748b');
-        const items = getEstimateItems(o); const t = totals(o, items);
-        const rows = [['Объект', o.name], ['Тип', o.kind || ''], ['Адрес', o.address || ''], ['Заказчик', o.client || ''], ['Дата', today()], [], ['№', 'Тип', 'Помещение', 'Этап', 'Раздел', 'Наименование', 'Кол-во', 'Ед.', 'Цена', 'Сумма', 'Себестоимость']];
-        items.forEach((i, idx) => {
-          const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null;
-          rows.push([idx + 1, i.type === 'material' ? 'Материал' : 'Работа', room ? room.name : (i.roomName || 'Общее'), i.stage || '', i.group || '', i.name || '', i.qty, i.unit, i.price, num(i.qty) * num(i.price), i.cost]);
-        });
-        rows.push([]); rows.push(['', '', '', '', '', 'Работы', '', '', '', t.work, '']); rows.push(['', '', '', '', '', 'Материалы', '', '', '', t.mat, '']); rows.push(['', '', '', '', '', 'Наценка', '', '', '', t.markup, '']); rows.push(['', '', '', '', '', 'ИТОГО', '', '', '', t.total, '']);
-        const blob = await buildExcelBlob(rows, 'Смета');
-        await saveBlob(blob, 'buildmate-smeta-' + (o.contractNo || o.id) + '-' + today() + '.xlsx');
-      } catch (e) { alert('Ошибка при создании Excel: ' + e.message); }
+      if (typeof window.exportExcel === 'function' && window.exportExcel !== exportExcel) return window.exportExcel();
+      alert('Модуль экспорта не загружен. Проверьте подключение patch.js');
     }
     async function exportCatalogExcel() {
-      try {
-        toast('⏳ Формирую Excel...', '#64748b');
-        const rows = [['Тип', 'Этап', 'Раздел', 'Наименование', 'Единица', 'Цена', 'Помещения']];
-        CATALOG.forEach(p => { rows.push([p.type === 'material' ? 'Материал' : 'Работа', p.stage || '', p.group || '', p.name || '', p.unit || '', p.price || 0, (p.rooms || []).join(',')]); });
-        const blob = await buildExcelBlob(rows, 'Расценки'); await saveBlob(blob, 'buildmate-catalog-' + today() + '.xlsx');
-      } catch (e) { alert('Ошибка: ' + e.message); }
+      if (typeof window.exportCatalogExcel === 'function' && window.exportCatalogExcel !== exportCatalogExcel) return window.exportCatalogExcel();
+      alert('Модуль экспорта не загружен.');
     }
     async function exportBackup() {
-      if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
-      db.catalog = CATALOG;
-      try { const json = JSON.stringify(db, null, 2); const blob = new Blob([json], { type: 'application/json' }); await saveBlob(blob, 'buildmate-backup-' + today() + '.json'); }
-      catch (e) { alert('Ошибка: ' + e.message); }
+      if (typeof window.exportBackup === 'function' && window.exportBackup !== exportBackup) return window.exportBackup();
+      alert('Модуль экспорта не загружен.');
     }
+    async function printDoc(kind) {
+      if (typeof window.printDoc === 'function' && window.printDoc !== printDoc) return window.printDoc(kind);
+      alert('Модуль экспорта не загружен.');
+    }
+    async function downloadExcelTemplate() {
+      if (typeof window.downloadExcelTemplate === 'function' && window.downloadExcelTemplate !== downloadExcelTemplate) return window.downloadExcelTemplate();
+      alert('Модуль экспорта не загружен.');
+    }
+    function handleXlsxUpload(file) {
+      // Импорт оставляем в основном скрипте (он использует window.XLSX из патча)
+      if (!file) return;
+      if (!window.XLSX) { alert('Библиотека Excel ещё не загружена. Попробуйте через 2 секунды.'); return; }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const wb = XLSX.read(data, { type: 'array' });
+          const sheet = wb.Sheets[wb.SheetNames[0]];
+          if (!sheet) { alert('В файле нет ни одного листа'); return; }
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+          const parsed = parseCatalogRows(rows);
+          if (!parsed.items.length) { alert('Не удалось найти позиции для импорта.'); return; }
+          showImportPreview(parsed);
+        } catch (err) { alert('Ошибка чтения файла: ' + err.message); }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+    // ensureXlsx используется в импорте — подхватываем из патча, если есть
+    function ensureXlsx() {
+      if (window.XLSX) return Promise.resolve();
+      if (typeof window.ensureXlsx === 'function') return window.ensureXlsx();
+      return loadScript('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js');
+    }
+
+    // async function exportExcel() {
+    //   const o = obj(); if (!o) { alert('Выберите объект'); return; }
+    //   try {
+    //     toast('⏳ Формирую Excel...', '#64748b');
+    //     const items = getEstimateItems(o); const t = totals(o, items);
+    //     const rows = [['Объект', o.name], ['Тип', o.kind || ''], ['Адрес', o.address || ''], ['Заказчик', o.client || ''], ['Дата', today()], [], ['№', 'Тип', 'Помещение', 'Этап', 'Раздел', 'Наименование', 'Кол-во', 'Ед.', 'Цена', 'Сумма', 'Себестоимость']];
+    //     items.forEach((i, idx) => {
+    //       const room = i.roomId ? (o.rooms || []).find(r => r.id === i.roomId) : null;
+    //       rows.push([idx + 1, i.type === 'material' ? 'Материал' : 'Работа', room ? room.name : (i.roomName || 'Общее'), i.stage || '', i.group || '', i.name || '', i.qty, i.unit, i.price, num(i.qty) * num(i.price), i.cost]);
+    //     });
+    //     rows.push([]); rows.push(['', '', '', '', '', 'Работы', '', '', '', t.work, '']); rows.push(['', '', '', '', '', 'Материалы', '', '', '', t.mat, '']); rows.push(['', '', '', '', '', 'Наценка', '', '', '', t.markup, '']); rows.push(['', '', '', '', '', 'ИТОГО', '', '', '', t.total, '']);
+    //     const blob = await buildExcelBlob(rows, 'Смета');
+    //     await saveBlob(blob, 'buildmate-smeta-' + (o.contractNo || o.id) + '-' + today() + '.xlsx');
+    //   } catch (e) { alert('Ошибка при создании Excel: ' + e.message); }
+    // }
+    // async function exportCatalogExcel() {
+    //   try {
+    //     toast('⏳ Формирую Excel...', '#64748b');
+    //     const rows = [['Тип', 'Этап', 'Раздел', 'Наименование', 'Единица', 'Цена', 'Помещения']];
+    //     CATALOG.forEach(p => { rows.push([p.type === 'material' ? 'Материал' : 'Работа', p.stage || '', p.group || '', p.name || '', p.unit || '', p.price || 0, (p.rooms || []).join(',')]); });
+    //     const blob = await buildExcelBlob(rows, 'Расценки'); await saveBlob(blob, 'buildmate-catalog-' + today() + '.xlsx');
+    //   } catch (e) { alert('Ошибка: ' + e.message); }
+    // }
+    // async function exportBackup() {
+    //   if (saveTimeout) { clearTimeout(saveTimeout); save(); saveTimeout = null; }
+    //   db.catalog = CATALOG;
+    //   try { const json = JSON.stringify(db, null, 2); const blob = new Blob([json], { type: 'application/json' }); await saveBlob(blob, 'buildmate-backup-' + today() + '.json'); }
+    //   catch (e) { alert('Ошибка: ' + e.message); }
+    // }
     function importBackup(file) {
       if (!file) return;
       if (!/\.json$/i.test(file.name) && file.type !== 'application/json') {
@@ -2438,56 +2470,58 @@
       });
       return body;
     }
-    async function printDoc(kind) {
-      const o = obj(); if (!o) { alert('Выберите объект'); return; }
-      try {
-        toast('⏳ Формирую PDF...', '#64748b');
-        const t = totals(o); const items = o.items; const reqs = companyRequisites();
-        const companyName = db.company && db.company.trim() ? db.company : '________________________';
-        const city = db.region || 'Новосибирск';
-        const title = kind === 'contract' ? 'Договор оказания услуг' : kind === 'act' ? 'Акт выполненных работ' : kind === 'invoice' ? 'Счёт на оплату' : 'Смета на ремонт';
-        const tableBody = buildEstimateTableBody(items, o);
-        const content = [];
-        if (kind === 'contract') {
-          content.push({ text: title + ' № ' + (o.contractNo || ''), style: 'h1' });
-          content.push({ text: 'г. ' + city + ' «' + (o.contractDate || today()) + '»', margin: [0, 8, 0, 12] });
-          content.push({ text: 'Исполнитель: ' + (reqs || '________________________') + ', Заказчик: ' + (o.client || '________________________') + ' заключили настоящий договор.', margin: [0, 0, 0, 10] });
-          content.push({ text: '1. Предмет договора', style: 'h3' });
-          content.push({ text: 'Исполнитель выполняет ремонтные работы на объекте: ' + o.name + ' (' + (o.kind || '—') + ') по адресу: ' + (o.address || '________________________') + '.' });
-          content.push({ text: '2. Стоимость и порядок оплаты', style: 'h3' });
-          content.push({ text: 'Стоимость по смете: ' + fmt(t.total) + '. ' + (o.contractTerms || '') });
-          content.push({ text: '3. Приёмка', style: 'h3' }); content.push({ text: 'Порядок и сроки согласовываются дополнительно.' });
-          content.push({ text: '4. Подписи сторон', style: 'h3' });
-          content.push({ text: 'Исполнитель: ' + companyName + (db.director ? ' (' + db.director + ')' : '') + ' ___________', margin: [0, 8, 0, 0] });
-          content.push({ text: 'Заказчик: ' + (o.client || '________________') + ' ___________', margin: [0, 8, 0, 0] });
-          content.push({ text: 'Приложение № 1. Смета', style: 'h3', pageBreak: 'before' });
-        } else if (kind === 'act') {
-          content.push({ text: title, style: 'h1' });
-          content.push({ text: 'Объект: ' + o.name + ' (' + (o.kind || '—') + '). Адрес: ' + (o.address || '—'), margin: [0, 8, 0, 6] });
-          content.push({ text: 'Исполнитель: ' + (reqs || '________________________') });
-          content.push({ text: 'Приняты работы на сумму ' + fmt(t.total) + '.', margin: [0, 8, 0, 12] });
-        } else if (kind === 'invoice') {
-          content.push({ text: title + ' № ' + (o.contractNo || '') + ' от ' + (o.contractDate || today()), style: 'h1' });
-          content.push({ text: 'Исполнитель: ' + (reqs || '________________________'), margin: [0, 8, 0, 4] });
-          content.push({ text: 'Заказчик: ' + (o.client || '—'), margin: [0, 0, 0, 12] });
-        } else {
-          content.push({ text: title, style: 'h1' });
-          content.push({ text: 'Компания: ' + (reqs || '________________________') + ' · Объект: ' + o.name + ' (' + (o.kind || '—') + ') · Адрес: ' + (o.address || '—'), margin: [0, 8, 0, 4], fontSize: 10 });
-          content.push({ text: 'Заказчик: ' + (o.client || '—') + ' · Дата: ' + today(), margin: [0, 0, 0, 12], fontSize: 10 });
-        }
-        content.push({ table: { headerRows: 1, widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto'], body: tableBody }, layout: 'lightHorizontalLines', margin: [0, 10, 0, 0] });
-        content.push({ text: 'Работы: ' + fmt(t.work), alignment: 'right', margin: [0, 12, 0, 2], fontSize: 11 });
-        content.push({ text: 'Материалы: ' + fmt(t.mat), alignment: 'right', margin: [0, 0, 0, 2], fontSize: 11 });
-        content.push({ text: 'Наценка: ' + fmt(t.markup), alignment: 'right', margin: [0, 0, 0, 2], fontSize: 11 });
-        content.push({ text: 'ИТОГО: ' + fmt(t.total), alignment: 'right', bold: true, fontSize: 14, margin: [0, 6, 0, 0] });
-        if (kind === 'act') { content.push({ text: 'Замечания: _______________', margin: [0, 20, 0, 0] }); content.push({ text: 'Исполнитель ' + (db.director ? '(' + db.director + ')' : '') + ' __________   Заказчик __________', margin: [0, 20, 0, 0] }); }
-        else if (kind === 'invoice') { content.push({ text: 'К оплате: ' + fmt(t.total), bold: true, margin: [0, 16, 0, 0] }); content.push({ text: 'Руководитель ' + (db.director ? '(' + db.director + ')' : '') + ' ___________', margin: [0, 20, 0, 0] }); }
-        content.push({ text: 'Сформировано в BuildMate Pro · ' + today(), fontSize: 8, color: '#888888', margin: [0, 20, 0, 0], alignment: 'right' });
-        const docDef = { content, styles: { h1: { fontSize: 16, bold: true, alignment: 'center', margin: [0, 0, 0, 8] }, h3: { fontSize: 12, bold: true, margin: [0, 12, 0, 4] }, th: { fillColor: '#f0f0f0', fontSize: 9 } }, defaultStyle: { fontSize: 9, lineHeight: 1.3 } };
-        const blob = await buildPdfBlob(docDef);
-        await saveBlob(blob, 'buildmate-' + kind + '-' + (o.contractNo || o.id) + '-' + today() + '.pdf');
-      } catch (e) { console.error(e); alert('Ошибка при создании PDF: ' + e.message); }
-    }
+    // async function printDoc(kind) {
+    //   const o = obj(); if (!o) { alert('Выберите объект'); return; }
+    //   try {
+    //     toast('⏳ Формирую PDF...', '#64748b');
+    //     const t = totals(o); const items = o.items; const reqs = companyRequisites();
+    //     const companyName = db.company && db.company.trim() ? db.company : '________________________';
+    //     const city = db.region || 'Новосибирск';
+    //     const title = kind === 'contract' ? 'Договор оказания услуг' : kind === 'act' ? 'Акт выполненных работ' : kind === 'invoice' ? 'Счёт на оплату' : 'Смета на ремонт';
+    //     const tableBody = buildEstimateTableBody(items, o);
+    //     const content = [];
+    //     if (kind === 'contract') {
+    //       content.push({ text: title + ' № ' + (o.contractNo || ''), style: 'h1' });
+    //       content.push({ text: 'г. ' + city + ' «' + (o.contractDate || today()) + '»', margin: [0, 8, 0, 12] });
+    //       content.push({ text: 'Исполнитель: ' + (reqs || '________________________') + ', Заказчик: ' + (o.client || '________________________') + ' заключили настоящий договор.', margin: [0, 0, 0, 10] });
+    //       content.push({ text: '1. Предмет договора', style: 'h3' });
+    //       content.push({ text: 'Исполнитель выполняет ремонтные работы на объекте: ' + o.name + ' (' + (o.kind || '—') + ') по адресу: ' + (o.address || '________________________') + '.' });
+    //       content.push({ text: '2. Стоимость и порядок оплаты', style: 'h3' });
+    //       content.push({ text: 'Стоимость по смете: ' + fmt(t.total) + '. ' + (o.contractTerms || '') });
+    //       content.push({ text: '3. Приёмка', style: 'h3' }); content.push({ text: 'Порядок и сроки согласовываются дополнительно.' });
+    //       content.push({ text: '4. Подписи сторон', style: 'h3' });
+    //       content.push({ text: 'Исполнитель: ' + companyName + (db.director ? ' (' + db.director + ')' : '') + ' ___________', margin: [0, 8, 0, 0] });
+    //       content.push({ text: 'Заказчик: ' + (o.client || '________________') + ' ___________', margin: [0, 8, 0, 0] });
+    //       content.push({ text: 'Приложение № 1. Смета', style: 'h3', pageBreak: 'before' });
+    //     } else if (kind === 'act') {
+    //       content.push({ text: title, style: 'h1' });
+    //       content.push({ text: 'Объект: ' + o.name + ' (' + (o.kind || '—') + '). Адрес: ' + (o.address || '—'), margin: [0, 8, 0, 6] });
+    //       content.push({ text: 'Исполнитель: ' + (reqs || '________________________') });
+    //       content.push({ text: 'Приняты работы на сумму ' + fmt(t.total) + '.', margin: [0, 8, 0, 12] });
+    //     } else if (kind === 'invoice') {
+    //       content.push({ text: title + ' № ' + (o.contractNo || '') + ' от ' + (o.contractDate || today()), style: 'h1' });
+    //       content.push({ text: 'Исполнитель: ' + (reqs || '________________________'), margin: [0, 8, 0, 4] });
+    //       content.push({ text: 'Заказчик: ' + (o.client || '—'), margin: [0, 0, 0, 12] });
+    //     } else {
+    //       content.push({ text: title, style: 'h1' });
+    //       content.push({ text: 'Компания: ' + (reqs || '________________________') + ' · Объект: ' + o.name + ' (' + (o.kind || '—') + ') · Адрес: ' + (o.address || '—'), margin: [0, 8, 0, 4], fontSize: 10 });
+    //       content.push({ text: 'Заказчик: ' + (o.client || '—') + ' · Дата: ' + today(), margin: [0, 0, 0, 12], fontSize: 10 });
+    //     }
+    //     content.push({ table: { headerRows: 1, widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto'], body: tableBody }, layout: 'lightHorizontalLines', margin: [0, 10, 0, 0] });
+    //     content.push({ text: 'Работы: ' + fmt(t.work), alignment: 'right', margin: [0, 12, 0, 2], fontSize: 11 });
+    //     content.push({ text: 'Материалы: ' + fmt(t.mat), alignment: 'right', margin: [0, 0, 0, 2], fontSize: 11 });
+    //     content.push({ text: 'Наценка: ' + fmt(t.markup), alignment: 'right', margin: [0, 0, 0, 2], fontSize: 11 });
+    //     content.push({ text: 'ИТОГО: ' + fmt(t.total), alignment: 'right', bold: true, fontSize: 14, margin: [0, 6, 0, 0] });
+    //     if (kind === 'act') { content.push({ text: 'Замечания: _______________', margin: [0, 20, 0, 0] }); content.push({ text: 'Исполнитель ' + (db.director ? '(' + db.director + ')' : '') + ' __________   Заказчик __________', margin: [0, 20, 0, 0] }); }
+    //     else if (kind === 'invoice') { content.push({ text: 'К оплате: ' + fmt(t.total), bold: true, margin: [0, 16, 0, 0] }); content.push({ text: 'Руководитель ' + (db.director ? '(' + db.director + ')' : '') + ' ___________', margin: [0, 20, 0, 0] }); }
+    //     content.push({ text: 'Сформировано в BuildMate Pro · ' + today(), fontSize: 8, color: '#888888', margin: [0, 20, 0, 0], alignment: 'right' });
+    //     const docDef = { content, styles: { h1: { fontSize: 16, bold: true, alignment: 'center', margin: [0, 0, 0, 8] }, h3: { fontSize: 12, bold: true, margin: [0, 12, 0, 4] }, th: { fillColor: '#f0f0f0', fontSize: 9 } }, defaultStyle: { fontSize: 9, lineHeight: 1.3 } };
+    //     const blob = await buildPdfBlob(docDef);
+    //     await saveBlob(blob, 'buildmate-' + kind + '-' + (o.contractNo || o.id) + '-' + today() + '.pdf');
+    //   } catch (e) { console.error(e); alert('Ошибка при создании PDF: ' + e.message); }
+    // }
+
+
 
     function companyRequisites() { return [db.company || '', db.inn ? `ИНН ${db.inn}` : '', db.ogrn ? `ОГРН ${db.ogrn}` : '', db.legalAddress || '', db.phone ? `тел. ${db.phone}` : '', db.email || '', db.website || ''].filter(Boolean).join(' · '); }
 
@@ -2659,6 +2693,7 @@
     applyState({ tab: 'home', editingItem: null });
     initCloudSync();
   </script>
+  <script src="patch.js"></script>
 </body>
 
 </html>
